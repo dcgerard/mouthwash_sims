@@ -1,12 +1,12 @@
 library(ggplot2)
 
-source("../Code/data_generators.R")
-source("../Code/adjustment_methods.R")
+source("./Code/data_generators.R")
+source("./Code/adjustment_methods.R")
 ## these do not change
 args_val              <- list()
 args_val$log2foldsd   <- 1
 args_val$tissue       <- "muscle"
-args_val$path         <- "../Output/gtex_tissue_gene_reads_v6p/"
+args_val$path         <- "./Output/gtex_tissue_gene_reads_v6p/"
 args_val$Ngene        <- 10000
 args_val$log2foldmean <- 0
 args_val$skip_gene    <- 0
@@ -41,19 +41,17 @@ ashr::get_pi0(ash_limma)
 mouth_out <- vicar::mouthwash(Y = Y, X = X, cov_of_interest = 2)
 mouth_out$pi0
 
-
 lfdr_df <- data.frame(OLSASH = ash_ols$result$lfdr,
                       VLEASH = ash_limma$result$lfdr,
                       MOUTHWASH = mouth_out$result$lfdr)
 longdat <- reshape2::melt(lfdr_df, id.vars = NULL)
-longdat$variable
 
 longdat$variable <- stringr::str_replace(longdat$variable, "OLSASH", "OLS + ASH")
 longdat$variable <- stringr::str_replace(longdat$variable, "VLEASH", "voom-limma-ebayes + ASH")
 longdat$variable <- factor(longdat$variable, levels = c("OLS + ASH", "voom-limma-ebayes + ASH",
                                                         "MOUTHWASH"))
 names(longdat) <- c("Method", "lfdr")
-pdf(file = "../Output/figures/ash_fail.pdf", family = "Times", width = 6.5, height = 2.5, colormodel = "cmyk")
+pdf(file = "./Output/figures/ash_fail.pdf", family = "Times", width = 6.5, height = 2.5, colormodel = "cmyk")
 ggplot(data = longdat, mapping = aes(x = lfdr, color = I("black"), fill = I("white"))) +
     facet_wrap(~Method) +
     geom_histogram(bins = 20) +

@@ -3,8 +3,8 @@ library(snow)
 
 one_rep <- function(new_params, current_params) {
     return_vec <- tryCatch(expr = {
-        source("../Code/data_generators.R")
-        source("../Code/adjustment_methods.R")
+        source("./Code/data_generators.R")
+        source("./Code/adjustment_methods.R")
         args_val <- append(current_params, new_params)
         set.seed(new_params$current_seed)
         d_out <- datamaker_counts_only(args_val)
@@ -196,7 +196,7 @@ for (list_index in 1:nrow(par_vals)) {
 args_val              <- list()
 args_val$log2foldsd   <- 0.8
 args_val$tissue       <- "muscle"
-args_val$path         <- "../Output/gtex_tissue_gene_reads_v6p/"
+args_val$path         <- "./Output/gtex_tissue_gene_reads_v6p/"
 args_val$Ngene        <- 1000
 args_val$log2foldmean <- 0
 args_val$skip_gene    <- 0
@@ -214,6 +214,6 @@ stopCluster(cl)
 mse_mat <- cbind(par_vals, sout[, 1:26])
 auc_mat <- cbind(par_vals, sout[, 27:52])
 pi0_mat <- cbind(par_vals, sout[, 53:78])
-write.csv(mse_mat, file = "../Output/sims_out/mse_mat2.csv", row.names = FALSE)
-write.csv(auc_mat, file = "../Output/sims_out/auc_mat2.csv", row.names = FALSE)
-write.csv(pi0_mat, file = "../Output/sims_out/pi0_mat2.csv", row.names = FALSE)
+write.csv(mse_mat, file = "./Output/sims_out/mse_mat2.csv", row.names = FALSE)
+write.csv(auc_mat, file = "./Output/sims_out/auc_mat2.csv", row.names = FALSE)
+write.csv(pi0_mat, file = "./Output/sims_out/pi0_mat2.csv", row.names = FALSE)

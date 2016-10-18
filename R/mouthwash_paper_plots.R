@@ -4,7 +4,7 @@ library(ggplot2)
 library(dplyr)
 
 ## AUC --------------------------------------------------------------------------------
-auc <- read.csv("../Output/sims_out/auc_mat2.csv")
+auc <- read.csv("./Output/sims_out/auc_mat2.csv")
 auc <- select(auc, -auc_ash_ruv3_mult)
 auc <- select(auc, -auc_pvalue_ruv3_mult)
 auc_names <- names(auc)
@@ -46,7 +46,7 @@ dummy_dat <- auc_mean %>% group_by(nullpi, `Sample Size`, ncontrols) %>% summari
 names(dummy_dat)[2] <- "Sample Size "
 
 ## plot!
-pdf(file = "../Output/figures/auc_ave.pdf", family = "Times", width = 6.5, height = 7, colormodel = "cmyk")
+pdf(file = "./Output/figures/auc_ave.pdf", family = "Times", width = 6.5, height = 7, colormodel = "cmyk")
 ggplot(data = auc_mean, mapping = aes(pch = `Sample Size`, y = avg, x = variable)) +
     facet_grid(nullpi ~ ncontrols) +
     geom_point() +
@@ -62,7 +62,7 @@ dev.off()
 
 ## Pi0hat ----------------------------------------------------------------------------
 rm(list = ls())
-pi0 <- read.csv("../Output/sims_out/pi0_mat2.csv")
+pi0 <- read.csv("./Output/sims_out/pi0_mat2.csv")
 pi0 <- select(pi0, -pi0_ash_ruv3_mult)
 pi0 <- select(pi0, -pi0_qvalue_ruv3_mult)
 pi0_names <- names(pi0)
@@ -95,7 +95,7 @@ subsamp <- filter(pi0_median, nullpi == 0.9 & Nsamp == 40 & ncontrols == 10)
 flevels <- levels(pi0_median$variable)[order(abs(subsamp$med - 0.9))]
 pi0_median$variable <- factor(pi0_median$variable, levels = flevels)
 
-pdf(file = "../Output/figures/pi0_med.pdf", family = "Times", colormodel = "cmyk", height = 7, width = 6.5)
+pdf(file = "./Output/figures/pi0_med.pdf", family = "Times", colormodel = "cmyk", height = 7, width = 6.5)
 ggplot(data = pi0_median, mapping = aes(x = variable, y = med, pch = Nsamp)) +
     facet_grid(nullpi ~ ncontrols) +
     geom_point() +
@@ -118,7 +118,7 @@ fa_labels <- mse_dat$variable[order(mse_dat$mse)]
 
 subdat$variable <- factor(subdat$variable, levels = fa_labels)
 
-pdf(file = "../Output/figures/pi0_box_09.pdf", family = "Times", colormodel = "cmyk", height = 7, width = 6.5)
+pdf(file = "./Output/figures/pi0_box_09.pdf", family = "Times", colormodel = "cmyk", height = 7, width = 6.5)
 ggplot(data = subdat, mapping = aes(y = value, x = variable)) +
     facet_grid(Nsamp ~ ncontrols) +
     geom_boxplot(outlier.size = 0.1, lwd = 0.5) +
@@ -143,7 +143,7 @@ fa_labels <- mse_dat$variable[order(mse_dat$mse)]
 
 subdat$variable <- factor(subdat$variable, levels = fa_labels)
 
-pdf(file = "../Output/figures/pi0_box_05.pdf", family = "Times", colormodel = "cmyk", height = 7, width = 6.5)
+pdf(file = "./Output/figures/pi0_box_05.pdf", family = "Times", colormodel = "cmyk", height = 7, width = 6.5)
 ggplot(data = subdat, mapping = aes(y = value, x = variable)) +
     facet_grid(Nsamp ~ ncontrols) +
     geom_boxplot(outlier.size = 0.1, lwd = 0.5) +
@@ -166,7 +166,7 @@ fa_labels <- mse_dat$variable[order(mse_dat$mse)]
 
 subdat$variable <- factor(subdat$variable, levels = fa_labels)
 
-pdf(file = "../Output/figures/pi0_box_1.pdf", family = "Times", colormodel = "cmyk", height = 7, width = 6.5)
+pdf(file = "./Output/figures/pi0_box_1.pdf", family = "Times", colormodel = "cmyk", height = 7, width = 6.5)
 ggplot(data = subdat, mapping = aes(y = value, x = variable)) +
     facet_grid(Nsamp ~ ncontrols) +
     geom_boxplot(outlier.size = 0.1, lwd = 0.5) +

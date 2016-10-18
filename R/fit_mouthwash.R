@@ -15,11 +15,10 @@ tissue_vec <- c("adiposetissue", "bladder", "bloodvessel", "breast",
                 "skin", "spleen", "adrenalgland", "blood", "brain",
                 "esophagus", "heart", "liver", "muscle", "pituitary",
                 "salivarygland", "smallintestine", "stomach", "thyroid")
-num_sv_seq <- readRDS("../output/ruvbout/num_sv.Rds")
 
 nseq <- rep(NA, length = length(tissue_vec))
 
-source("../Code/adjustment_methods.R")
+source("./Code/adjustment_methods.R")
 
 do_ash <- function(args) {
     if (!is.null(args$sebetahat) & !is.null(args$betahat)) {
@@ -77,15 +76,19 @@ get_betahat <- function(args) {
 
 plist <- list()
 betahat_list <- list()
+num_sv_seq <- rep(NA, length = length(tissue_vec))
 for(tissue_index in 1:length(tissue_vec)) {
     current_tissue <- tissue_vec[tissue_index]
-    num_sv <- num_sv_seq[tissue_index]
 
-    dat <- readRDS(paste0("../Output/cleaned_gtex_data/", current_tissue, ".Rds"))
+    dat <- readRDS(paste0("./Output/cleaned_gtex_data/", current_tissue, ".Rds"))
     onsex <- dat$chrom == "X" | dat$chrom == "Y"
     onsex[is.na(onsex)] <- FALSE
     dat$ctl[onsex] <- FALSE
     nseq[tissue_index] <- ncol(dat$Y)
+
+    num_sv <- sva::num.sv(dat = dat$Y, mod = dat$X)
+
+    num_sv_seq[tissue_index] <- num_sv
 
     cat(tissue_index, "\n")
 
@@ -170,6 +173,7 @@ for(tissue_index in 1:length(tissue_vec)) {
 
 }
 
-saveRDS(object = plist, file = "../Output/gtex_fits/plist.Rds")
-saveRDS(object = betahat_list, file = "../Output/gtex_fits/betahat_list.Rds")
-saveRDS(object = pi0mat, file = "../Output/gtex_fits/pi0mat.Rds")
+saveRDS(object = plist, file = "./Output/gtex_fits/plist.Rds")
+saveRDS(object = betahat_list, file = "./Output/gtex_fits/betahat_list.Rds")
+saveRDS(object = pi0mat, file = "./Output/gtex_fits/pi0mat.Rds")
+saveRDS(object = num_sv_seq, "./Output/gtex_fits/num_sv.Rds")

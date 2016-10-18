@@ -49,14 +49,14 @@ good_method_labels <- c("OLS+ASH", "RUV2+ASH", "RUV3+ASH", "RUV4+ASH",
 
 top100 <- matrix(NA, nrow = length(tissue_vec), ncol = 24)
 
-plist <- readRDS("../Output/gtex_fits/plist.Rds")
-pi0mat <- readRDS("../Output/gtex_fits/pi0mat.Rds")
-betahat_list <- readRDS("../Output/gtex_fits/betahat_list.Rds")
+plist <- readRDS("./Output/gtex_fits/plist.Rds")
+pi0mat <- readRDS("./Output/gtex_fits/pi0mat.Rds")
+betahat_list <- readRDS("./Output/gtex_fits/betahat_list.Rds")
 nseq <- rep(NA, length(tissue_vec))
 
 for (tissue_index in 1:length(tissue_vec)) {
     current_tissue <- tissue_vec[tissue_index]
-    dat <- readRDS(paste0("../Output/cleaned_gtex_data/", current_tissue, ".Rds"))
+    dat <- readRDS(paste0("./Output/cleaned_gtex_data/", current_tissue, ".Rds"))
 
     onsex <- dat$chrom == "X" | dat$chrom == "Y"
 
@@ -117,7 +117,7 @@ longdat$Tissue <- factor(longdat$Tissue, levels = rownames(top100)[order(nseq, d
 longdat$Method <- factor(longdat$Method, levels = levels(longdat$Method)[faorder])
 
 
-pdf(file = "../Output/figures/prop_max.pdf", height = 7.5, width = 6.5, family = "Times", color = "cmyk")
+pdf(file = "./Output/figures/prop_max.pdf", height = 7.5, width = 6.5, family = "Times", color = "cmyk")
 ggplot(data = longdat, mapping = aes(x = Method, y = Tissue, fill = Proportion)) +
     geom_raster() +
     scale_fill_gradient(high = "#ffffff",
@@ -145,9 +145,9 @@ print(xtable(medpi0), include.rownames = FALSE)
 
 ### Individual pmats -------------------------------------------------------------
 rm(list = ls())
-plist <- readRDS("../Output/gtex_fits/plist.Rds")
-pi0mat <- readRDS("../Output/gtex_fits/pi0mat.Rds")
-betahat_list <- readRDS("../Output/gtex_fits/betahat_list.Rds")
+plist <- readRDS("./Output/gtex_fits/plist.Rds")
+pi0mat <- readRDS("./Output/gtex_fits/pi0mat.Rds")
+betahat_list <- readRDS("./Output/gtex_fits/betahat_list.Rds")
 
 tissue_vec <- c("adiposetissue", "bladder", "bloodvessel", "breast",
                 "colon", "kidney", "lung", "nerve", "pancreas",
@@ -164,7 +164,7 @@ plot_now <- FALSE
 for (tissue_index in 1:length(tissue_vec)) {
 
     current_tissue <- tissue_vec[tissue_index]
-    dat <- readRDS(paste0("../Output/cleaned_gtex_data/", current_tissue, ".Rds"))
+    dat <- readRDS(paste0("./Output/cleaned_gtex_data/", current_tissue, ".Rds"))
     onsex <- dat$chrom == "X" | dat$chrom == "Y"
 
     pmat <- plist[[tissue_index]][, 1:12]
@@ -229,7 +229,7 @@ dummydat$method <- method_names
 
 names(dummydat) <- c("Method", "Rank", "lfdr", "Proportion")
 
-pdf(file = "../Output/figures/proponsex.pdf", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
+pdf(file = "./Output/figures/proponsex.pdf", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
 ggplot() + geom_point(data = dummydat, mapping = aes(x = Rank, y = lfdr,
                                                     color = Proportion), size = 0.5) +
     facet_wrap(~Method) +
