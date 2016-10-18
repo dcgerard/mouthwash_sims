@@ -1,5 +1,5 @@
 ---
-title: "Reproducing Results of MOUTHWASH results in Gerard and Stephens (2016)"
+title: "Reproducing MOUTHWASH results in Gerard and Stephens (2016)"
 bibliography: readme_bib.bib
 output: github_document
 ---

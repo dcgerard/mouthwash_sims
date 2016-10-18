@@ -1,4 +1,4 @@
-Reproducing Results of MOUTHWASH results in Gerard and Stephens (2016)
+Reproducing MOUTHWASH results in Gerard and Stephens (2016)
 ================
 
 Introduction
