@@ -212,22 +212,30 @@ dummydat <- biglongdat %>% group_by(method, index) %>% summarize(lfdr = median(l
 ##     geom_line(alpha = 0.2, mapping = aes(group = tissue))
 
 
-method_names <- dummydat$method
-method_names <- str_replace(method_names, "ash_", "")
-method_names <- str_replace(method_names, "_nocal", "")
-method_names <- str_replace(method_names, "ruv4v", "CATEv")
-method_names <- str_replace(method_names, "_nomult", "")
-method_names <- str_replace(method_names, "_rsvar", "v")
-method_names <- str_to_upper(method_names)
-method_names <- str_replace(method_names, "_NORM", "(normal)")
-method_names <- str_replace(method_names, "_T", "(t)")
-method_names <- str_replace(method_names, "CATENC", "CATEnc")
-method_names <- str_replace(method_names, "CATERR", "CATErr")
-method_names <- str_replace(method_names, "RUV4V", "RUV4v")
-method_names <- str_replace(method_names, "CATEV", "CATEv")
-dummydat$method <- method_names
+change_method_names <- function(method_names) {
+    method_names <- str_replace(method_names, "ash_", "")
+    method_names <- str_replace(method_names, "_nocal", "")
+    method_names <- str_replace(method_names, "ruv4v", "CATEv")
+    method_names <- str_replace(method_names, "_nomult", "")
+    method_names <- str_replace(method_names, "_rsvar", "v")
+    method_names <- str_to_upper(method_names)
+    method_names <- str_replace(method_names, "_NORM", "(normal)")
+    method_names <- str_replace(method_names, "_T", "(t)")
+    method_names <- str_replace(method_names, "CATENC", "CATEnc")
+    method_names <- str_replace(method_names, "CATERR", "CATErr")
+    method_names <- str_replace(method_names, "RUV4V", "RUV4v")
+    method_names <- str_replace(method_names, "CATEV", "CATEv")
+    return(method_names)
+}
+
+dummydat$method <- change_method_names(dummydat$method)
 
 names(dummydat) <- c("Method", "Rank", "lfdr", "Proportion")
+
+biglongdat2 <- biglongdat
+names(biglongdat2) <- c("lfdr", "onsex", "Method", "Rank", "Tissue")
+
+biglongdat2$Method <- change_method_names(biglongdat2$Method)
 
 pdf(file = "./Output/figures/proponsex.pdf", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
 ggplot() + geom_point(data = dummydat, mapping = aes(x = Rank, y = lfdr,
@@ -237,6 +245,16 @@ ggplot() + geom_point(data = dummydat, mapping = aes(x = Rank, y = lfdr,
     scale_color_gradient(high = "black",
                         low = "grey90",
                         guide = guide_colourbar(title = "Proportion\non Sex\nChromosome")) +
+    theme(strip.background = element_rect(fill="white"), text = element_text(size = 10)) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+    ylab("Median lfdr")
+dev.off()
+
+pdf(file = "./Output/figures/lfdr_rank.pdf", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
+ggplot(data = biglongdat2, mapping = aes(y = lfdr, x = Rank, group = Tissue)) +
+    geom_line(alpha = 1/4) +
+    facet_wrap(~Method) +
+    theme_bw() +
     theme(strip.background = element_rect(fill="white"), text = element_text(size = 10)) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 dev.off()
