@@ -111,6 +111,7 @@ one_rep <- function(new_params, current_params) {
         ash_list$mouthwash_t <- mouthwash(Y = Y, X = X,
                                           num_sv = num_sv,
                                           likelihood = "t")
+        ash_list$backwash    <- backwash(Y = Y, X = X, num_sv = num_sv)
 
 
         qvalue_list <- lapply(method_list, FUN = do_qvalue)
@@ -211,9 +212,9 @@ stopCluster(cl)
 
 
 ## save(sout, file = "general_sims2.Rd")
-mse_mat <- cbind(par_vals, sout[, 1:26])
-auc_mat <- cbind(par_vals, sout[, 27:52])
-pi0_mat <- cbind(par_vals, sout[, 53:78])
+mse_mat <- cbind(par_vals, sout[, 1:27])
+auc_mat <- cbind(par_vals, sout[, 28:54])
+pi0_mat <- cbind(par_vals, sout[, 55:81])
 write.csv(mse_mat, file = "./Output/sims_out/mse_mat2.csv", row.names = FALSE)
 write.csv(auc_mat, file = "./Output/sims_out/auc_mat2.csv", row.names = FALSE)
 write.csv(pi0_mat, file = "./Output/sims_out/pi0_mat2.csv", row.names = FALSE)

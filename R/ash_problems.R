@@ -31,25 +31,31 @@ df <- eout$df.total
 
 ols_out <- ols(Y = Y, X = X)
 
-ash_limma <- ashr::ash.workhorse(betahat = betahat, sebetahat = sebetahat, df = df)
+ash_limma <- ashr::ash.workhorse(betahat = betahat, sebetahat = sebetahat, df = df[1])
 ash_ols   <- ashr::ash.workhorse(betahat = ols_out$betahat, sebetahat = ols_out$sebetahat,
                                  df = ols_out$df)
 
 ashr::get_pi0(ash_ols)
 ashr::get_pi0(ash_limma)
 
-mouth_out <- vicar::mouthwash(Y = Y, X = X, cov_of_interest = 2)
+num_sv <- sva::num.sv(dat = t(Y), mod = X)
+
+mouth_out <- vicar::mouthwash(Y = Y, X = X, k = num_sv, cov_of_interest = 2)
 mouth_out$pi0
+
+back_out <- vicar::backwash(Y = Y, X = X, k = num_sv, cov_of_interest = 2)
+back_out$pi0
 
 lfdr_df <- data.frame(OLSASH = ash_ols$result$lfdr,
                       VLEASH = ash_limma$result$lfdr,
-                      MOUTHWASH = mouth_out$result$lfdr)
+                      MOUTHWASH = mouth_out$result$lfdr,
+                      BACKWASH = back_out$result$lfdr)
 longdat <- reshape2::melt(lfdr_df, id.vars = NULL)
 
 longdat$variable <- stringr::str_replace(longdat$variable, "OLSASH", "OLS + ASH")
 longdat$variable <- stringr::str_replace(longdat$variable, "VLEASH", "voom-limma-ebayes + ASH")
 longdat$variable <- factor(longdat$variable, levels = c("OLS + ASH", "voom-limma-ebayes + ASH",
-                                                        "MOUTHWASH"))
+                                                        "MOUTHWASH", "BACKWASH"))
 names(longdat) <- c("Method", "lfdr")
 pdf(file = "./Output/figures/ash_fail.pdf", family = "Times", width = 6.5, height = 2.5, colormodel = "cmyk")
 ggplot(data = longdat, mapping = aes(x = lfdr, color = I("black"), fill = I("white"))) +

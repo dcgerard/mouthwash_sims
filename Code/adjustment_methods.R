@@ -458,3 +458,14 @@ ruvb_bfl <- function(Y, X, control_genes, num_sv) {
                 upper = ruvbout$upper,
                 svalues = ruvbout$svalues))
 }
+
+backwash <- function(Y, X, num_sv, scale_var = TRUE) {
+    bout <- vicar::backwash(Y = Y, X = X, k = num_sv,
+                            cov_of_interest = 2,
+                            include_intercept = FALSE,
+                            scale_var = scale_var)
+    betahat <- bout$result$PosteriorMean
+    lfdr    <- bout$result$lfdr
+    pi0hat  <- bout$pi0
+    return(list(betahat = betahat, lfdr = lfdr, pi0hat = pi0hat))
+}

@@ -143,6 +143,8 @@ for(tissue_index in 1:length(tissue_vec)) {
     ash_list$mouthwash_t <- mouthwash(Y = Y, X = X,
                                       num_sv = num_sv,
                                       likelihood = "t")
+    ash_list$backwash    <- backwash(Y = Y, X = X, num_sv = num_sv)
+
 
 
 

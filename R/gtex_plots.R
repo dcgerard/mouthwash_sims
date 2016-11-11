@@ -41,7 +41,7 @@ good_method_labels <- c("OLS+ASH", "RUV2+ASH", "RUV3+ASH", "RUV4+ASH",
                         "RUV4v+ASH", "CATEnc+ASH",
                         "CATEv(normal)+ASH", "CATEv(t)+ASH",
                         "SVA+ASH", "CATErr+ASH", "MOUTHWASH(normal)",
-                        "MOUTHWASH(t)", "OLS", "RUV2", "RUV3", "RUV4",
+                        "MOUTHWASH(t)", "BACKWASH", "OLS", "RUV2", "RUV3", "RUV4",
                         "RUV4v", "CATEnc", "CATEnc+Cal",
                         "CATEv(normal)", "CATEv(t)", "SVA", "CATErr",
                         "CATErr+Cal")
