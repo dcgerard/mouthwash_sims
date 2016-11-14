@@ -38,7 +38,10 @@ ash_ols   <- ashr::ash.workhorse(betahat = ols_out$betahat, sebetahat = ols_out$
 ashr::get_pi0(ash_ols)
 ashr::get_pi0(ash_limma)
 
+library(sva)
 num_sv <- sva::num.sv(dat = t(Y), mod = X)
+
+cat("num_sv = ", num_sv, "\n")
 
 mouth_out <- vicar::mouthwash(Y = Y, X = X, k = num_sv, cov_of_interest = 2)
 mouth_out$pi0
@@ -53,14 +56,15 @@ lfdr_df <- data.frame(OLSASH = ash_ols$result$lfdr,
 longdat <- reshape2::melt(lfdr_df, id.vars = NULL)
 
 longdat$variable <- stringr::str_replace(longdat$variable, "OLSASH", "OLS + ASH")
-longdat$variable <- stringr::str_replace(longdat$variable, "VLEASH", "voom-limma-ebayes + ASH")
-longdat$variable <- factor(longdat$variable, levels = c("OLS + ASH", "voom-limma-ebayes + ASH",
+longdat$variable <- stringr::str_replace(longdat$variable, "VLEASH", "VOOM + ASH")
+longdat$variable <- factor(longdat$variable, levels = c("OLS + ASH", "VOOM + ASH",
                                                         "MOUTHWASH", "BACKWASH"))
 names(longdat) <- c("Method", "lfdr")
 pdf(file = "./Output/figures/ash_fail.pdf", family = "Times", width = 6.5, height = 2.5, colormodel = "cmyk")
 ggplot(data = longdat, mapping = aes(x = lfdr, color = I("black"), fill = I("white"))) +
-    facet_wrap(~Method) +
+    facet_grid(.~Method) +
     geom_histogram(bins = 20) +
     theme_bw() + ylab("Count") +
-    theme(strip.background = element_rect(fill="white"))
+    theme(strip.background = element_rect(fill="white")) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.4))
 dev.off()
