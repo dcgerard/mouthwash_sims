@@ -47,7 +47,7 @@ good_method_labels <- c("OLS+ASH", "RUV2+ASH", "RUV3+ASH", "RUV4+ASH",
                         "CATErr+Cal")
 
 
-top100 <- matrix(NA, nrow = length(tissue_vec), ncol = 24)
+top100 <- matrix(NA, nrow = length(tissue_vec), ncol = length(good_method_labels))
 
 plist <- readRDS("./Output/gtex_fits/plist.Rds")
 pi0mat <- readRDS("./Output/gtex_fits/pi0mat.Rds")
@@ -69,7 +69,7 @@ for (tissue_index in 1:length(tissue_vec)) {
 
     betamat <- betahat_list[[tissue_index]]
 
-    top100[tissue_index, ] <- apply(pmat, 2, do_topk, onsex = onsex, k = 100)
+    top100[tissue_index, ] <- apply(pmat, 2, do_topk, onsex = onsex, k = 200)
     nseq[tissue_index] <- ncol(dat$Y)
 
     countmat <- as.data.frame(t(apply(pmat[, 1:12], 2, tot_sig, onsex = onsex, alpha = 0.05)))
@@ -117,7 +117,7 @@ longdat$Tissue <- factor(longdat$Tissue, levels = rownames(top100)[order(nseq, d
 longdat$Method <- factor(longdat$Method, levels = levels(longdat$Method)[faorder])
 
 
-pdf(file = "./Output/figures/prop_max.pdf", height = 7.5, width = 6.5, family = "Times", color = "cmyk")
+pdf(file = "./Output/figures/prop_max.pdf", height = 7.3, width = 6.5, family = "Times", color = "cmyk")
 ggplot(data = longdat, mapping = aes(x = Method, y = Tissue, fill = Proportion)) +
     geom_raster() +
     scale_fill_gradient(high = "#ffffff",
@@ -167,7 +167,7 @@ for (tissue_index in 1:length(tissue_vec)) {
     dat <- readRDS(paste0("./Output/cleaned_gtex_data/", current_tissue, ".Rds"))
     onsex <- dat$chrom == "X" | dat$chrom == "Y"
 
-    pmat <- plist[[tissue_index]][, 1:12]
+    pmat <- plist[[tissue_index]][, 1:13]
 
     aout <- lapply(as.data.frame(pmat), return_topk, onsex = onsex)
 
@@ -239,11 +239,11 @@ biglongdat2$Method <- change_method_names(biglongdat2$Method)
 
 pdf(file = "./Output/figures/proponsex.pdf", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
 ggplot() + geom_point(data = dummydat, mapping = aes(x = Rank, y = lfdr,
-                                                    color = Proportion), size = 0.5) +
+                                                     color = Proportion), size = 0.5) +
     facet_wrap(~Method) +
     theme_bw() +
     scale_color_gradient(high = "black",
-                        low = "grey90",
+                        low = "gray80",
                         guide = guide_colourbar(title = "Proportion\non Sex\nChromosome")) +
     theme(strip.background = element_rect(fill="white"), text = element_text(size = 10)) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
