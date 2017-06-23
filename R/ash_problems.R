@@ -1,4 +1,5 @@
 library(ggplot2)
+library(dplyr)
 
 source("./Code/data_generators.R")
 source("./Code/adjustment_methods.R")
@@ -68,3 +69,25 @@ ggplot(data = longdat, mapping = aes(x = lfdr, color = I("black"), fill = I("whi
     theme(strip.background = element_rect(fill="white")) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.4))
 dev.off()
+
+smalldat <- filter(longdat, Method == "OLS + ASH" | Method  == "VOOM + ASH")
+
+pdf(file = "./Output/figures/ash_fail_small.pdf", family = "Times", width = 4, height = 2.5, colormodel = "cmyk")
+ggplot(data = smalldat, mapping = aes(x = lfdr, color = I("black"), fill = I("lightgrey"))) +
+  facet_grid(.~Method) +
+  geom_histogram(bins = 20) +
+  theme_bw() + ylab("Count") +
+  theme(strip.background = element_rect(fill="white")) +
+  xlim(0, 1)
+dev.off()
+
+smalldat <- filter(longdat, Method == "MOUTHWASH")
+pdf(file = "./Output/figures/ash_fail_small_mouth.pdf", family = "Times", width = 4, height = 2.5, colormodel = "cmyk")
+ggplot(data = smalldat, mapping = aes(x = lfdr, color = I("black"), fill = I("lightgrey"))) +
+  facet_grid(.~Method) +
+  geom_histogram(bins = 20) +
+  theme_bw() + ylab("Count") +
+  theme(strip.background = element_rect(fill="white")) +
+  xlim(0, 1)
+dev.off()
+

@@ -1,4 +1,3 @@
-library(Rmpi)
 library(snow)
 
 one_rep <- function(new_params, current_params) {
