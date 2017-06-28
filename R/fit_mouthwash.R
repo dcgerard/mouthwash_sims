@@ -1,6 +1,7 @@
-library(reshape2)
-library(ggplot2)
+library(tidyverse)
 library(stringr)
+source("./Code/nc_adjustment_methods.R")
+source("./Code/non_nc_methods.R")
 
 proc_wrapper <- function(predictor, response) {
     pROC::roc(predictor = predictor, response = response)$auc
@@ -18,8 +19,6 @@ tissue_vec <- c("adiposetissue", "bladder", "bloodvessel", "breast",
 
 nseq <- rep(NA, length = length(tissue_vec))
 
-source("./Code/adjustment_methods.R")
-
 do_ash <- function(args) {
     if (!is.null(args$sebetahat) & !is.null(args$betahat)) {
         if (!is.null(args$df)) {
@@ -32,29 +31,19 @@ do_ash <- function(args) {
                                       df = args$df,
                                       outputlevel = 2)
         return_list <- list()
-        return_list$betahat <- ashout$result$PosteriorMean
-        return_list$lfdr    <- ashout$result$lfdr
+        return_list$betahat <- ashr::get_pm(ashout)
+        return_list$lfdr    <- ashr::get_lfdr(ashout)
         return_list$pi0hat  <- ashr::get_pi0(ashout)
         return(return_list)
     }
 }
 
 do_qvalue <- function(args) {
-    if (!is.null(args$pvalues)) {
-        trash <- tryCatch({
-            qout <- qvalue::qvalue(p = args$pvalues)
-            return_list        <- list()
-            return_list$lfdr   <- qout$lfdr
-            return_list$pi0hat <- qout$pi0
-            TRUE
-        }, error = function(e){NULL})
-        if (is.null(trash)) {
-            return_list        <- list()
-            return_list$lfdr   <- rep(NA, length(args$pvalues))
-            return_list$pi0hat <- NA
-        }
-        return(return_list)
-    }
+  qout <- qvalue::qvalue(p = args)
+  return_list        <- list()
+  return_list$lfdr   <- qout$lfdr
+  return_list$pi0hat <- qout$pi0
+  return(return_list)
 }
 
 get_lfdr <- function(args) {
@@ -62,7 +51,12 @@ get_lfdr <- function(args) {
 }
 
 get_pvalues <- function(args) {
-    args$pvalues
+  if(!is.null(args$pvalues)) {
+    return(list(pvalues = c(args$pvalues)))
+  } else {
+    pvalues <- 2 * stats::pt(-abs(args$betahat / args$sebetahat), df = args$df)
+    return(list(pvalues = c(pvalues)))
+  }
 }
 
 get_pi0hat <- function(args) {
@@ -96,73 +90,40 @@ for(tissue_index in 1:length(tissue_vec)) {
     X <- dat$X
     control_genes <- dat$ctl
 
-    method_list            <- list()
-    method_list$ols        <- ols(Y = Y, X = X)
+    method_list      <- list()
+    method_list$ols  <- ols(Y = Y, X = X)
 
     ## control gene methods --------------------------------------------------
-    method_list$ruv2         <- ruv2(Y = Y, X = X, num_sv = num_sv,
-                                     control_genes = control_genes)
-    method_list$ruv3_nomult  <- ruv3(Y = Y, X = X, num_sv = num_sv,
-                                     control_genes = control_genes,
-                                     multiplier = FALSE)
-    ## method_list$ruv3_mult    <- ruv3(Y = Y, X = X, num_sv = num_sv,
-    ##                                  control_genes = control_genes,
-    ##                                  multiplier = TRUE)
-    method_list$ruv4         <- ruv4(Y = Y, X = X, num_sv = num_sv,
-                                     control_genes = control_genes)
-    method_list$ruv4_rsvar   <- ruv4_rsvar_ebayes(Y = Y, X = X, num_sv = num_sv,
-                                                  control_genes = control_genes)
-    method_list$catenc_nocal <- cate_nc(Y = Y, X = X, num_sv = num_sv,
-                                        control_genes = control_genes,
-                                        calibrate = FALSE)
-    method_list$catenc_cal   <- cate_nc(Y = Y, X = X, num_sv = num_sv,
-                                        control_genes = control_genes,
-                                        calibrate = TRUE)
-    method_list$ruv4v_norm   <- vruv4(Y = Y, X = X,
-                                      num_sv = num_sv,
-                                      control_genes = control_genes,
-                                      likelihood = "normal")
-    method_list$ruv4v_t      <- vruv4(Y = Y, X = X,
-                                      num_sv = num_sv,
-                                      control_genes = control_genes,
-                                      likelihood = "t")
+    ruv2_o <- ruv2_simp(Y = Y, X = X, num_sv = num_sv, control_genes = control_genes)
+    method_list$ruv2  <- limma_adjust(ruv2_o)
+    method_list$ruv3 <- ruv3_limma_pre(Y = Y, X = X, num_sv = num_sv,
+                                       control_genes = control_genes)
+    method_list$cate  <- cate_simp_nc_correction(Y = Y, X = X, num_sv = num_sv,
+                                                 control_genes = control_genes)
 
     ## non control gene methods ----------------------------------------------
-    method_list$sva          <- sva(Y = Y, X = X, num_sv = num_sv)
-    method_list$caterr_nocal <- cate_rr(Y = Y, X = X, num_sv = num_sv, calibrate = FALSE)
-    method_list$caterr_cal   <- cate_rr(Y = Y, X = X, num_sv = num_sv, calibrate = TRUE)
+    method_list$sva    <- sva_voom(Y = Y, X = X, num_sv = num_sv)
+    method_list$caterr <- cate_rr(Y = Y, X = X, num_sv = num_sv, calibrate = FALSE)
 
     ash_list <- lapply(method_list, FUN = do_ash)
-    ash_list$leapp <- NULL
-    ash_list$catenc_cal <- NULL
-    ash_list$caterr_cal <- NULL
-    ash_list$mouthwash_norm <- mouthwash(Y = Y, X = X,
-                                         num_sv = num_sv,
-                                         likelihood = "normal",
-                                         scale_var = TRUE)
-    ash_list$mouthwash_t <- mouthwash(Y = Y, X = X,
-                                      num_sv = num_sv,
-                                      likelihood = "t")
-    ash_list$backwash    <- backwash(Y = Y, X = X, num_sv = num_sv)
-
-
-
-
-    qvalue_list <- lapply(method_list, FUN = do_qvalue)
-
-
-
+    ash_list$mouthwash <- mouthwash(Y = Y, X = X, num_sv = num_sv, likelihood = "normal", scale_var = TRUE)
+    ash_list$backwash <- backwash(Y = Y, X = X, num_sv = num_sv)
 
     ash_lfdr <- sapply(ash_list, FUN = get_lfdr)
-    pvalmat  <- sapply(method_list, FUN = get_pvalues)
+    pvalmat  <- sapply(sapply(method_list, FUN = get_pvalues), c)
+    colnames(pvalmat) <- stringr::str_replace(colnames(pvalmat), ".pvalues", "")
+    qvalue_list <- apply(pvalmat, 2, FUN = do_qvalue)
+    qvalue_lfdr <- sapply(qvalue_list, FUN = get_lfdr)
+
+    colnames(qvalue_lfdr) <- paste0("qvalue_", colnames(qvalue_lfdr))
     colnames(ash_lfdr) <- paste0("ash_", colnames(ash_lfdr))
     colnames(pvalmat) <- paste0("pval_", colnames(pvalmat))
-    plist[[tissue_index]] <- cbind(ash_lfdr, pvalmat)
+    plist[[tissue_index]] <- cbind(ash_lfdr, pvalmat, qvalue_lfdr)
 
     ash_betahat <- sapply(ash_list, FUN = get_betahat)
     reg_betahat <- sapply(method_list, FUN = get_betahat)
     betahat_list[[tissue_index]] <- cbind(ash_betahat, reg_betahat)
-    colnames(betahat_list[[tissue_index]]) <- colnames(plist[[tissue_index]])
+    colnames(betahat_list[[tissue_index]]) <- colnames(plist[[tissue_index]])[1:ncol(betahat_list[[tissue_index]])]
 
     num_methods <- length(ash_list) + length(qvalue_list)
     if (tissue_index == 1) {
