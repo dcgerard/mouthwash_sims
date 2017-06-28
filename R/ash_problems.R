@@ -1,53 +1,42 @@
-library(ggplot2)
-library(dplyr)
+library(tidyverse)
+library(seqgendiff)
+library(sva)
+source("./Code/nc_adjustment_methods.R")
 
-source("./Code/data_generators.R")
-source("./Code/adjustment_methods.R")
-## these do not change
-args_val              <- list()
-args_val$log2foldsd   <- 1
-args_val$tissue       <- "muscle"
-args_val$path         <- "./Output/gtex_tissue_gene_reads_v6p/"
-args_val$Ngene        <- 10000
-args_val$log2foldmean <- 0
-args_val$skip_gene    <- 0
-args_val$nullpi       <- 1
-args_val$Nsamp        <- 3
-args_val$poisthin     <- FALSE
-
+nsamp <- 6
+ngene <- 10000
+muscle_dat <- t(as.matrix(read.csv("./Output/gtex_tissue_gene_reads_v6p/muscle.csv")[, -c(1, 2)]))
 
 set.seed(249)
 
-d_out <- datamaker_counts_only(args_val)
+dout <- poisthin(mat = muscle_dat, nsamp = nsamp, ngene = ngene, prop_null = 1, gselect = "mean_max")
 
-X <- as.matrix(model.matrix(~d_out$input$condition))
-Y <- t(log2(as.matrix(d_out$input$counts + 1)))
+X <- dout$X
+Y <- t(log2(dout$Y + 1))
 
-vout <- limma::voom(d_out$input$counts)
+vout <- limma::voom(t(dout$Y))
 lout <- limma::lmFit(vout, design = X)
 eout <- limma::ebayes(lout)
 betahat <- lout$coefficients[, 2]
 sebetahat <- sqrt(eout$s2.post) * lout$stdev.unscaled[, 2]
 df <- eout$df.total
 
-ols_out <- ols(Y = Y, X = X)
+ols_out <- ols(Y = t(Y), X = X)
 
 ash_limma <- ashr::ash.workhorse(betahat = betahat, sebetahat = sebetahat, df = df[1])
 ash_ols   <- ashr::ash.workhorse(betahat = ols_out$betahat, sebetahat = ols_out$sebetahat,
                                  df = ols_out$df)
 
-ashr::get_pi0(ash_ols)
 ashr::get_pi0(ash_limma)
+ashr::get_pi0(ash_ols)
 
-library(sva)
-num_sv <- sva::num.sv(dat = t(Y), mod = X)
-
+num_sv <- sva::num.sv(dat = Y, mod = X)
 cat("num_sv = ", num_sv, "\n")
 
-mouth_out <- vicar::mouthwash(Y = Y, X = X, k = num_sv, cov_of_interest = 2)
+mouth_out <- vicar::mouthwash(Y = t(Y), X = X, k = num_sv, cov_of_interest = 2)
 mouth_out$pi0
 
-back_out <- vicar::backwash(Y = Y, X = X, k = num_sv, cov_of_interest = 2)
+back_out <- vicar::backwash(Y = t(Y), X = X, k = num_sv, cov_of_interest = 2)
 back_out$pi0
 
 lfdr_df <- data.frame(OLSASH = ash_ols$result$lfdr,

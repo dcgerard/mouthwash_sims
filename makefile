@@ -58,9 +58,7 @@ gtex_fits = ./Output/gtex_fits/betahat_list.Rds \
             ./Output/gtex_fits/pi0mat.Rds \
             ./Output/gtex_fits/plist.Rds
 
-sims_out = ./Output/sims_out/auc_mat2.csv \
-           ./Output/sims_out/mse_mat2.csv \
-           ./Output/sims_out/pi0_mat2.csv
+sims_out = ./Output/sims_out/sims_out.RDS
 
 
 all: one_data gtex_analysis sims
@@ -87,15 +85,15 @@ gtex_analysis : $(gtex_fits) ./R/gtex_plots.R
 	Rscript ./R/gtex_plots.R
 
 ## run simulations
-$(sims_out) : $(tissue_dat) ./R/mouthwash_paper_sims.R
+$(sims_out) : $(tissue_dat) ./Code/mouthwash_sims.R
 	mkdir -p Output/sims_out
-	Rscript ./R/mouthwash_paper_sims.R
+	Rscript ./Code/mouthwash_sims.R
 
 ## plot simulations
 .PHONY : sims
-sims : $(sims_out) ./R/mouthwash_paper_plots.R
+sims : $(sims_out) ./R/plot_mouthwash_sims.R
 	mkdir -p Output/figures
-	Rscript ./R/mouthwash_paper_plots.R
+	Rscript ./R/plot_mouthwash_sims.R
 
 .PHONY : one_data
 one_data : $(tissue_dat) ./R/ash_problems.R
