@@ -107,7 +107,7 @@ for(tissue_index in 1:length(tissue_vec)) {
 
     ash_list <- lapply(method_list, FUN = do_ash)
     ash_list$mouthwash <- mouthwash(Y = Y, X = X, num_sv = num_sv, likelihood = "normal", scale_var = TRUE)
-    ash_list$backwash <- backwash(Y = Y, X = X, num_sv = num_sv)
+    ash_list$backwash <- backwash(Y = Y, X = X, num_sv = num_sv, scale_var = TRUE)
 
     ash_lfdr <- sapply(ash_list, FUN = get_lfdr)
     pvalmat  <- sapply(sapply(method_list, FUN = get_pvalues), c)
@@ -128,7 +128,7 @@ for(tissue_index in 1:length(tissue_vec)) {
     num_methods <- length(ash_list) + length(qvalue_list)
     if (tissue_index == 1) {
         pi0mat <- matrix(NA, nrow = length(tissue_vec), ncol = num_methods)
-        colnames(pi0mat) <- colnames(plist[[1]])
+        colnames(pi0mat) <- colnames(betahat_list[[1]])
     }
 
     pi0mat[tissue_index, ] <- c(sapply(ash_list, get_pi0hat),
