@@ -1,22 +1,34 @@
-library(ggplot2)
 library(stringr)
-library(dplyr)
-library(reshape2)
+library(tidyverse)
 
 do_topk <- function(lfdr, onsex, k) {
-    return(sum(onsex[order(lfdr)][1:k]))
+    return(sum(onsex[order(lfdr)][1:k], na.rm = TRUE))
 }
 
 tot_sig <- function(lfdr, onsex, alpha = 0.1) {
     sig <- onsex[lfdr < alpha]
-    return(c(numsex = sum(sig), sumsig = length(sig)))
+    return(c(numsex = sum(sig, na.rm = TRUE), sumsig = length(sig)))
 }
 
 prop_sig <- function(lfdr, onsex, alpha = 0.1) {
     sig <- onsex[lfdr < alpha]
     propsig <- length(sig) / length(lfdr)
-    propgen <- sum(sig) / length(sig)
+    propgen <- sum(sig, na.rm = TRUE) / length(sig)
     return(c(propsig = propsig, propgen = propgen))
+}
+
+replace_names <- function(x) {
+  x <- stringr::str_replace(x, "ash_mouthwash", "MOUTHWASH")
+  x <- stringr::str_replace(x, "ash_backwash", "BACKWASH")
+  x <- stringr::str_replace(x, "ash_(.+)", "\\1+ASH")
+  x <- stringr::str_replace(x, "qvalue_(.+)", "\\1+qvalue")
+  x <- stringr::str_replace(x, "ruv", "RUV")
+  x <- stringr::str_replace(x, "cate", "CATE")
+  x <- stringr::str_replace(x, "CATE\\+", "CATEnc+")
+  x <- stringr::str_replace(x, "pval_", "")
+  x <- stringr::str_replace(x, "ols", "OLS")
+  x <- stringr::str_replace(x, "sva", "SVA")
+  x <- stringr::str_replace(x, "_norm", "")
 }
 
 
@@ -32,22 +44,8 @@ good_tissue_labels <- c("Adipose Tissue", "Bladder", "Blood Vessel", "Breast",
                         "Esophagus", "Heart", "Liver", "Muscle", "Pituitary",
                         "Salivary Gland", "Small Intestine", "Stomach", "Thyroid")
 
-#############################################################################
-## CATErr+Cal and CATErr were misslabeld in simulations. When you re-run, switch them back!
-#############################################################################
 
-
-good_method_labels <- c("OLS+ASH", "RUV2+ASH", "RUV3+ASH", "RUV4+ASH",
-                        "RUV4v+ASH", "CATEnc+ASH",
-                        "CATEv(normal)+ASH", "CATEv(t)+ASH",
-                        "SVA+ASH", "CATErr+ASH", "MOUTHWASH(normal)",
-                        "MOUTHWASH(t)", "BACKWASH", "OLS", "RUV2", "RUV3", "RUV4",
-                        "RUV4v", "CATEnc", "CATEnc+Cal",
-                        "CATEv(normal)", "CATEv(t)", "SVA", "CATErr",
-                        "CATErr+Cal")
-
-
-top100 <- matrix(NA, nrow = length(tissue_vec), ncol = length(good_method_labels))
+top100 <- matrix(NA, nrow = length(tissue_vec), ncol = 14)
 
 plist <- readRDS("./Output/gtex_fits/plist.Rds")
 pi0mat <- readRDS("./Output/gtex_fits/pi0mat.Rds")
@@ -59,8 +57,10 @@ for (tissue_index in 1:length(tissue_vec)) {
     dat <- readRDS(paste0("./Output/cleaned_gtex_data/", current_tissue, ".Rds"))
 
     onsex <- dat$chrom == "X" | dat$chrom == "Y"
+    control_genes <- dat$ctl
 
     pmat <- plist[[tissue_index]]
+    pmat[control_genes, ] <- NA
 
     numzero <- apply(pmat, 2, function(x) sum(x == 0, na.rm = TRUE))
     if (any(numzero > 100)) {
@@ -69,13 +69,16 @@ for (tissue_index in 1:length(tissue_vec)) {
 
     betamat <- betahat_list[[tissue_index]]
 
-    top100[tissue_index, ] <- apply(pmat, 2, do_topk, onsex = onsex, k = 200)
+    top100[tissue_index, ] <- apply(pmat[, 1:14], 2, do_topk, onsex = onsex, k = 200)
     nseq[tissue_index] <- ncol(dat$Y)
 
-    countmat <- as.data.frame(t(apply(pmat[, 1:12], 2, tot_sig, onsex = onsex, alpha = 0.05)))
-    propmat  <- as.data.frame(t(apply(pmat[, 1:12], 2, prop_sig, onsex = onsex, alpha = 0.05)))
+    countmat <- as.data.frame(t(apply(pmat, 2, tot_sig, onsex = onsex, alpha = 0.05)))
+    propmat  <- as.data.frame(t(apply(pmat, 2, prop_sig, onsex = onsex, alpha = 0.05)))
 
-    namevec <- stringr::str_replace(rownames(countmat), "ash_", "")
+    countmat <- countmat[!stringr::str_detect(rownames(countmat), "pval"), ]
+    propmat  <- propmat[!stringr::str_detect(rownames(propmat), "pval"), ]
+
+    namevec <- replace_names(rownames(countmat))
 
     countmat$method <- namevec
     propmat$method  <- namevec
@@ -84,37 +87,30 @@ for (tissue_index in 1:length(tissue_vec)) {
     propmat$tissue  <- tissue_vec[tissue_index]
 
     if (tissue_index == 1) {
-        allcountmat <- countmat
-        allpropmat  <- propmat
+      colnames(top100) <- namevec
+      allcountmat <- countmat
+      allpropmat  <- propmat
     } else {
-        allcountmat <- rbind(allcountmat, countmat)
-        allpropmat  <- rbind(allpropmat, propmat)
+      allcountmat <- rbind(allcountmat, countmat)
+      allpropmat  <- rbind(allpropmat, propmat)
     }
     cat(tissue_index, "\n")
 }
 
 
 ## top 100 analysis
-colnames(top100) <- good_method_labels
 rownames(top100) <- paste0(good_tissue_labels, " (", nseq, ")")
-top100p <- as.data.frame(top100 / apply(top100, 1, max))
-top100p <- dplyr::select(top100p, -OLS, -`OLS+ASH`)
+top100p <- as_data_frame(top100 / apply(top100, 1, max)) %>%
+  select(-`OLS+ASH`, -`OLS+qvalue`)
 faorder <- order(apply(top100p, 2, median), decreasing = TRUE)
-top100p$Tissue <- rownames(top100p)
+top100p$Tissue <- rownames(top100)
 
 
 
 
-longdat <- melt(top100p, id.vars = "Tissue")
-names(longdat) <- c("Tissue", "Method", "Proportion")
-which_bad <- longdat$Method == "CATEnc" & longdat$Tissue == "Breast (214)"
-longdat$Proportion[which_bad] <- NA
-longdat$na <- FALSE
-longdat$na[which_bad] <- TRUE
-
+longdat <- gather(top100p, key = "Method", value = "Proportion", `RUV2+ASH`:`CATErr+qvalue`)
 longdat$Tissue <- factor(longdat$Tissue, levels = rownames(top100)[order(nseq, decreasing = TRUE)])
-
-longdat$Method <- factor(longdat$Method, levels = levels(longdat$Method)[faorder])
+longdat$Method <- factor(longdat$Method, levels = unique(longdat$Method)[faorder])
 
 
 pdf(file = "./Output/figures/prop_max.pdf", height = 7.3, width = 6.5, family = "Times", color = "cmyk")
@@ -125,14 +121,13 @@ ggplot(data = longdat, mapping = aes(x = Method, y = Tissue, fill = Proportion))
                         na.value = "black",
                         guide = guide_colourbar(title = "Proportion\nfrom\nMaximum")) +
     theme_bw() +
-    geom_point(aes(size=ifelse(na, "dot", "no_dot")), color = "white") +
     scale_size_manual(values=c(dot=2, no_dot=NA), guide="none") +
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 dev.off()
 
 medpi0 <- data.frame(pi0hat = apply(pi0mat, 2, median))
 rownames(medpi0) <- NULL
-medpi0$Method <- good_method_labels
+medpi0$Method <- namevec
 medpi0 <- medpi0[, 2:1]
 medpi0 <- medpi0[order(medpi0$pi0hat), ]
 
@@ -160,6 +155,20 @@ return_topk <- function(lfdr, onsex, k = 500) {
     return(cbind(lfdr[olf], onsex[olf]))
 }
 
+replace_names <- function(x) {
+  x <- stringr::str_replace(x, "ash_mouthwash", "MOUTHWASH")
+  x <- stringr::str_replace(x, "ash_backwash", "BACKWASH")
+  x <- stringr::str_replace(x, "ash_(.+)", "\\1+ASH")
+  x <- stringr::str_replace(x, "qvalue_(.+)", "\\1+qvalue")
+  x <- stringr::str_replace(x, "ruv", "RUV")
+  x <- stringr::str_replace(x, "cate", "CATE")
+  x <- stringr::str_replace(x, "CATE\\+", "CATEnc+")
+  x <- stringr::str_replace(x, "pval_", "")
+  x <- stringr::str_replace(x, "ols", "OLS")
+  x <- stringr::str_replace(x, "sva", "SVA")
+  x <- stringr::str_replace(x, "_norm", "")
+}
+
 plot_now <- FALSE
 for (tissue_index in 1:length(tissue_vec)) {
 
@@ -167,26 +176,25 @@ for (tissue_index in 1:length(tissue_vec)) {
     dat <- readRDS(paste0("./Output/cleaned_gtex_data/", current_tissue, ".Rds"))
     onsex <- dat$chrom == "X" | dat$chrom == "Y"
 
-    pmat <- plist[[tissue_index]][, 1:13]
+    pmat <- as_data_frame(plist[[tissue_index]]) %>% select(contains("ash_"), contains("qvalue_"))
 
-    aout <- lapply(as.data.frame(pmat), return_topk, onsex = onsex)
+    aout <- lapply(pmat, return_topk, onsex = onsex)
 
     for (index in 1:length(aout)) {
-        aout[[index]] <- as.data.frame(aout[[index]])
+        aout[[index]] <- as_data_frame(aout[[index]])
         aout[[index]]$method <- names(aout)[index]
         aout[[index]]$index  <- 1:nrow(aout[[index]])
     }
 
     longdat <- do.call(rbind, aout)
     longdat$tissue <- current_tissue
+    names(longdat) <- c("lfdr", "onsex", "method", "index")
 
     if (tissue_index == 1) {
         biglongdat <- longdat
     } else {
         biglongdat <- rbind(biglongdat, longdat)
     }
-
-    names(longdat) <- c("lfdr", "onsex", "method", "index")
 
     ## ggplot(data = longdat, mapping = aes(x = index, y = lfdr, color = method)) +
     ##    geom_line()
@@ -206,45 +214,25 @@ colnames(biglongdat) <- c("lfdr", "onsex", "method", "index", "tissue")
 
 dummydat <- biglongdat %>% group_by(method, index) %>% summarize(lfdr = median(lfdr), onsex = mean(onsex))
 
-## ggplot(data = biglongdat, mapping = aes(y = lfdr, x = index)) +
-##     facet_wrap(~method) +
-##     geom_point(size = 0.2, mapping = aes(color = as.factor(onsex))) +
-##     geom_line(alpha = 0.2, mapping = aes(group = tissue))
 
 
-change_method_names <- function(method_names) {
-    method_names <- str_replace(method_names, "ash_", "")
-    method_names <- str_replace(method_names, "_nocal", "")
-    method_names <- str_replace(method_names, "ruv4v", "CATEv")
-    method_names <- str_replace(method_names, "_nomult", "")
-    method_names <- str_replace(method_names, "_rsvar", "v")
-    method_names <- str_to_upper(method_names)
-    method_names <- str_replace(method_names, "_NORM", "(normal)")
-    method_names <- str_replace(method_names, "_T", "(t)")
-    method_names <- str_replace(method_names, "CATENC", "CATEnc")
-    method_names <- str_replace(method_names, "CATERR", "CATErr")
-    method_names <- str_replace(method_names, "RUV4V", "RUV4v")
-    method_names <- str_replace(method_names, "CATEV", "CATEv")
-    return(method_names)
-}
-
-dummydat$method <- change_method_names(dummydat$method)
+dummydat$method <- replace_names(dummydat$method)
 
 names(dummydat) <- c("Method", "Rank", "lfdr", "Proportion")
 
 biglongdat2 <- biglongdat
 names(biglongdat2) <- c("lfdr", "onsex", "Method", "Rank", "Tissue")
 
-biglongdat2$Method <- change_method_names(biglongdat2$Method)
+biglongdat2$Method <- replace_names(biglongdat2$Method)
 
 pdf(file = "./Output/figures/proponsex.pdf", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
 ggplot() + geom_point(data = dummydat, mapping = aes(x = Rank, y = lfdr,
                                                      color = Proportion), size = 0.5) +
     facet_wrap(~Method) +
     theme_bw() +
-    scale_color_gradient(high = "black",
-                        low = "gray80",
-                        guide = guide_colourbar(title = "Proportion\non Sex\nChromosome")) +
+    ggthemes::scale_color_gradient_tableau(guide = guide_colourbar(title = "Proportion\non Sex\nChromosome"))+
+                        #high = "black",
+                        #low = "gray80",
     theme(strip.background = element_rect(fill="white"), text = element_text(size = 10)) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
     ylab("Median lfdr")
