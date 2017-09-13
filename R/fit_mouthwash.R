@@ -100,10 +100,15 @@ for(tissue_index in 1:length(tissue_vec)) {
                                        control_genes = control_genes)
     method_list$cate  <- cate_simp_nc_correction(Y = Y, X = X, num_sv = num_sv,
                                                  control_genes = control_genes)
+    method_list$cate_madcal <- cate_simp_nc_correction(Y = Y, X = X, num_sv = num_sv,
+                                                       control_genes = control_genes,
+                                                       calibrate = TRUE)
+    method_list$cate_nccal <- ctl_adjust(obj = method_list$cate, control_genes = control_genes)
 
     ## non control gene methods ----------------------------------------------
     method_list$sva    <- sva_voom(Y = Y, X = X, num_sv = num_sv)
     method_list$caterr <- cate_rr(Y = Y, X = X, num_sv = num_sv, calibrate = FALSE)
+    method_list$caterr_cal <- cate_rr(Y = Y, X = X, num_sv = num_sv, calibrate = TRUE)
 
     ash_list <- lapply(method_list, FUN = do_ash)
     ash_list$mouthwash <- mouthwash(Y = Y, X = X, num_sv = num_sv, likelihood = "normal", scale_var = TRUE)

@@ -64,20 +64,32 @@ ruvb_bfa_gs_linked_se <- function(Y, X, control_genes, num_sv) {
 
 
 ## Methods to look at ---------------------------------------------------
-cate_simp_nc_correction <- function(Y, X, num_sv, control_genes) {
+cate_simp_nc_correction <- function(Y, X, num_sv, control_genes, calibrate = FALSE) {
   cate_nc <- cate::cate.fit(Y = Y, X.primary = X[, 2, drop = FALSE],
                             X.nuis = X[, -2, drop = FALSE],
                             r = num_sv, adj.method = "nc",
                             fa.method = "pc",
                             nc = as.logical(control_genes),
-                            calibrate = FALSE,
+                            calibrate = calibrate,
                             nc.var.correction = TRUE)
 
   betahat   <- c(cate_nc$beta)
   sebetahat <- c(sqrt(cate_nc$beta.cov.row * cate_nc$beta.cov.col) /
                    sqrt(nrow(X)))
   df        <- nrow(Y) - ncol(X) - num_sv
-  return(list(betahat = betahat, sebetahat = sebetahat, df = df))
+
+  ## sanity check
+  ## plot(c(cate_nc$beta.p.value), stats::pnorm(-abs(betahat / sebetahat)) * 2)
+
+  return_list <- list(betahat = betahat, sebetahat = sebetahat, df = df)
+
+  if (calibrate) {
+    lambda <- stats::mad(x = betahat / sebetahat, center = 0)
+    sebetahat <- sebetahat * lambda
+    return_list$pvalues <- c(cate_nc$beta.p.value)
+  }
+
+  return(return_list)
 }
 
 ruv4_simp <- function(Y, X, num_sv, control_genes) {

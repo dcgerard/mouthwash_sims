@@ -18,14 +18,20 @@ prop_sig <- function(lfdr, onsex, alpha = 0.1) {
 }
 
 replace_names <- function(x) {
+  x <- stringr::str_replace(x, "pi0_", "")
+  x <- stringr::str_replace(x, "auc_", "")
+  x <- stringr::str_replace(x, "mse_", "")
   x <- stringr::str_replace(x, "ash_mouthwash", "MOUTHWASH")
   x <- stringr::str_replace(x, "ash_backwash", "BACKWASH")
   x <- stringr::str_replace(x, "ash_(.+)", "\\1+ASH")
   x <- stringr::str_replace(x, "qvalue_(.+)", "\\1+qvalue")
   x <- stringr::str_replace(x, "ruv", "RUV")
-  x <- stringr::str_replace(x, "cate", "CATE")
-  x <- stringr::str_replace(x, "CATE\\+", "CATEnc+")
-  x <- stringr::str_replace(x, "pval_", "")
+  x <- stringr::str_replace(x, "caterr_cal", "CATErr+MAD")
+  x <- stringr::str_replace(x, "cate_nccal", "CATEnc+Cal")
+  x <- stringr::str_replace(x, "caterr", "CATErr")
+  x <- stringr::str_replace(x, "cate", "CATEnc")
+  x <- stringr::str_replace(x, "_madcal", "+MAD")
+  x <- stringr::str_replace(x, "pvalue_", "")
   x <- stringr::str_replace(x, "ols", "OLS")
   x <- stringr::str_replace(x, "sva", "SVA")
   x <- stringr::str_replace(x, "_norm", "")
@@ -45,7 +51,8 @@ good_tissue_labels <- c("Adipose Tissue", "Bladder", "Blood Vessel", "Breast",
                         "Salivary Gland", "Small Intestine", "Stomach", "Thyroid")
 
 
-top100 <- matrix(NA, nrow = length(tissue_vec), ncol = 14)
+## Change 20 if change number of methods!
+top100 <- matrix(NA, nrow = length(tissue_vec), ncol = 20)
 
 plist <- readRDS("./Output/gtex_fits/plist.Rds")
 pi0mat <- readRDS("./Output/gtex_fits/pi0mat.Rds")
@@ -69,7 +76,7 @@ for (tissue_index in 1:length(tissue_vec)) {
 
     betamat <- betahat_list[[tissue_index]]
 
-    top100[tissue_index, ] <- apply(pmat[, 1:14], 2, do_topk, onsex = onsex, k = 200)
+    top100[tissue_index, ] <- apply(pmat[, 1:20], 2, do_topk, onsex = onsex, k = 200)
     nseq[tissue_index] <- ncol(dat$Y)
 
     countmat <- as.data.frame(t(apply(pmat, 2, tot_sig, onsex = onsex, alpha = 0.05)))
@@ -131,9 +138,6 @@ medpi0$Method <- namevec
 medpi0 <- medpi0[, 2:1]
 medpi0 <- medpi0[order(medpi0$pi0hat), ]
 
-medpi0$Method[!str_detect(medpi0$Method, "ASH")] <-
-    paste0(medpi0$Method[!str_detect(medpi0$Method, "ASH")], "+qvalue")
-
 library(xtable)
 print(xtable(medpi0), include.rownames = FALSE)
 
@@ -156,14 +160,20 @@ return_topk <- function(lfdr, onsex, k = 500) {
 }
 
 replace_names <- function(x) {
+  x <- stringr::str_replace(x, "pi0_", "")
+  x <- stringr::str_replace(x, "auc_", "")
+  x <- stringr::str_replace(x, "mse_", "")
   x <- stringr::str_replace(x, "ash_mouthwash", "MOUTHWASH")
   x <- stringr::str_replace(x, "ash_backwash", "BACKWASH")
   x <- stringr::str_replace(x, "ash_(.+)", "\\1+ASH")
   x <- stringr::str_replace(x, "qvalue_(.+)", "\\1+qvalue")
   x <- stringr::str_replace(x, "ruv", "RUV")
-  x <- stringr::str_replace(x, "cate", "CATE")
-  x <- stringr::str_replace(x, "CATE\\+", "CATEnc+")
-  x <- stringr::str_replace(x, "pval_", "")
+  x <- stringr::str_replace(x, "caterr_cal", "CATErr+MAD")
+  x <- stringr::str_replace(x, "cate_nccal", "CATEnc+Cal")
+  x <- stringr::str_replace(x, "caterr", "CATErr")
+  x <- stringr::str_replace(x, "cate", "CATEnc")
+  x <- stringr::str_replace(x, "_madcal", "+MAD")
+  x <- stringr::str_replace(x, "pvalue_", "")
   x <- stringr::str_replace(x, "ols", "OLS")
   x <- stringr::str_replace(x, "sva", "SVA")
   x <- stringr::str_replace(x, "_norm", "")
@@ -233,7 +243,7 @@ ggplot() + geom_point(data = dummydat, mapping = aes(x = Rank, y = lfdr,
     ggthemes::scale_color_gradient_tableau(guide = guide_colourbar(title = "Proportion\non Sex\nChromosome"))+
                         #high = "black",
                         #low = "gray80",
-    theme(strip.background = element_rect(fill="white"), text = element_text(size = 10)) +
+    theme(strip.background = element_rect(fill="white"), text = element_text(size = 9)) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
     ylab("Median lfdr")
 dev.off()

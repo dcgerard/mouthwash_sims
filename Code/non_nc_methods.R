@@ -11,6 +11,12 @@ cate_rr <- function(Y, X, num_sv, calibrate = FALSE) {
   sebetahat   <- c(sqrt(cate_rr$beta.cov.row * cate_rr$beta.cov.col) / sqrt(nrow(X)))
   pvalues     <- c(cate_rr$beta.p.value)
   df          <- Inf
+
+  if (calibrate) {
+    lambda <- stats::mad(x = betahat / sebetahat, center = 0)
+    sebetahat <- sebetahat * lambda
+  }
+
   return(list(betahat = betahat, sebetahat = sebetahat, df = df,
               pvalues = pvalues))
 }

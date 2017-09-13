@@ -11,8 +11,11 @@ replace_names <- function(x) {
   x <- stringr::str_replace(x, "ash_(.+)", "\\1+ASH")
   x <- stringr::str_replace(x, "qvalue_(.+)", "\\1+qvalue")
   x <- stringr::str_replace(x, "ruv", "RUV")
-  x <- stringr::str_replace(x, "cate", "CATE")
-  x <- stringr::str_replace(x, "CATE\\+", "CATEnc+")
+  x <- stringr::str_replace(x, "caterr_cal", "CATErr+MAD")
+  x <- stringr::str_replace(x, "cate_nccal", "CATEnc+Cal")
+  x <- stringr::str_replace(x, "caterr", "CATErr")
+  x <- stringr::str_replace(x, "cate", "CATEnc")
+  x <- stringr::str_replace(x, "_madcal", "+MAD")
   x <- stringr::str_replace(x, "pvalue_", "")
   x <- stringr::str_replace(x, "ols", "OLS")
   x <- stringr::str_replace(x, "sva", "SVA")
@@ -23,7 +26,7 @@ replace_names <- function(x) {
 library(tidyverse)
 dat <- as_data_frame(readRDS(file = "./Output/sims_out/sims_out.RDS"))
 longdat <- select(dat, nullpi, Nsamp, ncontrols, contains("pi0")) %>%
-  gather(key = "Method", value = "pi0hat", pi0_ash_ols:pi0_qvalue_caterr)
+  gather(key = "Method", value = "pi0hat", pi0_ash_ols:pi0_qvalue_caterr_cal)
 longdat$Method <- replace_names(longdat$Method)
 
 for (nullpi_current in c(0.5, 0.9, 1)) {

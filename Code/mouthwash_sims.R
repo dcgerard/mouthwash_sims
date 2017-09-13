@@ -40,11 +40,17 @@ one_rep <- function(new_params, current_params) {
   method_list$ruv3 <- ruv3_limma_pre(Y = Y, X = X, num_sv = num_sv,
                                      control_genes = control_genes)
   method_list$cate  <- cate_simp_nc_correction(Y = Y, X = X, num_sv = num_sv,
-                                               control_genes = control_genes)
+                                               control_genes = control_genes,
+                                               calibrate = FALSE)
+  method_list$cate_madcal <- cate_simp_nc_correction(Y = Y, X = X, num_sv = num_sv,
+                                                  control_genes = control_genes,
+                                                  calibrate = TRUE)
+  method_list$cate_nccal <- ctl_adjust(obj = method_list$cate, control_genes = control_genes)
 
   ## non control gene methods ----------------------------------------------
   method_list$sva    <- sva_voom(Y = Y, X = X, num_sv = num_sv)
   method_list$caterr <- cate_rr(Y = Y, X = X, num_sv = num_sv, calibrate = FALSE)
+  method_list$caterr_cal <- cate_rr(Y = Y, X = X, num_sv = num_sv, calibrate = TRUE)
 
   do_ash <- function(args) {
     if (!is.null(args$sebetahat) & !is.null(args$betahat)) {
@@ -185,7 +191,7 @@ args_val$mat <- mat[, order(apply(mat, 2, median), decreasing = TRUE)[1:args_val
 rm(mat)
 
 # start_time <- proc.time()
-# oout <- one_rep(par_list[[101]], args_val)
+# oout <- one_rep(par_list[[1]], args_val)
 # oout[stringr::str_detect(names(oout), "pi0")]
 # end_time <- proc.time() - start_time
 # end_time

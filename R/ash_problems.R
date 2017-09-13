@@ -7,7 +7,7 @@ nsamp <- 6
 ngene <- 10000
 muscle_dat <- t(as.matrix(read.csv("./Output/gtex_tissue_gene_reads_v6p/muscle.csv")[, -c(1, 2)]))
 
-set.seed(249)
+set.seed(247)
 
 dout <- poisthin(mat = muscle_dat, nsamp = nsamp, ngene = ngene, prop_null = 1, gselect = "mean_max")
 
