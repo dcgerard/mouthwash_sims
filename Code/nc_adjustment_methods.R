@@ -85,7 +85,7 @@ cate_simp_nc_correction <- function(Y, X, num_sv, control_genes, calibrate = FAL
 
   if (calibrate) {
     lambda <- stats::mad(x = betahat / sebetahat, center = 0)
-    sebetahat <- sebetahat * lambda
+    return_list$sebetahat <- sebetahat * lambda
     return_list$pvalues <- c(cate_nc$beta.p.value)
   }
 
