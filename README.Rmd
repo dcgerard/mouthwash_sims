@@ -1,5 +1,5 @@
 ---
-title: "Reproducing MOUTHWASH results in Gerard and Stephens (2016)"
+title: "Reproducing Results from Gerard and Stephens (2017)"
 bibliography: readme_bib.bib
 output: github_document
 ---
@@ -7,10 +7,10 @@ output: github_document
 # Introduction
 
 This repository contains code to reproduce the empirical evaluations
-of @gerard2016mouthwash. The new methods can be found in the
+of @gerard2017empirical. The new methods can be found in the
 [vicar](https://github.com/dcgerard/vicar) package.
 
-```{r, echo = FALSE, results = "hide"}
+```{r, echo = FALSE, results = "hide", message=FALSE}
 liblist <- list("dplyr", "stringr", "ggplot2", "reshape2", "pROC",
                 "ruv", "cate", "gridExtra", "snow", "devtools", "sva",
                 "limma", "vicar", "Rmpi")
@@ -30,7 +30,7 @@ If you find a bug, please create an
 
 # Instructions
 
-To reproduce the results of @gerard2016mouthwash, you need to (1)
+To reproduce the results of @gerard2017empirical, you need to (1)
 install the appropriate R packages, (2) obtain the appropriate data,
 (3) run `make` and (4) get some coffee while you wait.
 
@@ -64,7 +64,7 @@ data.
 
 ## Run Make
 
-To reproduce all of the results in @gerard2016mouthwash, simply run
+To reproduce all of the results in @gerard2017empirical, simply run
 `make` from the terminal.
 
 If you want to reproduce just the results from Section 5.1, run
