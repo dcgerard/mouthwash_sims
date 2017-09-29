@@ -115,7 +115,18 @@ make one_data
 Get Coffee
 ----------
 
-All of these runs (except the last one) should take a very long time (a day to a couple of days). You should get some coffee. If you're in the Chicago area, I would recommend [Plein Air Cafe](http://www.pleinaircafe.co/).
+All of these runs (except the last one) should take a very long time (a day to a couple of days). You should get some coffee. Here is a list of some of my favorite places:
+
+-   Chicago
+    -   [Sawada Coffee](https://www.yelp.com/biz/sawada-coffee-chicago)
+    -   [Plein Air Cafe](https://www.yelp.com/biz/plein-air-cafe-and-eatery-chicago-2)
+-   Seattle
+    -   [Bauhaus Ballard](https://www.yelp.com/biz/bauhaus-ballard-seattle)
+    -   [Cafe Solstice](https://www.yelp.com/biz/cafe-solstice-seattle)
+-   Columbus
+    -   [Yeah, Me Too](https://www.yelp.com/biz/yeah-me-too-columbus)
+    -   [Stauf's Coffee Roasters](https://www.yelp.com/biz/staufs-coffee-roasters-columbus-2)
+    -   [Caffe Apropos](https://www.yelp.com/biz/caff%C3%A9-apropos-columbus-2)
 
 References
 ==========
