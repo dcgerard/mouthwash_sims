@@ -39,9 +39,9 @@ for (nullpi_current in c(0.5, 0.9, 1)) {
   sublongdat$Method <- factor(sublongdat$Method, levels = factor_levels)
 
   pl <- ggplot(data = sublongdat, mapping = aes(y = pi0hat, x = Method)) +
-    geom_hline(yintercept = nullpi_current, lty = 2) +
     facet_grid(Nsamp ~ ncontrols) +
     geom_boxplot(outlier.size = 0.1) +
+    geom_hline(yintercept = nullpi_current, lty = 2, col = "red") +
     theme_bw() +
     theme(strip.background = element_rect(fill = "white"),
           axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +

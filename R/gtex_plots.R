@@ -121,7 +121,7 @@ longdat$Method <- factor(longdat$Method, levels = unique(longdat$Method)[faorder
 
 
 pdf(file = "./Output/figures/prop_max.pdf", height = 7.3, width = 6.5, family = "Times", color = "cmyk")
-ggplot(data = longdat, mapping = aes(x = Method, y = Tissue, fill = Proportion)) +
+pl <- ggplot(data = longdat, mapping = aes(x = Method, y = Tissue, fill = Proportion)) +
     geom_raster() +
     scale_fill_gradient(high = "#ffffff",
                         low = "#000000",
@@ -130,6 +130,12 @@ ggplot(data = longdat, mapping = aes(x = Method, y = Tissue, fill = Proportion))
     theme_bw() +
     scale_size_manual(values=c(dot=2, no_dot=NA), guide="none") +
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+print(pl)
+dev.off()
+
+setEPS()
+postscript(file = "./Output/figures/prop_max.eps", height = 7.3, width = 6.5, family = "Times", color = "cmyk")
+print(pl)
 dev.off()
 
 medpi0 <- data.frame(pi0hat = apply(pi0mat, 2, median))
