@@ -10,10 +10,10 @@ This repository contains code to reproduce the empirical evaluations
 of @gerard2017empirical. The new methods can be found in the
 [vicar](https://github.com/dcgerard/vicar) package.
 
-```{r, echo = FALSE, results = "hide", message=FALSE}
-liblist <- list("dplyr", "stringr", "ggplot2", "reshape2", "pROC",
+```{r, echo = FALSE, results = "hide", message=FALSE, warning=FALSE}
+liblist <- list("tidyverse", "dplyr", "stringr", "ggplot2", "reshape2", "pROC",
                 "ruv", "cate", "gridExtra", "snow", "devtools", "sva",
-                "limma", "vicar", "Rmpi")
+                "limma", "vicar", "Rmpi", "seqgendiff", "ashr")
 lapply(liblist, require, character.only = TRUE)
 ```
 
@@ -38,11 +38,13 @@ install the appropriate R packages, (2) obtain the appropriate data,
 
 To install the needed R packages, run the following in R
 
-``` r
-install.packages(c("dplyr", "stringr", "ggplot2", "reshape2", "pROC",
-                   "ruv", "cate", "gridExtra", "snow", "devtools", "Rmpi"))
+```{r, eval=FALSE}
+install.packages(c("tidyverse", "stringr", "reshape2", "pROC",
+                   "ruv", "cate", "gridExtra", "snow", "devtools", 
+                   "Rmpi", "ashr"))
 source("https://bioconductor.org/biocLite.R")
 biocLite(c("sva", "limma"))
+devtools::install_github("dcgerard/seqgendiff")
 devtools::install_github("dcgerard/vicar")
 ```
 
