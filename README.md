@@ -13,9 +13,9 @@ If you find a bug, please create an
 If you find any of the source code in this repository useful for your
 work, please cite our paper:
 
-Gerard, David, and Matthew Stephens. 2017. "Empirical Bayes Shrinkage
-and False Discovery Rate Estimation, Allowing for Unwanted Variation."
-*arXiv Preprint arXiv:1709.10066*. <https://arxiv.org/abs/1709.10066>.
+> Gerard, David, and Matthew Stephens. 2017. "Empirical Bayes Shrinkage
+> and False Discovery Rate Estimation, Allowing for Unwanted Variation."
+> *arXiv Preprint arXiv:1709.10066*. <https://arxiv.org/abs/1709.10066>.
 
 ## License
 
@@ -23,7 +23,7 @@ Copyright (c) 2017-2018, David Gerard.
 
 All source code and software in this repository are made available
 under the terms of the [GNU General Public
-License](http://awww.gnu.org/licenses/gpl.html). See the
+License](http://www.gnu.org/licenses/gpl.html). See the
 [LICENSE](LICENSE) file for the full text of the license.
 
 ## Instructions
@@ -35,17 +35,20 @@ below for details on each of these steps.
 
 ### Install R packages
 
-To install the needed R packages, run the following in R:
+To install the required R packages, run the following in R. (Note the
+Bioconductor packages should be installed before the CRAN packages.)
 
 ```R
+source("https://bioconductor.org/biocLite.R")
+biocLite(c("sva", "limma"),suppressUpdates = TRUE)
 install.packages(c("tidyverse", "stringr", "reshape2", "pROC",
                    "ruv", "cate", "gridExtra", "snow", "devtools", 
-                   "Rmpi", "ashr"))
-source("https://bioconductor.org/biocLite.R")
-biocLite(c("sva", "limma"))
+                   "Rmpi", "ashr", "bfa"))
 devtools::install_github("dcgerard/seqgendiff")
 devtools::install_github("dcgerard/vicar")
 ```
+
+See below for the versions of the packages that I used.
 
 ### Get data
 

@@ -5,6 +5,9 @@ TO DO
   both in the same folder. Maybe move README.Rmd to a subfolder (e.g.,
   etc)?
 
-* It  is 
+* It is odd that you have an R folder and a Code folder. Maybe rename
+  them? e.g., "process" and "analysis".
 
 * Give target file list in Data after downloading all the files.
+
+* Do we need the snow & Rmpi packages?
