@@ -1,0 +1,6 @@
+TO DO
+=====
+
+* Is README.Rmd used to generate README.md? It is confusing to have
+  both in the same folder. Maybe move README.Rmd to a subfolder (e.g.,
+  etc)?
