@@ -1,8 +1,9 @@
 # Source to reproduce results from Gerard & Stephens (2017)
 
 This repository contains source code to reproduce the empirical
-evaluations of Gerard & Stephens (2017). The new methods can be found
-in the [vicar](https://github.com/dcgerard/vicar) package.
+evaluations of [Gerard & Stephens (2017)](https://arxiv.org/abs/1709.10066).
+The new methods can be found in the
+[vicar](https://github.com/dcgerard/vicar) package.
 
 If you find a bug, please create an
 [issue](https://github.com/dcgerard/ruvb_sims/issues).
@@ -20,15 +21,10 @@ and False Discovery Rate Estimation, Allowing for Unwanted Variation."
 
 Copyright (c) 2017-2018, David Gerard.
 
-The *mouthwash_sims* source code repository by
-[David Gerard](https://dcgerard.github.io) is free software: you can
-redistribute it under the terms of the
-[GNU General Public License](http://www.gnu.org/licenses/gpl.html). All
-the files in this project are part of *mouthwash_sims*. This project is
-distributed in the hope that it will be useful, but **without any
-warranty**; without even the implied warranty of **merchantability or
-fitness for a particular purpose**. See the [LICENSE](LICENSE) file for
-the full text of the license.
+All source code and software in this repository are made available
+under the terms of the [GNU General Public
+License](http://awww.gnu.org/licenses/gpl.html). See the
+[LICENSE](LICENSE) file for the full text of the license.
 
 ## Instructions
 
@@ -64,8 +60,7 @@ Place the following files in the Data folder:
 
 1 through 4 of the above are only available if you are a registered user of the GTEx Portal. I don't think I'm allowed to release these data.
 
-Run Make
---------
+### Run Make
 
 To reproduce all of the results in Gerard and Stephens (2017), simply run `make` from the terminal.
 
@@ -87,10 +82,11 @@ If you want to reproduce the figure in the introduction, run
 make one_data
 ```
 
-Get Coffee
-----------
+###Get Coffee
 
-All of these runs (except the last one) should take a very long time (a day to a couple of days). You should get some coffee. Here is a list of some of my favorite places:
+All of these runs (except the last one) should take a very long time
+(a day to a couple of days). You should get some coffee. Here is a
+list of some of my favorite places:
 
 -   Chicago
     -   [Sawada Coffee](https://www.yelp.com/biz/sawada-coffee-chicago)
@@ -107,7 +103,7 @@ If you are having trouble reproducing these results, it might be that
 you need to update some of your R packages. These are the versions
 that I used:
 
-``` r
+```R
 sessionInfo()
 ```
 
@@ -168,5 +164,12 @@ sessionInfo()
 
 As you can see above, I've also only tried this out on Ubuntu.
 
+## Credits
 
-## References
+This project was developed by
+[David Gerard](https://dcgerard.github.io) at the University of
+Chicago.
+
+Thanks to [Matthew Stephens](stephenslab.uchicago.edu) for his support
+and mentorship.
+
