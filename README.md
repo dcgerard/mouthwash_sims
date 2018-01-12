@@ -42,8 +42,7 @@ Bioconductor packages should be installed before the CRAN packages.)
 source("https://bioconductor.org/biocLite.R")
 biocLite(c("sva", "limma"),suppressUpdates = TRUE)
 install.packages(c("tidyverse", "stringr", "reshape2", "pROC",
-                   "ruv", "cate", "gridExtra", "snow", "devtools", 
-                   "Rmpi", "ashr", "bfa"))
+                   "ruv", "cate", "devtools", "ashr", "bfa"))
 devtools::install_github("dcgerard/seqgendiff")
 devtools::install_github("dcgerard/vicar")
 ```
@@ -104,7 +103,8 @@ list of some of my favorite places:
 
 If you are having trouble reproducing these results, it might be that
 you need to update some of your R packages. These are the versions
-that I used:
+that I used (including some versions of packages that are not actually
+needed to run the code):
 
 ```R
 sessionInfo()

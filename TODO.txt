@@ -10,4 +10,3 @@ TO DO
 
 * Give target file list in Data after downloading all the files.
 
-* Do we need the snow & Rmpi packages?
