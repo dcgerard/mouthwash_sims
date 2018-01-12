@@ -1,4 +1,4 @@
-library(snow)
+library(parallel)
 
 one_rep <- function(new_params, current_params) {
     return_vec <- tryCatch(expr = {
@@ -60,7 +60,6 @@ one_rep <- function(new_params, current_params) {
 
         ## LEAPP SUCKS! Slow and always with the BUGS!
         ## method_list$leapp <- leapp(Y = Y, X = X, num_sv = num_sv)
-
 
         do_ash <- function(args) {
             if (!is.null(args$sebetahat) & !is.null(args$betahat)) {
@@ -136,8 +135,6 @@ one_rep <- function(new_params, current_params) {
             pROC::roc(predictor = pred, response = which_null)$auc
         }
 
-
-
         ## pi0hat ----------------------------------------------------------
         ash_pi0 <- sapply(ash_list, FUN = function(args) args$pi0hat)
         names(ash_pi0) <- paste0("pi0_ash_", names(ash_pi0))
@@ -201,16 +198,13 @@ args_val$Ngene        <- 1000
 args_val$log2foldmean <- 0
 args_val$skip_gene    <- 0
 
-## one_rep(par_list[[3]], args_val)
-
-## ## If on your own computer, use this
+## If on your own computer, use this
 library(parallel)
 cl <- makeCluster(detectCores() - 2)
-sout <- t(snow::parSapply(cl = cl, par_list, FUN = one_rep, current_params = args_val))
+sout <- t(parallel::parSapply(cl = cl, par_list, FUN = one_rep, current_params = args_val))
 stopCluster(cl)
 
-
-## save(sout, file = "general_sims2.Rd")
+## Save results to CSV file.
 mse_mat <- cbind(par_vals, sout[, 1:27])
 auc_mat <- cbind(par_vals, sout[, 28:54])
 pi0_mat <- cbind(par_vals, sout[, 55:81])

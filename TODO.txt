@@ -1,12 +1,13 @@
 TO DO
 =====
 
-* Is README.Rmd used to generate README.md? It is confusing to have
-  both in the same folder. Maybe move README.Rmd to a subfolder (e.g.,
-  etc)?
-
 * It is odd that you have an R folder and a Code folder. Maybe rename
   them? e.g., "process" and "analysis".
 
 * Give target file list in Data after downloading all the files.
 
+* Update etc/README.Rmd to reflect changes to README.md.
+
+* Replace use of detectCores().
+
+* Add Makefile rule to clean up outputs.

@@ -1,4 +1,5 @@
-## Hopefully these will be the final sims. I've run these too many times and I'm really really bored.
+# Hopefully these will be the final sims. I've run these too many
+# times and I'm really really bored.
 
 one_rep <- function(new_params, current_params) {
   source("./Code/nc_adjustment_methods.R")
@@ -190,17 +191,10 @@ mat <- t(as.matrix(read.csv("./Output/gtex_tissue_gene_reads_v6p/muscle.csv",
 args_val$mat <- mat[, order(apply(mat, 2, median), decreasing = TRUE)[1:args_val$Ngene]]
 rm(mat)
 
-# start_time <- proc.time()
-# oout <- one_rep(par_list[[1]], args_val)
-# oout[stringr::str_detect(names(oout), "pi0")]
-# end_time <- proc.time() - start_time
-# end_time
-
 ## If on your own computer, use this
-library(snow)
 library(parallel)
 cl <- makeCluster(detectCores() - 2)
-sout <- t(snow::parSapply(cl = cl, par_list, FUN = one_rep, current_params = args_val))
+sout <- t(parallel::parSapply(cl = cl, par_list, FUN = one_rep, current_params = args_val))
 stopCluster(cl)
 
 saveRDS(cbind(par_vals, sout), "./Output/sims_out/sims_out.RDS")

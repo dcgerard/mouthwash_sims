@@ -8,12 +8,9 @@ tissue_vec <- c("adiposetissue", "bladder", "bloodvessel", "breast",
                 "esophagus", "heart", "liver", "muscle", "pituitary",
                 "salivarygland", "smallintestine", "stomach", "thyroid")
 
-
 ## This is from gencode here http://useast.ensembl.org/info/data/ftp/index.html
 ## The GTF is what you want
 ## exon2 <- read.delim(file = "/home/david/Data/gtex/gene_reference/Homo_sapiens.GRCh38.85.gtf", skip = 5)
-
-
 
 gtout <- read.table(file = "./Data/gencode.v19.genes.V6p_model.patched_contigs.gtf",
                     skip = 6, sep = "\t")
@@ -44,8 +41,6 @@ for (tissue_index in 1:length(tissue_vec)) {
     ## Read in Data
     tissuedat <- read.csv(paste0("./Output/gtex_tissue_gene_reads_v6p/", current_tissue,
                                  ".csv"))
-
-
 
     match_out <- match(tissuedat$Name, gene_names)
     tissuedat$CHR <- exon$CHR[match_out]

@@ -47,7 +47,7 @@ devtools::install_github("dcgerard/seqgendiff")
 devtools::install_github("dcgerard/vicar")
 ```
 
-See below for the versions of the packages that I used.
+See below for the versions of the packages that I used for the paper.
 
 ### Get data
 

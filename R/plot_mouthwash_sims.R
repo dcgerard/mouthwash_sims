@@ -53,8 +53,6 @@ for (nullpi_current in c(0.5, 0.9, 1)) {
   dev.off()
 }
 
-
-
 ## Now AUC --------------------------------------------------------------
 dat <- as_data_frame(readRDS(file = "./Output/sims_out/sims_out.RDS"))
 longdat <- select(dat, nullpi, Nsamp, ncontrols, contains("auc")) %>%
