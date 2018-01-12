@@ -1,12 +1,111 @@
-Reproducing Results from Gerard and Stephens (2017)
-================
+# Source to reproduce results from Gerard & Stephens (2017)
 
-Introduction
-============
+This repository contains source code to reproduce the empirical
+evaluations of Gerard & Stephens (2017). The new methods can be found
+in the [vicar](https://github.com/dcgerard/vicar) package.
 
-This repository contains code to reproduce the empirical evaluations of Gerard and Stephens (2017). The new methods can be found in the [vicar](https://github.com/dcgerard/vicar) package.
+If you find a bug, please create an
+[issue](https://github.com/dcgerard/ruvb_sims/issues).
 
-If you are having trouble reproducing these results, it might be that you need to update some of your R packages. These are the versions that I used:
+## Citing this work
+
+If you find any of the source code in this repository useful for your
+work, please cite our paper:
+
+Gerard, David, and Matthew Stephens. 2017. "Empirical Bayes Shrinkage
+and False Discovery Rate Estimation, Allowing for Unwanted Variation."
+*arXiv Preprint arXiv:1709.10066*. <https://arxiv.org/abs/1709.10066>.
+
+## License
+
+Copyright (c) 2017-2018, David Gerard.
+
+The *mouthwash_sims* source code repository by
+[David Gerard](https://dcgerard.github.io) is free software: you can
+redistribute it under the terms of the
+[GNU General Public License](http://www.gnu.org/licenses/gpl.html). All
+the files in this project are part of *mouthwash_sims*. This project is
+distributed in the hope that it will be useful, but **without any
+warranty**; without even the implied warranty of **merchantability or
+fitness for a particular purpose**. See the [LICENSE](LICENSE) file for
+the full text of the license.
+
+## Instructions
+
+To reproduce the results of Gerard & Stephens (2017), you need to (1)
+install the appropriate R packages, (2) obtain the appropriate data,
+(3) run `make` and (4) get some coffee while you wait. Please read
+below for details on each of these steps.
+
+### Install R packages
+
+To install the needed R packages, run the following in R:
+
+```R
+install.packages(c("tidyverse", "stringr", "reshape2", "pROC",
+                   "ruv", "cate", "gridExtra", "snow", "devtools", 
+                   "Rmpi", "ashr"))
+source("https://bioconductor.org/biocLite.R")
+biocLite(c("sva", "limma"))
+devtools::install_github("dcgerard/seqgendiff")
+devtools::install_github("dcgerard/vicar")
+```
+
+### Get data
+
+Place the following files in the Data folder:
+
+1.  [GTEx\_Data\_V6\_Annotations\_SampleAttributesDS.txt](http://www.gtexportal.org/home/datasets#filesetFilesDiv21)
+2.  [GTEx\_Analysis\_v6p\_RNA-seq\_RNA-SeQCv1.1.8\_gene\_reads.gct.gz](http://www.gtexportal.org/home/datasets#filesetFilesDiv11)
+3.  [gencode.v19.genes.V6p\_model.patched\_contigs.gtf](http://www.gtexportal.org/home/datasets#filesetFilesDiv14)
+4.  [GTEx\_Data\_V6\_Annotations\_SubjectPhenotypesDS.txt](http://www.gtexportal.org/home/datasets#datasetDiv2)
+5.  [HK\_genes.txt](http://www.tau.ac.il/~elieis/HKG/HK_genes.txt)
+6.  gene2ensembl.gz at <ftp://ftp.ncbi.nih.gov/gene/DATA/>
+
+1 through 4 of the above are only available if you are a registered user of the GTEx Portal. I don't think I'm allowed to release these data.
+
+Run Make
+--------
+
+To reproduce all of the results in Gerard and Stephens (2017), simply run `make` from the terminal.
+
+If you want to reproduce just the results from Section 5.1, run
+
+``` bash
+make sims
+```
+
+If you want to reproduce just the results from Section 5.2, run
+
+``` bash
+make gtex_analysis
+```
+
+If you want to reproduce the figure in the introduction, run
+
+``` bash
+make one_data
+```
+
+Get Coffee
+----------
+
+All of these runs (except the last one) should take a very long time (a day to a couple of days). You should get some coffee. Here is a list of some of my favorite places:
+
+-   Chicago
+    -   [Sawada Coffee](https://www.yelp.com/biz/sawada-coffee-chicago)
+    -   [Plein Air Cafe](https://www.yelp.com/biz/plein-air-cafe-and-eatery-chicago-2)
+-   Seattle
+    -   [Bauhaus Ballard](https://www.yelp.com/biz/bauhaus-ballard-seattle)
+    -   [Cafe Solstice](https://www.yelp.com/biz/cafe-solstice-seattle)
+-   Columbus
+    -   [Yeah, Me Too](https://www.yelp.com/biz/yeah-me-too-columbus)
+    -   [Stauf's Coffee Roasters](https://www.yelp.com/biz/staufs-coffee-roasters-columbus-2)
+    -   [Caffe Apropos](https://www.yelp.com/biz/caff%C3%A9-apropos-columbus-2)
+
+If you are having trouble reproducing these results, it might be that
+you need to update some of your R packages. These are the versions
+that I used:
 
 ``` r
 sessionInfo()
@@ -69,82 +168,5 @@ sessionInfo()
 
 As you can see above, I've also only tried this out on Ubuntu.
 
-If you find a bug, please create an [issue](https://github.com/dcgerard/ruvb_sims/issues).
 
-Instructions
-============
-
-To reproduce the results of Gerard and Stephens (2017), you need to (1) install the appropriate R packages, (2) obtain the appropriate data, (3) run `make` and (4) get some coffee while you wait.
-
-Install R Packages
-------------------
-
-To install the needed R packages, run the following in R
-
-``` r
-install.packages(c("tidyverse", "stringr", "reshape2", "pROC",
-                   "ruv", "cate", "gridExtra", "snow", "devtools", 
-                   "Rmpi", "ashr"))
-source("https://bioconductor.org/biocLite.R")
-biocLite(c("sva", "limma"))
-devtools::install_github("dcgerard/seqgendiff")
-devtools::install_github("dcgerard/vicar")
-```
-
-Get Data
---------
-
-Place the following files in the Data folder:
-
-1.  [GTEx\_Data\_V6\_Annotations\_SampleAttributesDS.txt](http://www.gtexportal.org/home/datasets#filesetFilesDiv21)
-2.  [GTEx\_Analysis\_v6p\_RNA-seq\_RNA-SeQCv1.1.8\_gene\_reads.gct.gz](http://www.gtexportal.org/home/datasets#filesetFilesDiv11)
-3.  [gencode.v19.genes.V6p\_model.patched\_contigs.gtf](http://www.gtexportal.org/home/datasets#filesetFilesDiv14)
-4.  [GTEx\_Data\_V6\_Annotations\_SubjectPhenotypesDS.txt](http://www.gtexportal.org/home/datasets#datasetDiv2)
-5.  [HK\_genes.txt](http://www.tau.ac.il/~elieis/HKG/HK_genes.txt)
-6.  gene2ensembl.gz at <ftp://ftp.ncbi.nih.gov/gene/DATA/>
-
-1 through 4 of the above are only available if you are a registered user of the GTEx Portal. I don't think I'm allowed to release these data.
-
-Run Make
---------
-
-To reproduce all of the results in Gerard and Stephens (2017), simply run `make` from the terminal.
-
-If you want to reproduce just the results from Section 5.1, run
-
-``` bash
-make sims
-```
-
-If you want to reproduce just the results from Section 5.2, run
-
-``` bash
-make gtex_analysis
-```
-
-If you want to reproduce the figure in the introduction, run
-
-``` bash
-make one_data
-```
-
-Get Coffee
-----------
-
-All of these runs (except the last one) should take a very long time (a day to a couple of days). You should get some coffee. Here is a list of some of my favorite places:
-
--   Chicago
-    -   [Sawada Coffee](https://www.yelp.com/biz/sawada-coffee-chicago)
-    -   [Plein Air Cafe](https://www.yelp.com/biz/plein-air-cafe-and-eatery-chicago-2)
--   Seattle
-    -   [Bauhaus Ballard](https://www.yelp.com/biz/bauhaus-ballard-seattle)
-    -   [Cafe Solstice](https://www.yelp.com/biz/cafe-solstice-seattle)
--   Columbus
-    -   [Yeah, Me Too](https://www.yelp.com/biz/yeah-me-too-columbus)
-    -   [Stauf's Coffee Roasters](https://www.yelp.com/biz/staufs-coffee-roasters-columbus-2)
-    -   [Caffe Apropos](https://www.yelp.com/biz/caff%C3%A9-apropos-columbus-2)
-
-References
-==========
-
-Gerard, David, and Matthew Stephens. 2017. “Empirical Bayes Shrinkage and False Discovery Rate Estimation, Allowing for Unwanted Variation.” *arXiv Preprint arXiv:1709.10066*. <https://arxiv.org/abs/1709.10066>.
+## References
