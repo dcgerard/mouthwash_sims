@@ -195,6 +195,7 @@ args_val$mat <- mat[, order(apply(mat, 2, median), decreasing = TRUE)[1:args_val
 rm(mat)
 
 # Number of threads to use.
+args <- commandArgs(trailingOnly = TRUE)
 if (length(args) < 1) {
   nc <- 1
 } else {

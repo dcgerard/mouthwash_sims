@@ -108,7 +108,7 @@ gtex_analysis : ./R/gtex_plots.R $(gtex_fits)
 # Run simulations.
 $(sims_out) : ./Code/mouthwash_sims.R $(tissue_dat) 
 	mkdir -p Output/sims_out
-	$(rexec) $<
+	$(rexec) $< $(nc)
 
 # Create plots from simulation experiments.
 .PHONY : sims
