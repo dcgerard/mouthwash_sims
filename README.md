@@ -44,7 +44,7 @@ biocLite(c("sva","limma","qvalue"),suppressUpdates = TRUE)
 install.packages(c("tidyverse", "stringr", "reshape2", "pROC",
                    "ruv", "cate", "devtools", "ashr", "bfa",
 				   "xtable", "dplyr", "ggthemes", "qvalue",
-				   "assertthat"))
+				   "assertthat", "R.utils"))
 devtools::install_github("dcgerard/seqgendiff")
 devtools::install_github("dcgerard/vicar")
 ```
