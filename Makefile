@@ -6,8 +6,9 @@
 # specifies the number of CPUs allocated for each task.
 nc = 8
 
-# R scripting front-end. Note that parSapply and parLapply sometimes
-# fail in Rscript, so we are using the "R CMD BATCH" interface instead.
+# R scripting front-end. Note that makeCluster sometimes fails to
+# connect to a socker when using Rscript, so we are using the "R CMD
+# BATCH" interface instead.
 rexec = R CMD BATCH --no-save --no-restore
 
 # AVOID EDITING ANYTHING BELOW THIS LINE
