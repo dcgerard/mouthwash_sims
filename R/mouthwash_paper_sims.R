@@ -198,10 +198,18 @@ args_val$Ngene        <- 1000
 args_val$log2foldmean <- 0
 args_val$skip_gene    <- 0
 
-## If on your own computer, use this
+# Number of threads to use.
+if (length(args) < 1) {
+  nc <- 1
+} else {
+  nc <- args[1]
+}
+
+# If on your own computer, use this.
 library(parallel)
-cl <- makeCluster(detectCores() - 2)
-sout <- t(parallel::parSapply(cl = cl, par_list, FUN = one_rep, current_params = args_val))
+cl   <- makeCluster(nc)
+sout <- t(parallel::parSapply(cl = cl, par_list, FUN = one_rep,
+                              current_params = args_val))
 stopCluster(cl)
 
 ## Save results to CSV file.
