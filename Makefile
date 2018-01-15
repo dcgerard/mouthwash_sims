@@ -1,13 +1,14 @@
 # ADJUST THESE VARIABLES AS NEEDED TO SUIT YOUR COMPUTING ENVIRONMENT
 # -------------------------------------------------------------------
-# R scripting front-end.
-rexec = Rscript --verbose
-
 # This variable specifies the number of threads to use for the
 # parSapply calls. This could also be specified automatically using
 # environment variables. For example, in SLURM, SLURM_CPUS_PER_TASK
 # specifies the number of CPUs allocated for each task.
 nc = 8
+
+# R scripting front-end. Note that parSapply and parLapply sometimes
+# fail in Rscript, so we are using the "R CMD BATCH" interface instead.
+rexec = R CMD BATCH --no-save --no-restore
 
 # AVOID EDITING ANYTHING BELOW THIS LINE
 # --------------------------------------
@@ -85,9 +86,9 @@ sims_out = ./Output/sims_out/sims_out.Rds
 all: sims gtex_analysis one_data 
 
 # Extract tissue data.
-$(tissue_dat) : ./R/gtex_extract_tissues_v6p.R
+$(tissue_dat) : R/gtex_extract_tissues_v6p.R
 	mkdir -p Output/gtex_tissue_gene_reads_v6p
-	$(rexec) $<
+	$(rexec) $< Output/gtex_extract_tissues_v6p.Rout
 
 # Clean tissue data for GTEx analysis.
 $(cleaned_dat) : ./R/gtex_clean.R $(tissue_dat)
@@ -108,7 +109,7 @@ gtex_analysis : ./R/gtex_plots.R $(gtex_fits)
 # Run simulations.
 $(sims_out) : ./Code/mouthwash_sims.R $(tissue_dat) 
 	mkdir -p Output/sims_out
-	$(rexec) $< $(nc)
+	$(rexec) '--args nc=$(nc)' $< Output/mouthwash_sims.Rout
 
 # Create plots from simulation experiments.
 .PHONY : sims

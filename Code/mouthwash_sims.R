@@ -194,24 +194,25 @@ mat <- t(as.matrix(read.csv("./Output/gtex_tissue_gene_reads_v6p/muscle.csv",
 args_val$mat <- mat[, order(apply(mat, 2, median), decreasing = TRUE)[1:args_val$Ngene]]
 rm(mat)
 
-# Number of threads to use.
+# Number of threads to use for multithreaded computing. This must be
+# specified in the command-line shell; e.g., to use 8 threads, run
+# command
+#
+#  R CMD BATCH '--args nc=8' mouthwash_sims.R
+# 
 args <- commandArgs(trailingOnly = TRUE)
-if (length(args) < 1) {
+if (length(args) == 0) {
   nc <- 1
 } else {
-  nc <- args[1]
+  eval(parse(text = args[[1]]))
 }
 
 # If on your own computer, use this.
 library(parallel)
 cl   <- makeCluster(nc)
-sout <- t(parallel::parSapply(cl = cl, par_list, FUN = one_rep,
+cat("Running multithreaded computations with",nc,"threads.\n")
+sout <- t(parallel::parSapply(cl = cl, X = par_list, FUN = one_rep,
                               current_params = args_val))
 stopCluster(cl)
 
 saveRDS(cbind(par_vals, sout), "./Output/sims_out/sims_out.RDS")
-
-
-
-
-
