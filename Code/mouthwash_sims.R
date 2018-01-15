@@ -2,6 +2,9 @@
 # times and I'm really really bored.
 
 one_rep <- function(new_params, current_params) {
+
+  # I'm assuming that the current working directory is the parent
+  # directory of this file.
   source("./Code/nc_adjustment_methods.R")
   source("./Code/non_nc_methods.R")
   args_val <- append(current_params, new_params)

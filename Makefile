@@ -1,7 +1,13 @@
 # ADJUST THESE VARIABLES AS NEEDED TO SUIT YOUR COMPUTING ENVIRONMENT
 # -------------------------------------------------------------------
-rexec = Rscript  # R scripting front-end.
-nc    = 1        # Number of threads to use for the parSapply calls.
+# R scripting front-end.
+rexec = Rscript  
+
+# This variable specifies the number of threads to use for the
+# parSapply calls. This could also be specified automatically using
+# environment variables. For example, in SLURM, SLURM_CPUS_PER_TASK
+# specifies the number of CPUs allocated for each task.
+nc = 8
 
 # AVOID EDITING ANYTHING BELOW THIS LINE
 # --------------------------------------
@@ -99,7 +105,7 @@ gtex_analysis : $(gtex_fits) ./R/gtex_plots.R
 # Run simulations.
 $(sims_out) : $(tissue_dat) ./Code/mouthwash_sims.R
 	mkdir -p Output/sims_out
-	Rscript ./Code/mouthwash_sims.R $
+	Rscript ./Code/mouthwash_sims.R $(nc)
 
 # Create plots from simulation experiments.
 .PHONY : sims

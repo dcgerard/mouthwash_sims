@@ -5,7 +5,7 @@ TO DO
   them? e.g., "process" and "analysis". I'm not sure what is the
   distinction between these two folders.
 
-* Give target file list in Data after downloading all the files.
+* Remove mouthwash_paper_sims.R?
 
 * Update etc/README.Rmd to reflect changes to README.md.
 
@@ -21,4 +21,6 @@ TO DO
 
 * Add dependencies to data files in Makefile.
 
-* Explain how NC can be set automatically in SLURM.
+* Create sbatch script for running on RCC cluster.
+
+

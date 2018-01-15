@@ -66,12 +66,25 @@ done so already.
 Next, the list of human housekeeping genes and the NCBI
 NCBI-to-Ensembl gene mapping file:
 
-1. [HK\_genes.txt](http://www.tau.ac.il/~elieis/HKG/HK_genes.txt)
-2. [gene2ensembl.gz](ftp://ftp.ncbi.nih.gov/gene/DATA/gene2ensembl.gz)
+5. [HK\_genes.txt](http://www.tau.ac.il/~elieis/HKG/HK_genes.txt)
+6. [gene2ensembl.gz](ftp://ftp.ncbi.nih.gov/gene/DATA/gene2ensembl.gz)
+
+After completing these steps, the Data folder should look like this:
+
+```bash
+ls -1
+# GTEx_Analysis_v6p_RNA-seq_RNA-SeQCv1.1.8_gene_reads.gct.gz
+# GTEx_Data_V6_Annotations_SampleAttributesDS.txt
+# GTEx_Data_V6_Annotations_SubjectPhenotypesDS.txt
+# HK_genes.txt
+# gencode.v19.genes.v6p_model.patched_contigs.gtf.gz
+# gene2ensembl.gz
+```
 
 ### Run make
 
-To reproduce all of the results in Gerard and Stephens (2017), simply run `make` from the terminal.
+To reproduce all of the results in Gerard and Stephens (2017), run
+`make` from the terminal.
 
 If you want to reproduce just the results from Section 5.1, run
 

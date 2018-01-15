@@ -2,6 +2,9 @@ library(parallel)
 
 one_rep <- function(new_params, current_params) {
     return_vec <- tryCatch(expr = {
+
+        # I'm assuming that the current working directory is the
+        # parent directory of this file.
         source("./Code/data_generators.R")
         source("./Code/adjustment_methods.R")
         args_val <- append(current_params, new_params)
