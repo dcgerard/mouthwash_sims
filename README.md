@@ -40,9 +40,11 @@ Bioconductor packages should be installed before the CRAN packages.)
 
 ```R
 source("https://bioconductor.org/biocLite.R")
-biocLite(c("sva", "limma"),suppressUpdates = TRUE)
+biocLite(c("sva","limma","qvalue"),suppressUpdates = TRUE)
 install.packages(c("tidyverse", "stringr", "reshape2", "pROC",
-                   "ruv", "cate", "devtools", "ashr", "bfa"))
+                   "ruv", "cate", "devtools", "ashr", "bfa",
+				   "xtable", "dplyr", "ggthemes", "qvalue",
+				   "assertthat"))
 devtools::install_github("dcgerard/seqgendiff")
 devtools::install_github("dcgerard/vicar")
 ```
@@ -67,7 +69,7 @@ Next, download the list of human housekeeping genes and the NCBI
 NCBI-to-Ensembl gene mapping file, and copy these files to the
 [Data](data) directory:
 
-5. [HK\_genes.txt](http://www.tau.ac.il/~elieis/HKG/HK_genes.txt)
+5. http://www.tau.ac.il/~elieis/HKG/HK_genes.txt
 6. ftp://ftp.ncbi.nih.gov/gene/DATA/gene2ensembl.gz
 
 After completing these steps, the Data folder should look like this:
