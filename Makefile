@@ -81,7 +81,7 @@ sims_out = ./Output/sims_out/sims_out.Rds
 
 all: one_data gtex_analysis sims
 
-## Extract tissue data.
+# Extract tissue data.
 $(tissue_dat) : ./R/gtex_extract_tissues_v6p.R
 	mkdir -p Output/gtex_tissue_gene_reads_v6p
 	Rscript ./R/gtex_extract_tissues_v6p.R
@@ -113,6 +113,7 @@ sims : $(sims_out) ./R/plot_mouthwash_sims.R
 	mkdir -p Output/figures
 	Rscript ./R/plot_mouthwash_sims.R
 
+# TO DO: Explain here what this does.
 .PHONY : one_data
 one_data : $(tissue_dat) ./R/ash_problems.R
 	mkdir -p Output/figures

@@ -22,4 +22,6 @@ TO DO
 
 * Create sbatch script for running on RCC cluster.
 
+* Add missing descriptions to steps in Makefile.
+
 
