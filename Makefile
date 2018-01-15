@@ -123,4 +123,5 @@ one_data : ./R/ash_problems.R $(tissue_dat)
 	$(rexec) $<
 
 clean:
-        rm -f $(tissue_dat)
+	rm -f $(tissue_dat)
+

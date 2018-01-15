@@ -20,5 +20,10 @@
 # For reproducibility, add version number to "module load" call.
 module load R/3.4.3
 
+# The packages installed here are sometimes not detected
+# automatically, so I add this location manually to the package search
+# path.
+R_LIBS_USER=~/R/x86_64-redhat-linux-gnu-library/3.4
+
 # Generate the Makefile targets.
 make all
