@@ -63,15 +63,17 @@ done so already.
 3. `gencode.v19.genes.V6p_model.patched_contigs.gtf.gz`
 4. `GTEx_Data_V6_Annotations_SubjectPhenotypesDS.txt`
 
-Next, the list of human housekeeping genes and the NCBI
-NCBI-to-Ensembl gene mapping file:
+Next, download the list of human housekeeping genes and the NCBI
+NCBI-to-Ensembl gene mapping file, and copy these files to the
+[Data](data) directory:
 
 5. [HK\_genes.txt](http://www.tau.ac.il/~elieis/HKG/HK_genes.txt)
-6. [gene2ensembl.gz](ftp://ftp.ncbi.nih.gov/gene/DATA/gene2ensembl.gz)
+6. ftp://ftp.ncbi.nih.gov/gene/DATA/gene2ensembl.gz
 
 After completing these steps, the Data folder should look like this:
 
 ```bash
+cd Data
 ls -1
 # GTEx_Analysis_v6p_RNA-seq_RNA-SeQCv1.1.8_gene_reads.gct.gz
 # GTEx_Data_V6_Annotations_SampleAttributesDS.txt
