@@ -16,8 +16,7 @@ TO DO
 * Clarify comment, "If on your own computer, use this."
 
 * What are the files that are being downloaded in "Get data"? It would
-  be helpful to know what these files are, and what they are for. Add
-  a brief description of the files that are downloaded.
+  be helpful to know what these files are, and what they are for. 
 
 * Add dependencies to data files in Makefile.
 
