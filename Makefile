@@ -1,4 +1,11 @@
-## The data output from gtex_extract_tissues_v6p.R
+# ADJUST THESE VARIABLES AS NEEDED TO SUIT YOUR COMPUTING ENVIRONMENT
+# -------------------------------------------------------------------
+rexec = Rscript  # R scripting front-end.
+nc    = 1        # Number of threads to use for the parSapply calls.
+
+# AVOID EDITING ANYTHING BELOW THIS LINE
+# --------------------------------------
+# This variable specifies the CSV files created by gtex_extract_tissues_v6p.R.
 tissue_dat = ./Output/gtex_tissue_gene_reads_v6p/adiposetissue.csv \
 	     ./Output/gtex_tissue_gene_reads_v6p/bladder.csv \
              ./Output/gtex_tissue_gene_reads_v6p/bloodvessel.csv \
@@ -30,6 +37,8 @@ tissue_dat = ./Output/gtex_tissue_gene_reads_v6p/adiposetissue.csv \
              ./Output/gtex_tissue_gene_reads_v6p/thyroid.csv \
              ./Output/gtex_tissue_gene_reads_v6p/vagina.csv
 
+# TO DO: Add description of these targets here. See above description
+# of tissue_dat for an example.
 cleaned_dat = ./Output/cleaned_gtex_data/adiposetissue.Rds \
 	      ./Output/cleaned_gtex_data/bladder.Rds \
 	      ./Output/cleaned_gtex_data/bloodvessel.Rds \
@@ -54,42 +63,45 @@ cleaned_dat = ./Output/cleaned_gtex_data/adiposetissue.Rds \
 	      ./Output/cleaned_gtex_data/smallintestine.Rds \
 	      ./Output/cleaned_gtex_data/stomach.Rds
 
+# TO DO: Add description of these targets here. See above description
+# of tissue_dat for an example.
 gtex_fits = ./Output/gtex_fits/betahat_list.Rds \
             ./Output/gtex_fits/pi0mat.Rds \
             ./Output/gtex_fits/plist.Rds
 
-sims_out = ./Output/sims_out/sims_out.RDS
-
+# TO DO: Add description of these targets here. See above description
+# of tissue_dat for an example.
+sims_out = ./Output/sims_out/sims_out.Rds
 
 all: one_data gtex_analysis sims
 
-## extract tissue data
+## Extract tissue data.
 $(tissue_dat) : ./R/gtex_extract_tissues_v6p.R
 	mkdir -p Output/gtex_tissue_gene_reads_v6p
 	Rscript ./R/gtex_extract_tissues_v6p.R
 
-## clean tissue data for gtex analysis
+# Clean tissue data for GTEx analysis.
 $(cleaned_dat) : ./R/gtex_clean.R $(tissue_dat)
 	mkdir -p Output/cleaned_gtex_data
 	Rscript ./R/gtex_clean.R
 
-## run gtex analysis
+# Run GTEx analysis.
 $(gtex_fits) : $(cleaned_dat) ./R/fit_mouthwash.R
 	mkdir -p Output/gtex_fits
 	Rscript ./R/fit_mouthwash.R
 
-## plot gtex_analysis
+# Create plots from results of GTEx analysis.
 .PHONY : gtex_analysis
 gtex_analysis : $(gtex_fits) ./R/gtex_plots.R
 	mkdir -p Output/figures
 	Rscript ./R/gtex_plots.R
 
-## run simulations
+# Run simulations.
 $(sims_out) : $(tissue_dat) ./Code/mouthwash_sims.R
 	mkdir -p Output/sims_out
-	Rscript ./Code/mouthwash_sims.R
+	Rscript ./Code/mouthwash_sims.R $
 
-## plot simulations
+# Create plots from simulation experiments.
 .PHONY : sims
 sims : $(sims_out) ./R/plot_mouthwash_sims.R
 	mkdir -p Output/figures

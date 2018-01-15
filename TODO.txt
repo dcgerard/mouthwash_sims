@@ -2,14 +2,23 @@ TO DO
 =====
 
 * It is odd that you have an R folder and a Code folder. Maybe rename
-  them? e.g., "process" and "analysis".
+  them? e.g., "process" and "analysis". I'm not sure what is the
+  distinction between these two folders.
 
 * Give target file list in Data after downloading all the files.
 
 * Update etc/README.Rmd to reflect changes to README.md.
 
-* Replace use of detectCores().
-
-* Revise Makefile.
-
 * Add Makefile rule to clean up outputs.
+
+* Specify targets for plots and remove .PHONY lines in Makefile.
+
+* Clarify comment, "If on your own computer, use this."
+
+* What are the files that are being downloaded in "Get data"? It would
+  be helpful to know what these files are, and what they are for. Add
+  a brief description of the files that are downloaded.
+
+* Add dependencies to data files in Makefile.
+
+* Explain how NC can be set automatically in SLURM.
