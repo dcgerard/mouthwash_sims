@@ -10,4 +10,6 @@ TO DO
 
 * Replace use of detectCores().
 
+* Revise Makefile.
+
 * Add Makefile rule to clean up outputs.
