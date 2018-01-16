@@ -35,3 +35,8 @@ TO DO
   missing, and which rules to run. Right now, for example, "make sims"
   will always run R/plot_mouthwash_sims.R regardless of whether the
   plots have been previously generated.
+
+* In the README under "Instructions", give a ballpark estimate of the
+  amount of storage space needed to download the data files and
+  generate the outputs. Likewise, it would also be helpful to know
+  (roughly) how much memory is needed to run the analyses in R.
