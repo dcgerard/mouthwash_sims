@@ -70,7 +70,7 @@ done so already.
 
 1. `GTEx_Data_V6_Annotations_SampleAttributesDS.txt`
 2. `GTEx_Analysis_v6p_RNA-seq_RNA-SeQCv1.1.8_gene_reads.gct.gz`
-3. `gencode.v19.genes.V6p_model.patched_contigs.gtf.gz`
+3. `gencode.v19.genes.v6p_model.patched_contigs.gtf.gz`
 4. `GTEx_Data_V6_Annotations_SubjectPhenotypesDS.txt`
 
 Next, download the list of human housekeeping genes and the NCBI

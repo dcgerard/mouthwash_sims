@@ -27,7 +27,7 @@ colnames(exon)[1:8] <- c("CHR", "annotation_source", "feature_type", "gene_start
                          "gene_end", "score", "strand", "phase")
 
 ## this file is from the GTEX portal
-write.csv(exon, file = "./Output/gencode.v19.genes.V6p_model.patched_contigs.txt")
+write.csv(exon, file = "./Output/gencode.v19.genes.v6p_model.patched_contigs.txt")
 
 ## Associate genes with chromosome position
 gene_names <- rep(NA, length = length(exon$gene_id))
