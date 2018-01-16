@@ -95,8 +95,12 @@ ls -1
 
 ### Run make
 
-To reproduce all of the results in Gerard and Stephens (2017), run
-`make` from the terminal.
+To reproduce all of the results in Gerard and Stephens (2017), move to
+the root directory in your local copy of this repository, and run
+`make` from the terminal. This will run all the steps in the data
+processing and analysis pipeline. Note that you may need to adjust
+some of the settings in the [Makefile](Makefile) to suit your
+computing environment.
 
 If you want to reproduce just the results from Section 5.1, run
 

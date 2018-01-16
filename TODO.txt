@@ -24,4 +24,13 @@ TO DO
 
 * Add missing descriptions to steps in Makefile.
 
+* Ideally, the Makefile should be in the same directory as the R
+  scripts, or the scripts should be run so that the working directory
+  is the same as the location of the scripts. Not strictly necessary,
+  but avoids some confusion about file paths.
+
 * Describe computing environment(s) where code has been tested.
+
+* Output progress and timing for long-running steps in R data
+  processing and analysis scripts. This is important to provide
+  assurance to user that things are working!
