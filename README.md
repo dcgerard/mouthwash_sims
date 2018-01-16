@@ -102,7 +102,9 @@ processing and analysis pipeline. Note that you may need to adjust
 some of the settings in the [Makefile](Makefile) to suit your
 computing environment.
 
-If you want to reproduce just the results from Section 5.1, run
+Since some of the steps take a long time to run, you may not want to
+run everything at once. If you want to reproduce just the results from
+Section 5.1, run
 
 ``` bash
 make sims
