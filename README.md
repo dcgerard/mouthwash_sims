@@ -120,6 +120,10 @@ If you want to reproduce the figure in the introduction, run
 make one_data
 ```
 
+At any point during or after the commands are running, you can assess
+progress and troubleshoot errors by inspecting the `.Rout` files saved
+in the [Output](Output) subdirectory.
+
 ### Get Coffee
 
 All of these runs (except the last one) should take a very long time

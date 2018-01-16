@@ -12,7 +12,7 @@ tissue_vec <- c("adiposetissue", "bladder", "bloodvessel", "breast",
 ## The GTF is what you want
 ## exon2 <- read.delim(file = "/home/david/Data/gtex/gene_reference/Homo_sapiens.GRCh38.85.gtf", skip = 5)
 
-gtout <- read.table(file = "./Data/gencode.v19.genes.V6p_model.patched_contigs.gtf",
+gtout <- read.table(file = "./Data/gencode.v19.genes.v6p_model.patched_contigs.gtf.gz",
                     skip = 6, sep = "\t")
 temp1 <- stringr::str_split(gtout[, 9], pattern = ";")
 
@@ -38,9 +38,11 @@ for (index in 1:length(gene_names)) {
 
 for (tissue_index in 1:length(tissue_vec)) {
     current_tissue <- tissue_vec[tissue_index]
+    cat("tissue",tissue_index,"=",current_tissue,"\n")
     ## Read in Data
-    tissuedat <- read.csv(paste0("./Output/gtex_tissue_gene_reads_v6p/", current_tissue,
-                                 ".csv"))
+    tissuedat <-
+      read.csv(paste0("./Output/gtex_tissue_gene_reads_v6p/", current_tissue,
+                      ".csv"))
 
     match_out <- match(tissuedat$Name, gene_names)
     tissuedat$CHR <- exon$CHR[match_out]
@@ -79,7 +81,7 @@ for (tissue_index in 1:length(tissue_vec)) {
 
     ## Now get the X matrix
     pheno <- read.table("./Data/GTEx_Data_V6_Annotations_SubjectPhenotypesDS.txt",
-                        header = TRUE)
+                        header = TRUE,sep = "\t")
     match_out <- match(colnames(Y), pheno$SUBJID)
     X <- model.matrix(~as.factor(pheno$GENDER[match_out]))
     colnames(X) <- c("Intercept", "Gender")
@@ -120,5 +122,6 @@ for (tissue_index in 1:length(tissue_vec)) {
     ## Save file
     final_tiss <- list(Y = Y, X = X, ctl = ctl, chrom = subtissue$CHR)
     saveRDS(object = final_tiss,
-            file = paste0("./Output/cleaned_gtex_data/", current_tissue, ".Rds"))
-}
+            file = paste0("./Output/cleaned_gtex_data/",
+              current_tissue, ".Rds"))
+  }
