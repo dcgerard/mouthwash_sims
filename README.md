@@ -8,6 +8,8 @@ The new methods can be found in the
 If you find a bug, please create an
 [issue](https://github.com/dcgerard/ruvb_sims/issues).
 
+This code has been tested in ...
+
 ## Citing this work
 
 If you find any of the source code in this repository useful for your
@@ -33,10 +35,16 @@ install the appropriate R packages, (2) obtain the appropriate data,
 (3) run `make` and (4) get some coffee while you wait. Please read
 below for details on each of these steps.
 
-### Install R packages
+### Install software and R packages
 
-To install the required R packages, run the following in R. (Note the
-Bioconductor packages should be installed before the CRAN packages.)
+1. Install [R](https://cran.r-project.org).
+
+2. Install [GNU Make](https://www.gnu.org/software/make).
+
+3. Install the required R packages by running the following commands
+in the R interactive environment. (Note the order of these commands is
+important---the Bioconductor packages should be installed before the
+CRAN packages.)
 
 ```R
 source("https://bioconductor.org/biocLite.R")
