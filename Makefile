@@ -89,40 +89,40 @@ all: sims gtex_analysis one_data
 # Extract tissue data.
 $(tissue_dat) : R/gtex_extract_tissues_v6p.R
 	mkdir -p Output/gtex_tissue_gene_reads_v6p
-	$(rexec) $< Output/gtex_extract_tissues_v6p.Rout
+	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
 # Clean tissue data for GTEx analysis.
 $(cleaned_dat) : ./R/gtex_clean.R $(tissue_dat)
 	mkdir -p Output/cleaned_gtex_data
-	$(rexec) $<
+	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
 # Run GTEx analysis.
 $(gtex_fits) : ./R/fit_mouthwash.R $(cleaned_dat) 
 	mkdir -p Output/gtex_fits
-	$(rexec) $<
+	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
 # Create plots from results of GTEx analysis.
 .PHONY : gtex_analysis
 gtex_analysis : ./R/gtex_plots.R $(gtex_fits) 
 	mkdir -p Output/figures
-	$(rexec) $<
+	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
 # Run simulations.
 $(sims_out) : ./Code/mouthwash_sims.R $(tissue_dat) 
 	mkdir -p Output/sims_out
-	$(rexec) '--args nc=$(nc)' $< Output/mouthwash_sims.Rout
+	$(rexec) '--args nc=$(nc)' $< Output/$(basename $(notdir $<)).Rout
 
 # Create plots from simulation experiments.
 .PHONY : sims
 sims : ./R/plot_mouthwash_sims.R $(sims_out) 
 	mkdir -p Output/figures
-	$(rexec) $<
+	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
 # TO DO: Explain here what this does.
 .PHONY : one_data
 one_data : ./R/ash_problems.R $(tissue_dat) 
 	mkdir -p Output/figures
-	$(rexec) $<
+	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
 clean:
 	rm -f $(tissue_dat)
