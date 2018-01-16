@@ -5,13 +5,9 @@ TO DO
   them? e.g., "process" and "analysis". I'm not sure what is the
   distinction between these two folders.
 
-* Remove mouthwash_paper_sims.R?
-
 * Update etc/README.Rmd to reflect changes to README.md.
 
 * Add Makefile rule to clean up outputs.
-
-* Specify targets for plots and remove .PHONY lines in Makefile.
 
 * Clarify comment, "If on your own computer, use this."
 
@@ -34,3 +30,8 @@ TO DO
 * Output progress and timing for long-running steps in R data
   processing and analysis scripts. This is important to provide
   assurance to user that things are working!
+
+* Fix Makefile so that it correctly determines which dependencies are
+  missing, and which rules to run. Right now, for example, "make sims"
+  will always run R/plot_mouthwash_sims.R regardless of whether the
+  plots have been previously generated.

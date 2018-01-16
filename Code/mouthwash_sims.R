@@ -215,4 +215,4 @@ sout <- t(parallel::parSapply(cl = cl, X = par_list, FUN = one_rep,
                               current_params = args_val))
 stopCluster(cl)
 
-saveRDS(cbind(par_vals, sout), "./Output/sims_out/sims_out.RDS")
+saveRDS(cbind(par_vals, sout), "./Output/sims_out/sims_out.Rds")
