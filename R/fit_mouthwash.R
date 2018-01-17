@@ -76,6 +76,7 @@ betahat_list <- list()
 num_sv_seq <- rep(NA, length = length(tissue_vec))
 for(tissue_index in 1:length(tissue_vec)) {
     current_tissue <- tissue_vec[tissue_index]
+    cat("Tissue",tissue_index,"=",current_tissue,"\n")
 
     dat <- readRDS(paste0("./Output/cleaned_gtex_data/", current_tissue, ".Rds"))
     onsex <- dat$chrom == "X" | dat$chrom == "Y"
@@ -87,8 +88,6 @@ for(tissue_index in 1:length(tissue_vec)) {
 
     num_sv_seq[tissue_index] <- num_sv
 
-    cat(tissue_index, "\n")
-
     Y <- t(dat$Y)
     X <- dat$X
     control_genes <- dat$ctl
@@ -97,25 +96,63 @@ for(tissue_index in 1:length(tissue_vec)) {
     method_list$ols  <- ols(Y = Y, X = X)
 
     ## control gene methods --------------------------------------------------
-    ruv2_o <- ruv2_simp(Y = Y, X = X, num_sv = num_sv, control_genes = control_genes)
-    method_list$ruv2  <- limma_adjust(ruv2_o)
-    method_list$ruv3 <- ruv3_limma_pre(Y = Y, X = X, num_sv = num_sv,
-                                       control_genes = control_genes)
-    method_list$cate  <- cate_simp_nc_correction(Y = Y, X = X, num_sv = num_sv,
-                                                 control_genes = control_genes)
-    method_list$cate_madcal <- cate_simp_nc_correction(Y = Y, X = X, num_sv = num_sv,
-                                                       control_genes = control_genes,
-                                                       calibrate = TRUE)
-    method_list$cate_nccal <- ctl_adjust(obj = method_list$cate, control_genes = control_genes)
+    cat(" - Running ruv2_o.\n")
+    out <- system.time(ruv2_o <- ruv2_simp(Y = Y, X = X, num_sv = num_sv,
+                                           control_genes = control_genes))
+    cat("   Computation took",out["elapsed"],"seconds.\n")
+    cat(" - Running ruv2.\n")
+    out <- system.time(method_list$ruv2  <- limma_adjust(ruv2_o))
+    cat("   Computation took",out["elapsed"],"seconds.\n")
+    cat(" - Running ruv3.\n")
+    out <- system.time(
+      method_list$ruv3 <- ruv3_limma_pre(Y = Y, X = X, num_sv = num_sv,
+                                         control_genes = control_genes))
+    cat("   Computation took",out["elapsed"],"seconds.\n")
+    cat(" - Running cate.\n")
+    out <- system.time(
+      method_list$cate  <- cate_simp_nc_correction(Y = Y,X = X,
+                             num_sv = num_sv,control_genes = control_genes))
+    cat("   Computation took",out["elapsed"],"seconds.\n")
+    cat(" - Running cate_madcal.\n")
+    out <- system.time(method_list$cate_madcal <-
+      cate_simp_nc_correction(Y = Y, X = X, num_sv = num_sv,
+                              control_genes = control_genes,
+                              calibrate = TRUE))
+    cat("   Computation took",out["elapsed"],"seconds.\n")
+    cat(" - Running cate_nccal.\n")
+    out <- system.time(method_list$cate_nccal <-
+                         ctl_adjust(obj = method_list$cate,
+                                    control_genes = control_genes))
+    cat("   Computation took",out["elapsed"],"seconds.\n")
 
     ## non control gene methods ----------------------------------------------
-    method_list$sva    <- sva_voom(Y = Y, X = X, num_sv = num_sv)
-    method_list$caterr <- cate_rr(Y = Y, X = X, num_sv = num_sv, calibrate = FALSE)
-    method_list$caterr_cal <- cate_rr(Y = Y, X = X, num_sv = num_sv, calibrate = TRUE)
-
-    ash_list <- lapply(method_list, FUN = do_ash)
-    ash_list$mouthwash <- mouthwash(Y = Y, X = X, num_sv = num_sv, likelihood = "normal", scale_var = TRUE)
-    ash_list$backwash <- backwash(Y = Y, X = X, num_sv = num_sv, scale_var = TRUE)
+    cat(" - Running sva.\n")
+    out <- system.time(method_list$sva <- sva_voom(Y = Y, X = X,
+                                                   num_sv = num_sv))
+    cat("   Computation took",out["elapsed"],"seconds.\n")
+    cat(" - Running caterr.\n")
+    out <- system.time(method_list$caterr <-
+                         cate_rr(Y = Y, X = X, num_sv = num_sv,
+                                 calibrate = FALSE))
+    cat("   Computation took",out["elapsed"],"seconds.\n")
+    cat(" - Running caterr_call.\n")
+    out <- system.time(method_list$caterr_cal <-
+             cate_rr(Y = Y, X = X, num_sv = num_sv, calibrate = TRUE))
+    cat("   Computation took",out["elapsed"],"seconds.\n")
+    
+    cat(" - Running mouthwash.\n")
+    out <- system.time({
+             ash_list <- lapply(method_list, FUN = do_ash)
+             ash_list$mouthwash <-
+               mouthwash(Y = Y, X = X, num_sv = num_sv, likelihood = "normal",
+                         scale_var = TRUE)
+           })
+    cat("   Computation took",out["elapsed"],"seconds.\n")
+    
+    cat(" - Running backwash.\n")
+    out <- system.time(ash_list$backwash <-
+             backwash(Y = Y, X = X, num_sv = num_sv, scale_var = TRUE))
+    cat("   Computation took",out["elapsed"],"seconds.\n")
 
     ash_lfdr <- sapply(ash_list, FUN = get_lfdr)
     pvalmat  <- sapply(sapply(method_list, FUN = get_pvalues), c)
