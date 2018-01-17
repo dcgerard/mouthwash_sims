@@ -40,3 +40,8 @@ TO DO
   amount of storage space needed to download the data files and
   generate the outputs. Likewise, it would also be helpful to know
   (roughly) how much memory is needed to run the analyses in R.
+
+* Whenever possible, in a script it is best to load all the necessary
+  packages upfront. It is frustrating to wait hours and then have to
+  re-run a script because a package was not available, or failed to
+  load! This is an easy error to catch at the very beginning.
