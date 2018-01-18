@@ -1,6 +1,8 @@
 TO DO
 =====
 
+* Add instructions for installing MOSEK and Rmosek.
+
 * Look into dependencies for multiple files in Makefile.
 
 * It is odd that you have an R folder and a Code folder. Maybe rename
