@@ -1,7 +1,7 @@
 TO DO
 =====
 
-* Add instructions for installing MOSEK and Rmosek.
+* Add instructions for installing MOSEK, Rmosek and REBayes.
 
 * Look into dependencies for multiple files in Makefile.
 
