@@ -11,6 +11,7 @@ source("./Code/mosek.R")
 # mouthwash and backwash methods. This will give an error if the
 # Rmosek package is not available.
 library(Rmosek)
+library(REBayes)
 test_mosek()
 
 proc_wrapper <- function(predictor, response) {
