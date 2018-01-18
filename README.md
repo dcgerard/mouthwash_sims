@@ -51,7 +51,7 @@ source("https://bioconductor.org/biocLite.R")
 biocLite(c("sva","limma","qvalue"),suppressUpdates = TRUE)
 install.packages(c("tidyverse", "stringr", "reshape2", "pROC",
                    "ruv", "cate", "devtools", "ashr", "bfa",
-				   "xtable", "dplyr", "ggthemes", "qvalue",
+				   "xtable", "dplyr", "ggthemes", 
 				   "assertthat", "R.utils"))
 devtools::install_github("dcgerard/seqgendiff")
 devtools::install_github("dcgerard/vicar")
@@ -73,7 +73,7 @@ done so already.
 3. `gencode.v19.genes.v6p_model.patched_contigs.gtf.gz`
 4. `GTEx_Data_V6_Annotations_SubjectPhenotypesDS.txt`
 
-Next, download the list of human housekeeping genes and the NCBI
+Next, download the list of human housekeeping genes and the
 NCBI-to-Ensembl gene mapping file, and copy these files to the
 [Data](data) directory:
 

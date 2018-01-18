@@ -1,6 +1,8 @@
 TO DO
 =====
 
+* Look into dependencies for multiple files in Makefile.
+
 * It is odd that you have an R folder and a Code folder. Maybe rename
   them? e.g., "process" and "analysis". I'm not sure what is the
   distinction between these two folders.
