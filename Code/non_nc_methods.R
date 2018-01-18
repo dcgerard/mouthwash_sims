@@ -35,7 +35,6 @@ sva <- function(Y, X, num_sv) {
               pvalues = pvalues))
 }
 
-
 sva_voom <- function(Y, X, num_sv) {
   trash      <- capture.output(sva_out <- sva::sva(dat = t(Y), mod = X, n.sv = num_sv))
   X.sv       <- cbind(X, sva_out$sv)
@@ -49,7 +48,6 @@ sva_voom <- function(Y, X, num_sv) {
   return(list(betahat = betahat, sebetahat = sebetahat, df = df,
               pvalues = pvalues))
 }
-
 
 mouthwash <- function(Y, X, num_sv, likelihood = c("normal", "t"), alpha = 0, scale_var = FALSE,
                       var_inflate_pen = 0, mixing_dist = NULL) {
@@ -68,7 +66,6 @@ mouthwash <- function(Y, X, num_sv, likelihood = c("normal", "t"), alpha = 0, sc
   return_list$pi0hat  <- mout$pi0
   return(return_list)
 }
-
 
 backwash <- function(Y, X, num_sv, alpha = 0, scale_var = FALSE, var_inflate_pen = 0) {
   mout <- vicar::backwash(Y = Y, X = X, k = num_sv, scale_var = scale_var, sprop = alpha,

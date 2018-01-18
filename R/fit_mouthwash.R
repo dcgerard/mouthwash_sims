@@ -1,5 +1,9 @@
+# Although not strictly necessary, Rmosek dramatically speeds up the
+# mouthwash and backwash methods. This will give an error if the
+# Rmosek package is not available.
 library(tidyverse)
 library(stringr)
+library(Rmosek)
 
 # I'm assuming that the current working directory is the parent
 # directory of this file.
