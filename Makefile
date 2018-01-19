@@ -45,6 +45,7 @@ tissue_dat = $(tissue_dir)/adiposetissue.csv \
              $(tissue_dir)/stomach.csv \
              $(tissue_dir)/thyroid.csv \
              $(tissue_dir)/vagina.csv
+tissue_targets = $(addsuffix .%,$(basename $(tissue_dat)))
 
 # TO DO: Add description of these targets here. See above description
 # of tissue_dat for an example.
@@ -87,7 +88,7 @@ sims_out = ./Output/sims_out/sims_out.Rds
 all: sims gtex_analysis one_data 
 
 # Extract tissue data.
-$(tissue_dat) : R/gtex_extract_tissues_v6p.R
+$(tissue_targets) : R/gtex_extract_tissues_v6p.R
 	mkdir -p Output/gtex_tissue_gene_reads_v6p
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 

@@ -2,8 +2,6 @@ To-do items, comments & suggestions for improving reproducibility
 Compiled by Peter Carbonetto
 January 18, 2018
 
-* TO DO (Peter): Look into dependencies for multiple files in Makefile.
-
 * TO DO (Peter): Create sbatch script for running on RCC cluster.
 
 * TO DO: Update etc/README.Rmd to reflect changes to README.md.
@@ -22,6 +20,13 @@ January 18, 2018
   of the amount of storage space needed to download the data files and
   generate the outputs. Likewise, it would also be helpful to know
   (roughly) how much memory is needed to run the analyses in R.
+
+* TO DO: In Makefile, correctly define rules that generate multiple
+  outputs with one command. For an example of how to do this
+  correctly, see the rule for generating the CSV files in
+  Output/gtex_tissue_gene_reads_v6p. To understand why this works, run
+  "make --dry-run sims", then replace $(tissue_targets) in the rule by
+  $(tissue_dat).
 
 * SUGGESTION: it is odd that you have an R folder and a Code
   folder. Maybe rename them? e.g., "process" and "analysis". I'm not
