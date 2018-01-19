@@ -10,9 +10,9 @@ source("./Code/mosek.R")
 # Although not strictly necessary, Rmosek dramatically speeds up the
 # mouthwash and backwash methods. This will give an error if the
 # Rmosek package is not available.
-library(Rmosek)
-library(REBayes)
-test_mosek()
+# library(Rmosek)
+# library(REBayes)
+# test_mosek()
 
 proc_wrapper <- function(predictor, response) {
     pROC::roc(predictor = predictor, response = response)$auc
