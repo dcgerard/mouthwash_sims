@@ -215,6 +215,6 @@ This project was developed by
 [David Gerard](https://dcgerard.github.io) at the University of
 Chicago.
 
-Thanks to [Matthew Stephens](stephenslab.uchicago.edu) for his support
-and mentorship.
+Thanks to [Matthew Stephens](http://stephenslab.uchicago.edu) for his
+support and mentorship.
 
