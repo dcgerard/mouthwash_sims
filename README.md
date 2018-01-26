@@ -51,7 +51,7 @@ source("https://bioconductor.org/biocLite.R")
 biocLite(c("sva","limma","qvalue"),suppressUpdates = TRUE)
 install.packages(c("tidyverse", "stringr", "reshape2", "pROC",
                    "ruv", "cate", "devtools", "ashr", "bfa",
-				   "xtable", "dplyr", "ggthemes", 
+				   "xtable", "dplyr", "ggthemes",
 				   "assertthat", "R.utils"))
 devtools::install_github("dcgerard/seqgendiff")
 devtools::install_github("dcgerard/vicar")
@@ -162,7 +162,7 @@ sessionInfo()
     ## [1] LC_COLLATE=English_United States.1252
     ## [2] LC_CTYPE=English_United States.1252
     ## [3] LC_MONETARY=English_United States.1252
-    ## [4] LC_NUMERIC=C             
+    ## [4] LC_NUMERIC=C
     ## [5] LC_TIME=English_United States.1252
     ##
     ## attached base packages:
@@ -215,6 +215,9 @@ This project was developed by
 [David Gerard](https://dcgerard.github.io) at the University of
 Chicago.
 
+[Peter Carbonetto](https://pcarbo.github.io/) made many fantastic
+contributions and suggestions to increase the reproducibility of this
+work.
+
 Thanks to [Matthew Stephens](http://stephenslab.uchicago.edu) for his
 support and mentorship.
-
