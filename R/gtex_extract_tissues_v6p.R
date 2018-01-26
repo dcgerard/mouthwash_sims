@@ -36,7 +36,6 @@ for (tiss_index in 1:length(unique_tissues)) {
                                    output_filenames[tiss_index]), row.names = FALSE)
 }
 
-
 ## Implementation Check
 rm(list = ls())
 sample_attributes <- "./Data/GTEx_Data_V6_Annotations_SampleAttributesDS.txt"

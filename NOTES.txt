@@ -1,0 +1,81 @@
+To-do items, comments & suggestions for improving reproducibility
+Compiled by Peter Carbonetto
+January 18, 2018
+
+* TO DO (Peter): Create sbatch script for running on RCC cluster.
+
+* TO DO: Update etc/README.Rmd to reflect changes to README.md.
+
+* TO DO: In your code, clarify (or remove) comments, "If on your own
+  computer, use this."
+
+* TO DO: If it turns out that Rmosek is important for optimizing the
+  adaptive shrinkage ("ash") models, add instructions for installing
+  MOSEK, Rmosek and REBayes.
+
+* TO DO: In README, briefly describe computing environment(s) where
+  code has been tested. (The sessionInfo at the bottom is also useful.)
+
+* TO DO: In the README under "Instructions", give a ballpark estimate
+  of the amount of storage space needed to download the data files and
+  generate the outputs. Likewise, it would also be helpful to know
+  (roughly) how much memory is needed to run the analyses in R.
+
+* TO DO: In Makefile, correctly define rules that generate multiple
+  outputs with one command. For an example of how to do this
+  correctly, see the rule for generating the CSV files in
+  Output/gtex_tissue_gene_reads_v6p. To understand why this works, run
+  "make --dry-run sims", then replace $(tissue_targets) in the rule by
+  $(tissue_dat).
+
+* SUGGESTION: it is odd that you have an R folder and a Code
+  folder. Maybe rename them? e.g., "process" and "analysis". I'm not
+  sure what is the distinction between these two folders.
+
+* SUGGESTION: Add Makefile rule to clean up outputs.
+
+* SUGGESTION: Add ./Data file dependencies to rules in Makefile.
+
+* SUGGESTION: What are the files that are being downloaded in "Get
+  data"? It would be helpful to know what these files are, and what
+  they are for.
+
+* SUGGESTION: Whenever possible, in a script it is best to load all
+  the necessary packages upfront. It is frustrating to wait hours and
+  then have to re-run a script because a package was not available, or
+  failed to load! This is an easy error to catch at the very
+  beginning.
+
+* SUGGESTION: This is a general suggestion about the design of the
+  analsyis pipeline. It would be better if there were more smaller
+  targets in the Makefile. To illustrate, fit_mouthwash.R takes a long
+  time to run, and at the end of the script it saves all the results
+  to several .Rds files. It seems that it would be possible to design
+  fit_mouthwash.R so that it takes one argument, the tissue, and runs
+  the entire analysis on one tissue. Then the commands executed by
+  calling "make gtex_analysis" would be
+
+    R CMD BATCH fit_mouthwash.R adiposetissue
+    R CMD BATCH fit_mouthwash.R bladder
+    etc.
+
+  There are many advantages to smaller chunks; one obvious advantage
+  is that it is easier to debug errors, and it is less frustrating
+  when errors occur.
+
+* SUGGESTION: Add missing descriptions to steps in Makefile.
+
+* SUGGESTION: Ideally, the Makefile should be in the same directory as
+  the R scripts, or the scripts should be run so that the working
+  directory is the same as the location of the scripts. Not strictly
+  necessary, but avoids some confusion about file paths.
+
+* SUGGESTION: Output progress and timing for long-running steps in R
+  data processing and analysis scripts. This is important to provide
+  assurance to user that things are working!
+
+* SUGGESTION: Fix Makefile so that it correctly determines which
+  dependencies are missing, and which rules to run. Right now, for
+  example, "make sims" will always run R/plot_mouthwash_sims.R
+  regardless of whether the plots have been previously generated.
+

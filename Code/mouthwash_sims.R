@@ -1,6 +1,10 @@
-## Hopefully these will be the final sims. I've run these too many times and I'm really really bored.
+# Hopefully these will be the final sims. I've run these too many
+# times and I'm really really bored.
 
 one_rep <- function(new_params, current_params) {
+
+  # I'm assuming that the current working directory is the parent
+  # directory of this file.
   source("./Code/nc_adjustment_methods.R")
   source("./Code/non_nc_methods.R")
   args_val <- append(current_params, new_params)
@@ -190,22 +194,25 @@ mat <- t(as.matrix(read.csv("./Output/gtex_tissue_gene_reads_v6p/muscle.csv",
 args_val$mat <- mat[, order(apply(mat, 2, median), decreasing = TRUE)[1:args_val$Ngene]]
 rm(mat)
 
-# start_time <- proc.time()
-# oout <- one_rep(par_list[[1]], args_val)
-# oout[stringr::str_detect(names(oout), "pi0")]
-# end_time <- proc.time() - start_time
-# end_time
+# Number of threads to use for multithreaded computing. This must be
+# specified in the command-line shell; e.g., to use 8 threads, run
+# command
+#
+#  R CMD BATCH '--args nc=8' mouthwash_sims.R
+# 
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args) == 0) {
+  nc <- 1
+} else {
+  eval(parse(text = args[[1]]))
+}
 
-## If on your own computer, use this
-library(snow)
+# If on your own computer, use this.
 library(parallel)
-cl <- makeCluster(detectCores() - 2)
-sout <- t(snow::parSapply(cl = cl, par_list, FUN = one_rep, current_params = args_val))
+cl   <- makeCluster(nc)
+cat("Running multithreaded computations with",nc,"threads.\n")
+sout <- t(parallel::parSapply(cl = cl, X = par_list, FUN = one_rep,
+                              current_params = args_val))
 stopCluster(cl)
 
-saveRDS(cbind(par_vals, sout), "./Output/sims_out/sims_out.RDS")
-
-
-
-
-
+saveRDS(cbind(par_vals, sout), "./Output/sims_out/sims_out.Rds")

@@ -24,7 +24,7 @@ replace_names <- function(x) {
 
 ## pi0 first ------------------------------------------------------------
 library(tidyverse)
-dat <- as_data_frame(readRDS(file = "./Output/sims_out/sims_out.RDS"))
+dat <- as_data_frame(readRDS(file = "./Output/sims_out/sims_out.Rds"))
 longdat <- select(dat, nullpi, Nsamp, ncontrols, contains("pi0")) %>%
   gather(key = "Method", value = "pi0hat", pi0_ash_ols:pi0_qvalue_caterr_cal)
 longdat$Method <- replace_names(longdat$Method)
@@ -53,10 +53,8 @@ for (nullpi_current in c(0.5, 0.9, 1)) {
   dev.off()
 }
 
-
-
 ## Now AUC --------------------------------------------------------------
-dat <- as_data_frame(readRDS(file = "./Output/sims_out/sims_out.RDS"))
+dat <- as_data_frame(readRDS(file = "./Output/sims_out/sims_out.Rds"))
 longdat <- select(dat, nullpi, Nsamp, ncontrols, contains("auc")) %>%
   gather(key = "Method", value = "auc", auc_ash_ols:auc_pvalue_caterr) %>%
   filter(nullpi != 1)

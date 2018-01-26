@@ -37,7 +37,6 @@ replace_names <- function(x) {
   x <- stringr::str_replace(x, "_norm", "")
 }
 
-
 tissue_vec <- c("adiposetissue", "bladder", "bloodvessel", "breast",
                 "colon", "kidney", "lung", "nerve", "pancreas",
                 "skin", "spleen", "adrenalgland", "blood", "brain",
@@ -49,7 +48,6 @@ good_tissue_labels <- c("Adipose Tissue", "Bladder", "Blood Vessel", "Breast",
                         "Skin", "Spleen", "Adrenal Gland", "Blood", "Brain",
                         "Esophagus", "Heart", "Liver", "Muscle", "Pituitary",
                         "Salivary Gland", "Small Intestine", "Stomach", "Thyroid")
-
 
 ## Change 20 if change number of methods!
 top100 <- matrix(NA, nrow = length(tissue_vec), ncol = 20)
@@ -104,7 +102,6 @@ for (tissue_index in 1:length(tissue_vec)) {
     cat(tissue_index, "\n")
 }
 
-
 ## top 100 analysis
 rownames(top100) <- paste0(good_tissue_labels, " (", nseq, ")")
 top100p <- as_data_frame(top100 / apply(top100, 1, max)) %>%
@@ -112,13 +109,9 @@ top100p <- as_data_frame(top100 / apply(top100, 1, max)) %>%
 faorder <- order(apply(top100p, 2, median), decreasing = TRUE)
 top100p$Tissue <- rownames(top100)
 
-
-
-
 longdat <- gather(top100p, key = "Method", value = "Proportion", `RUV2+ASH`:`CATErr+qvalue`)
 longdat$Tissue <- factor(longdat$Tissue, levels = rownames(top100)[order(nseq, decreasing = TRUE)])
 longdat$Method <- factor(longdat$Method, levels = unique(longdat$Method)[faorder])
-
 
 pdf(file = "./Output/figures/prop_max.pdf", height = 7.3, width = 6.5, family = "Times", color = "cmyk")
 pl <- ggplot(data = longdat, mapping = aes(x = Method, y = Tissue, fill = Proportion)) +
@@ -146,7 +139,6 @@ medpi0 <- medpi0[order(medpi0$pi0hat), ]
 
 library(xtable)
 print(xtable(medpi0), include.rownames = FALSE)
-
 
 ### Individual pmats -------------------------------------------------------------
 rm(list = ls())
@@ -212,9 +204,6 @@ for (tissue_index in 1:length(tissue_vec)) {
         biglongdat <- rbind(biglongdat, longdat)
     }
 
-    ## ggplot(data = longdat, mapping = aes(x = index, y = lfdr, color = method)) +
-    ##    geom_line()
-
     if (plot_now) {
         par(ask = TRUE)
         p1 <- ggplot(data = longdat, mapping = aes(x = index,
@@ -230,8 +219,6 @@ colnames(biglongdat) <- c("lfdr", "onsex", "method", "index", "tissue")
 
 dummydat <- biglongdat %>% group_by(method, index) %>% summarize(lfdr = median(lfdr), onsex = mean(onsex))
 
-
-
 dummydat$method <- replace_names(dummydat$method)
 
 names(dummydat) <- c("Method", "Rank", "lfdr", "Proportion")
@@ -246,9 +233,7 @@ ggplot() + geom_point(data = dummydat, mapping = aes(x = Rank, y = lfdr,
                                                      color = Proportion), size = 0.5) +
     facet_wrap(~Method) +
     theme_bw() +
-    ggthemes::scale_color_gradient_tableau(guide = guide_colourbar(title = "Proportion\non Sex\nChromosome"))+
-                        #high = "black",
-                        #low = "gray80",
+    ggthemes::scale_color_gradient_tableau(guide = guide_colourbar(title = "Proportion\non Sex\nChromosome")) +
     theme(strip.background = element_rect(fill="white"), text = element_text(size = 9)) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
     ylab("Median lfdr")

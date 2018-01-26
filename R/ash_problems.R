@@ -1,6 +1,9 @@
 library(tidyverse)
 library(seqgendiff)
 library(sva)
+
+# I'm assuming that the current working directory is the parent
+# directory of this file.
 source("./Code/nc_adjustment_methods.R")
 
 nsamp <- 6
