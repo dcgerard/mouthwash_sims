@@ -6,6 +6,8 @@
 # 
 #   sbatch mouthwash.sbatch
 #
+# Note that the "time" option may have to be adjusted; 36 hours may
+# not be long enough to complete all the computation.
 
 #SBATCH --job-name=mouthwash
 #SBATCH --output=mouthwash.out
@@ -15,7 +17,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
-#SBATCH --time=24:00:00
+#SBATCH --time=36:00:00
 
 # For reproducibility, add version number to "module load" call.
 module load R/3.4.3
