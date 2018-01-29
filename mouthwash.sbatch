@@ -6,6 +6,8 @@
 # 
 #   sbatch mouthwash.sbatch
 #
+# Note that the "time" option may have to be adjusted; 36 hours may
+# not be long enough to complete all the computation.
 
 #SBATCH --job-name=mouthwash
 #SBATCH --output=mouthwash.out
@@ -15,7 +17,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
-#SBATCH --time=24:00:00
+#SBATCH --time=36:00:00
 
 # For reproducibility, add version number to "module load" call.
 module load R/3.4.3
@@ -23,7 +25,12 @@ module load R/3.4.3
 # The packages installed here are sometimes not detected
 # automatically, so I add this location manually to the package search
 # path.
-R_LIBS_USER=~/R/x86_64-redhat-linux-gnu-library/3.4
+export R_LIBS_USER=~/R/x86_64-redhat-linux-gnu-library/3.4
+
+# Set the number of threads used for matrix operations. This should
+# speed up the runtime considerably because there are lots of
+# intensive matrix computations.
+export OPENBLAS_NUM_THREADS=8
 
 # Generate the Makefile targets.
 make all
