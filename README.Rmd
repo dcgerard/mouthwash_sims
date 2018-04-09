@@ -1,0 +1,172 @@
+---
+output: github_document
+bibliography: readme_bib.bib
+---
+
+# Source to reproduce results from @gerard2017unifying
+
+This repository contains source code to reproduce the empirical
+evaluations of @gerard2017unifying.
+The new methods can be found in the
+[vicar](https://github.com/dcgerard/vicar) package.
+
+If you find a bug, please create an
+[issue](https://github.com/dcgerard/ruvb_sims/issues).
+
+## Citing this work
+
+If you find any of the source code in this repository useful for your
+work, please cite our paper:
+
+> Gerard, David, and Matthew Stephens. 2017. "Empirical Bayes Shrinkage  and False Discovery Rate Estimation, Allowing for Unwanted Variation." *arXiv Preprint arXiv:1709.10066*. <https://arxiv.org/abs/1709.10066>.
+
+## License
+
+Copyright (c) 2017-2018, David Gerard.
+
+All source code and software in this repository are made available
+under the terms of the [GNU General Public
+License](http://www.gnu.org/licenses/gpl.html). See the
+[LICENSE](LICENSE) file for the full text of the license.
+
+## Instructions
+
+To reproduce the results of @gerard2017unifying, you need to (i)
+install the appropriate R packages, (ii) obtain the appropriate data,
+(iii) run `make` and (iv) get some coffee while you wait. Please read
+below for details on each of these steps.
+
+### Install software and R packages
+
+1. Install [R](https://cran.r-project.org).
+2. Install [GNU Make](https://www.gnu.org/software/make).
+3. Install the required R packages by running the following commands
+in the R interactive environment. (Note the order of these commands is
+important---the Bioconductor packages should be installed before the
+CRAN packages.)
+
+```R
+source("https://bioconductor.org/biocLite.R")
+biocLite(c("sva","limma","qvalue"),suppressUpdates = TRUE)
+install.packages(c("tidyverse", "stringr", "reshape2", "pROC",
+                   "ruv", "cate", "devtools", "ashr", "bfa",
+				   "xtable", "dplyr", "ggthemes",
+				   "assertthat", "R.utils"))
+devtools::install_github("dcgerard/seqgendiff")
+devtools::install_github("dcgerard/vicar")
+```
+
+See below for the versions of the packages that I used for the paper.
+
+### Get data
+
+Download the following files from the
+[GTEx Portal](https://www.gtexportal.org) and copy them to the
+[Data](data) subdirectory. In order to replicate my results, it is
+important to use version "6p" of the GTEx data. To access these files,
+you will need to register for a GTEx Portal account if you have not
+done so already.
+
+1. `GTEx_Data_V6_Annotations_SampleAttributesDS.txt`
+2. `GTEx_Analysis_v6p_RNA-seq_RNA-SeQCv1.1.8_gene_reads.gct.gz`
+3. `gencode.v19.genes.v6p_model.patched_contigs.gtf.gz`
+4. `GTEx_Data_V6_Annotations_SubjectPhenotypesDS.txt`
+
+    Next, download the list of human housekeeping genes from @eisenberg2013human and the
+    NCBI-to-Ensembl gene mapping file, and copy these files to the
+    [Data](data) directory:
+
+5. http://www.tau.ac.il/~elieis/HKG/HK_genes.txt
+6. ftp://ftp.ncbi.nih.gov/gene/DATA/gene2ensembl.gz
+
+    Finally, download the list of human housekeeping genes from @lin2017housekeeping by
+    navigating to their [Shiny R application](http://shiny.maths.usyd.edu.au/scHK/), clicking on 
+    "Default Values", then immediately clicking "Download". Then place this file, 
+    labeled "h-scHKgenes.csv", in the [Data](data) directory.
+
+7. `h-scHKgenes.csv`
+
+After completing these steps, the Data folder should look like this:
+
+```{bash}
+cd Data
+ls -1
+```
+
+### Run make
+
+To reproduce all of the results in @gerard2017unifying, move to
+the root directory in your local copy of this repository, and run
+`make` from the terminal. This will run all the steps in the data
+processing and analysis pipeline. Note that you may need to adjust
+some of the settings in the [Makefile](Makefile) to suit your
+computing environment.
+
+Since some of the steps take a long time to run, you may not want to
+run everything at once. If you want to reproduce just the results from
+Section 5.1, run
+
+``` bash
+make sims
+```
+
+If you want to reproduce just the results from Section 5.2, run
+
+``` bash
+make gtex_analysis
+```
+
+If you want to reproduce the figure in the introduction, run
+
+``` bash
+make one_data
+```
+
+At any point during or after the commands are running, it may be
+helpful to inspect the `.Rout` files saved in the [Output](Output)
+subdirectory.
+
+### Get Coffee
+
+All of these runs (except the last one) should take a very long time
+(a day to a couple of days). You should get some coffee. Here is a
+list of some of my favorite places:
+
+-   Chicago
+    -   [Sawada Coffee](https://www.yelp.com/biz/sawada-coffee-chicago)
+    -   [Plein Air Cafe](https://www.yelp.com/biz/plein-air-cafe-and-eatery-chicago-2)
+-   Seattle
+    -   [Bauhaus Ballard](https://www.yelp.com/biz/bauhaus-ballard-seattle)
+    -   [Cafe Solstice](https://www.yelp.com/biz/cafe-solstice-seattle)
+-   Columbus
+    -   [Yeah, Me Too](https://www.yelp.com/biz/yeah-me-too-columbus)
+    -   [Stauf's Coffee Roasters](https://www.yelp.com/biz/staufs-coffee-roasters-columbus-2)
+    -   [Caffe Apropos](https://www.yelp.com/biz/caff%C3%A9-apropos-columbus-2)
+
+If you are having trouble reproducing these results, it might be that
+you need to update some of your R packages. These are the versions
+that I used (including some versions of packages that are not actually
+needed to run the code):
+
+```{r}
+sessionInfo()
+```
+
+As you can see, I've also only tried this out on Ubuntu.
+
+## Credits
+
+This project was developed by
+[David Gerard](https://dcgerard.github.io) at the University of
+Chicago.
+
+[Peter Carbonetto](https://pcarbo.github.io/) made many fantastic
+contributions and suggestions to increase the reproducibility of this
+work.
+
+Thanks to [Matthew Stephens](http://stephenslab.uchicago.edu) for his
+support and mentorship.
+
+## References
+
+

@@ -1,58 +1,43 @@
-# Source to reproduce results from Gerard & Stephens (2017)
 
-This repository contains source code to reproduce the empirical
-evaluations of [Gerard & Stephens (2017)](https://arxiv.org/abs/1709.10066).
-The new methods can be found in the
-[vicar](https://github.com/dcgerard/vicar) package.
+Source to reproduce results from Gerard and Stephens (2017)
+===========================================================
 
-If you find a bug, please create an
-[issue](https://github.com/dcgerard/ruvb_sims/issues).
+This repository contains source code to reproduce the empirical evaluations of Gerard and Stephens (2017). The new methods can be found in the [vicar](https://github.com/dcgerard/vicar) package.
 
-This code has been tested in ...
+If you find a bug, please create an [issue](https://github.com/dcgerard/ruvb_sims/issues).
 
-## Citing this work
+Citing this work
+----------------
 
-If you find any of the source code in this repository useful for your
-work, please cite our paper:
+If you find any of the source code in this repository useful for your work, please cite our paper:
 
-> Gerard, David, and Matthew Stephens. 2017. "Empirical Bayes Shrinkage
-> and False Discovery Rate Estimation, Allowing for Unwanted Variation."
-> *arXiv Preprint arXiv:1709.10066*. <https://arxiv.org/abs/1709.10066>.
+> Gerard, David, and Matthew Stephens. 2017. "Empirical Bayes Shrinkage and False Discovery Rate Estimation, Allowing for Unwanted Variation." *arXiv Preprint arXiv:1709.10066*. <https://arxiv.org/abs/1709.10066>.
 
-## License
+License
+-------
 
 Copyright (c) 2017-2018, David Gerard.
 
-All source code and software in this repository are made available
-under the terms of the [GNU General Public
-License](http://www.gnu.org/licenses/gpl.html). See the
-[LICENSE](LICENSE) file for the full text of the license.
+All source code and software in this repository are made available under the terms of the [GNU General Public License](http://www.gnu.org/licenses/gpl.html). See the [LICENSE](LICENSE) file for the full text of the license.
 
-## Instructions
+Instructions
+------------
 
-To reproduce the results of Gerard & Stephens (2017), you need to (1)
-install the appropriate R packages, (2) obtain the appropriate data,
-(3) run `make` and (4) get some coffee while you wait. Please read
-below for details on each of these steps.
+To reproduce the results of Gerard and Stephens (2017), you need to (i) install the appropriate R packages, (ii) obtain the appropriate data, (iii) run `make` and (iv) get some coffee while you wait. Please read below for details on each of these steps.
 
 ### Install software and R packages
 
-1. Install [R](https://cran.r-project.org).
+1.  Install [R](https://cran.r-project.org).
+2.  Install [GNU Make](https://www.gnu.org/software/make).
+3.  Install the required R packages by running the following commands in the R interactive environment. (Note the order of these commands is important---the Bioconductor packages should be installed before the CRAN packages.)
 
-2. Install [GNU Make](https://www.gnu.org/software/make).
-
-3. Install the required R packages by running the following commands
-in the R interactive environment. (Note the order of these commands is
-important---the Bioconductor packages should be installed before the
-CRAN packages.)
-
-```R
+``` r
 source("https://bioconductor.org/biocLite.R")
 biocLite(c("sva","limma","qvalue"),suppressUpdates = TRUE)
 install.packages(c("tidyverse", "stringr", "reshape2", "pROC",
                    "ruv", "cate", "devtools", "ashr", "bfa",
-				   "xtable", "dplyr", "ggthemes",
-				   "assertthat", "R.utils"))
+                   "xtable", "dplyr", "ggthemes",
+                   "assertthat", "R.utils"))
 devtools::install_github("dcgerard/seqgendiff")
 devtools::install_github("dcgerard/vicar")
 ```
@@ -61,50 +46,42 @@ See below for the versions of the packages that I used for the paper.
 
 ### Get data
 
-Download the following files from the
-[GTEx Portal](https://www.gtexportal.org) and copy them to the
-[Data](data) subdirectory. In order to replicate my results, it is
-important to use version "6p" of the GTEx data. To access these files,
-you will need to register for a GTEx Portal account if you have not
-done so already.
+Download the following files from the [GTEx Portal](https://www.gtexportal.org) and copy them to the [Data](data) subdirectory. In order to replicate my results, it is important to use version "6p" of the GTEx data. To access these files, you will need to register for a GTEx Portal account if you have not done so already.
 
-1. `GTEx_Data_V6_Annotations_SampleAttributesDS.txt`
-2. `GTEx_Analysis_v6p_RNA-seq_RNA-SeQCv1.1.8_gene_reads.gct.gz`
-3. `gencode.v19.genes.v6p_model.patched_contigs.gtf.gz`
-4. `GTEx_Data_V6_Annotations_SubjectPhenotypesDS.txt`
+1.  `GTEx_Data_V6_Annotations_SampleAttributesDS.txt`
+2.  `GTEx_Analysis_v6p_RNA-seq_RNA-SeQCv1.1.8_gene_reads.gct.gz`
+3.  `gencode.v19.genes.v6p_model.patched_contigs.gtf.gz`
+4.  `GTEx_Data_V6_Annotations_SubjectPhenotypesDS.txt`
 
-Next, download the list of human housekeeping genes and the
-NCBI-to-Ensembl gene mapping file, and copy these files to the
-[Data](data) directory:
+    Next, download the list of human housekeeping genes from Eisenberg and Levanon (2013) and the NCBI-to-Ensembl gene mapping file, and copy these files to the [Data](data) directory:
 
-5. http://www.tau.ac.il/~elieis/HKG/HK_genes.txt
-6. ftp://ftp.ncbi.nih.gov/gene/DATA/gene2ensembl.gz
+5.  <http://www.tau.ac.il/~elieis/HKG/HK_genes.txt>
+6.  <ftp://ftp.ncbi.nih.gov/gene/DATA/gene2ensembl.gz>
+
+    Finally, download the list of human housekeeping genes from Lin et al. (2017) by navigating to their [Shiny R application](http://shiny.maths.usyd.edu.au/scHK/), clicking on "Default Values", then immediately clicking "Download". Then place this file, labeled "h-scHKgenes.csv", in the [Data](data) directory.
+
+7.  `h-scHKgenes.csv`
 
 After completing these steps, the Data folder should look like this:
 
-```bash
+``` bash
 cd Data
 ls -1
-# GTEx_Analysis_v6p_RNA-seq_RNA-SeQCv1.1.8_gene_reads.gct.gz
-# GTEx_Data_V6_Annotations_SampleAttributesDS.txt
-# GTEx_Data_V6_Annotations_SubjectPhenotypesDS.txt
-# HK_genes.txt
-# gencode.v19.genes.v6p_model.patched_contigs.gtf.gz
-# gene2ensembl.gz
 ```
+
+    ## gencode.v19.genes.V6p_model.patched_contigs.gtf
+    ## gene2ensembl.gz
+    ## GTEx_Analysis_v6p_RNA-seq_RNA-SeQCv1.1.8_gene_reads.gct.gz
+    ## GTEx_Data_V6_Annotations_SampleAttributesDS.txt
+    ## GTEx_Data_V6_Annotations_SubjectPhenotypesDS.txt
+    ## HK_genes.txt
+    ## h-scHKgenes.csv
 
 ### Run make
 
-To reproduce all of the results in Gerard and Stephens (2017), move to
-the root directory in your local copy of this repository, and run
-`make` from the terminal. This will run all the steps in the data
-processing and analysis pipeline. Note that you may need to adjust
-some of the settings in the [Makefile](Makefile) to suit your
-computing environment.
+To reproduce all of the results in Gerard and Stephens (2017), move to the root directory in your local copy of this repository, and run `make` from the terminal. This will run all the steps in the data processing and analysis pipeline. Note that you may need to adjust some of the settings in the [Makefile](Makefile) to suit your computing environment.
 
-Since some of the steps take a long time to run, you may not want to
-run everything at once. If you want to reproduce just the results from
-Section 5.1, run
+Since some of the steps take a long time to run, you may not want to run everything at once. If you want to reproduce just the results from Section 5.1, run
 
 ``` bash
 make sims
@@ -122,15 +99,11 @@ If you want to reproduce the figure in the introduction, run
 make one_data
 ```
 
-At any point during or after the commands are running, it may be
-helpful to inspect the `.Rout` files saved in the [Output](Output)
-subdirectory.
+At any point during or after the commands are running, it may be helpful to inspect the `.Rout` files saved in the [Output](Output) subdirectory.
 
 ### Get Coffee
 
-All of these runs (except the last one) should take a very long time
-(a day to a couple of days). You should get some coffee. Here is a
-list of some of my favorite places:
+All of these runs (except the last one) should take a very long time (a day to a couple of days). You should get some coffee. Here is a list of some of my favorite places:
 
 -   Chicago
     -   [Sawada Coffee](https://www.yelp.com/biz/sawada-coffee-chicago)
@@ -143,81 +116,53 @@ list of some of my favorite places:
     -   [Stauf's Coffee Roasters](https://www.yelp.com/biz/staufs-coffee-roasters-columbus-2)
     -   [Caffe Apropos](https://www.yelp.com/biz/caff%C3%A9-apropos-columbus-2)
 
-If you are having trouble reproducing these results, it might be that
-you need to update some of your R packages. These are the versions
-that I used (including some versions of packages that are not actually
-needed to run the code):
+If you are having trouble reproducing these results, it might be that you need to update some of your R packages. These are the versions that I used (including some versions of packages that are not actually needed to run the code):
 
-```R
+``` r
 sessionInfo()
 ```
 
-    ## R version 3.4.0 (2017-04-21)
-    ## Platform: x86_64-w64-mingw32/x64 (64-bit)
-    ## Running under: Windows 10 x64 (build 15063)
-    ##
+    ## R version 3.4.4 (2018-03-15)
+    ## Platform: x86_64-pc-linux-gnu (64-bit)
+    ## Running under: Ubuntu 16.04.4 LTS
+    ## 
     ## Matrix products: default
-    ##
+    ## BLAS: /usr/lib/atlas-base/atlas/libblas.so.3.0
+    ## LAPACK: /usr/lib/atlas-base/atlas/liblapack.so.3.0
+    ## 
     ## locale:
-    ## [1] LC_COLLATE=English_United States.1252
-    ## [2] LC_CTYPE=English_United States.1252
-    ## [3] LC_MONETARY=English_United States.1252
-    ## [4] LC_NUMERIC=C
-    ## [5] LC_TIME=English_United States.1252
-    ##
+    ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+    ##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+    ##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+    ##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+    ##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+    ## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+    ## 
     ## attached base packages:
-    ## [1] stats     graphics  grDevices utils     datasets  methods   base
-    ##
-    ## other attached packages:
-    ##  [1] ashr_2.0.5          seqgendiff_0.1.0    Rmpi_0.6-6
-    ##  [4] vicar_0.1.6         limma_3.32.10       sva_3.24.4
-    ##  [7] BiocParallel_1.10.1 genefilter_1.58.0   mgcv_1.8-17
-    ## [10] nlme_3.1-131        devtools_1.13.4     snow_0.4-2
-    ## [13] gridExtra_2.3       cate_1.0.4          ruv_0.9.6
-    ## [16] pROC_1.10.0         reshape2_1.4.3      forcats_0.2.0
-    ## [19] stringr_1.2.0       dplyr_0.7.4         purrr_0.2.4
-    ## [22] readr_1.1.1         tidyr_0.7.2         tibble_1.3.4
-    ## [25] ggplot2_2.2.1       tidyverse_1.2.1
-    ##
+    ## [1] stats     graphics  grDevices utils     datasets  methods   base     
+    ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] svd_0.4              bitops_1.0-6         matrixStats_0.52.2
-    ##  [4] lubridate_1.7.1      doParallel_1.0.10    httr_1.3.1
-    ##  [7] rprojroot_1.2        tools_3.4.0          backports_1.1.1
-    ## [10] R6_2.2.0             DBI_0.6-1            lazyeval_0.2.0
-    ## [13] BiocGenerics_0.22.0  colorspace_1.3-2     withr_1.0.2
-    ## [16] mnormt_1.5-5         compiler_3.4.0       cli_1.0.0
-    ## [19] rvest_0.3.2          Biobase_2.36.0       xml2_1.1.1
-    ## [22] scales_0.4.1         SQUAREM_2017.10-1    psych_1.7.3.21
-    ## [25] esaBcv_1.2.1         digest_0.6.12        foreign_0.8-67
-    ## [28] rmarkdown_1.6        pscl_1.4.9           pkgconfig_2.0.1
-    ## [31] htmltools_0.3.6      rlang_0.1.4          readxl_1.0.0
-    ## [34] rstudioapi_0.7       RSQLite_1.1-2        bindr_0.1
-    ## [37] jsonlite_1.5         leapp_1.2            RCurl_1.95-4.8
-    ## [40] magrittr_1.5         Matrix_1.2-9         Rcpp_0.12.14
-    ## [43] munsell_0.4.3        S4Vectors_0.14.0     stringi_1.1.5
-    ## [46] yaml_2.1.14          MASS_7.3-47          plyr_1.8.4
-    ## [49] grid_3.4.0           parallel_3.4.0       crayon_1.3.4
-    ## [52] lattice_0.20-35      haven_1.1.0          splines_3.4.0
-    ## [55] annotate_1.54.0      hms_0.3              knitr_1.17
-    ## [58] corpcor_1.6.9        codetools_0.2-15     stats4_3.4.0
-    ## [61] XML_3.98-1.6         glue_1.1.1           evaluate_0.10
-    ## [64] modelr_0.1.1         foreach_1.4.3        cellranger_1.1.0
-    ## [67] gtable_0.2.0         assertthat_0.2.0     xtable_1.8-2
-    ## [70] broom_0.4.2          survival_2.41-3      truncnorm_1.0-7
-    ## [73] iterators_1.0.8      AnnotationDbi_1.38.0 memoise_1.1.0
-    ## [76] IRanges_2.10.0       bindrcpp_0.2
+    ##  [1] compiler_3.4.4  backports_1.0.5 magrittr_1.5    rprojroot_1.3-2
+    ##  [5] tools_3.4.4     htmltools_0.3.5 yaml_2.1.14     Rcpp_0.12.16   
+    ##  [9] stringi_1.1.2   rmarkdown_1.9   knitr_1.20      stringr_1.2.0  
+    ## [13] digest_0.6.12   evaluate_0.10
 
 As you can see, I've also only tried this out on Ubuntu.
 
-## Credits
+Credits
+-------
 
-This project was developed by
-[David Gerard](https://dcgerard.github.io) at the University of
-Chicago.
+This project was developed by [David Gerard](https://dcgerard.github.io) at the University of Chicago.
 
-[Peter Carbonetto](https://pcarbo.github.io/) made many fantastic
-contributions and suggestions to increase the reproducibility of this
-work.
+[Peter Carbonetto](https://pcarbo.github.io/) made many fantastic contributions and suggestions to increase the reproducibility of this work.
 
-Thanks to [Matthew Stephens](http://stephenslab.uchicago.edu) for his
-support and mentorship.
+Thanks to [Matthew Stephens](http://stephenslab.uchicago.edu) for his support and mentorship.
+
+References
+----------
+
+Eisenberg, Eli, and Erez Y Levanon. 2013. “Human Housekeeping Genes, Revisited.” *Trends in Genetics* 29 (10). Elsevier: 569–74. doi:[10.1016/j.tig.2013.05.010](https://doi.org/10.1016/j.tig.2013.05.010).
+
+Gerard, David, and Matthew Stephens. 2017. “Unifying and Generalizing Methods for Removing Unwanted Variation Based on Negative Controls.” *arXiv Preprint arXiv:1705.08393*. <https://arxiv.org/abs/1705.08393>.
+
+Lin, Yingxin, Shila Ghazanfar, Dario Strbenac, Andy Wang, Ellis Patrick, Terence Speed, Jean Yang, and Pengyi Yang. 2017. “Housekeeping Genes, Revisited at the Single-Cell Level.” *bioRxiv*. Cold Spring Harbor Laboratory. doi:[10.1101/229815](https://doi.org/10.1101/229815).
