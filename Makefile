@@ -73,18 +73,24 @@ cleaned_dat = $(cleaned_dir)/adiposetissue.Rds \
 	      $(cleaned_dir)/smallintestine.Rds \
 	      $(cleaned_dir)/stomach.Rds
 
-# TO DO: Add description of these targets here. See above description
-# of tissue_dat for an example.
+# Results of fitting the various confounder adjustment methods to all GTEx tissues.
+# This uses the eisenburg control genes.
 gtex_dir  = ./Output/gtex_fits
 gtex_fits = $(gtex_dir)/betahat_list.Rds \
             $(gtex_dir)/pi0mat.Rds \
             $(gtex_dir)/plist.Rds
 
+gtex_lin_dir  = ./Output/gtex_fits_lin
+gtex_lin_fits = $(gtex_lin_dir)/betahat_list.Rds \
+                $(gtex_lin_dir)/pi0mat.Rds \
+                $(gtex_lin_dir)/plist.Rds
+
+
 # TO DO: Add description of these targets here. See above description
 # of tissue_dat for an example.
 sims_out = ./Output/sims_out/sims_out.Rds
 
-all: sims gtex_analysis one_data
+all: sims gtex_analysis gtex_analysis_lin one_data
 
 # Extract tissue data.
 $(tissue_targets) : ./R/gtex_extract_tissues_v6p.R
@@ -106,9 +112,21 @@ $(gtex_fits) : ./R/fit_mouthwash.R $(cleaned_dat)
 	mkdir -p Output/gtex_fits
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
+# Re-run GTEx analysis with control genes from Lin et al.
+$(gtex_lin_fits) : ./R/fit_gtex_lin.R $(cleaned_dat)
+	mkdir -p Output/gtex_fits_lin
+	$(rexec) $< Output/$(basename $(notdir $<)).Rout
+
 # Create plots from results of GTEx analysis.
 .PHONY : gtex_analysis
 gtex_analysis : ./R/gtex_plots.R $(gtex_fits)
+	mkdir -p Output/figures
+	$(rexec) $< Output/$(basename $(notdir $<)).Rout
+
+# Create same plots from results of GTEx analysis where we use
+# the control genes from Lin et al.
+.PHONY : gtex_analysis_lin
+gtex_analysis_lin : ./R/gtex_plots_lin.R $(gtex_lin_fits)
 	mkdir -p Output/figures
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
