@@ -45,13 +45,13 @@ in the R interactive environment. (Note the order of these commands is
 important---the Bioconductor packages should be installed before the
 CRAN packages.)
 
-```R
+```{r, eval=FALSE}
 source("https://bioconductor.org/biocLite.R")
-biocLite(c("sva","limma","qvalue"),suppressUpdates = TRUE)
+biocLite(c("sva", "limma", "qvalue", "biomaRt"), suppressUpdates = TRUE)
 install.packages(c("tidyverse", "stringr", "reshape2", "pROC",
                    "ruv", "cate", "devtools", "ashr", "bfa",
-				   "xtable", "dplyr", "ggthemes",
-				   "assertthat", "R.utils"))
+                   "xtable", "dplyr", "ggthemes",
+                   "assertthat", "R.utils"))
 devtools::install_github("dcgerard/seqgendiff")
 devtools::install_github("dcgerard/vicar")
 ```
@@ -82,9 +82,14 @@ done so already.
     Finally, download the list of human housekeeping genes from @lin2017housekeeping by
     navigating to their [Shiny R application](http://shiny.maths.usyd.edu.au/scHK/), clicking on 
     "Default Values", then immediately clicking "Download". Then place this file, 
-    labeled "h-scHKgenes.csv", in the [Data](data) directory.
+    labeled "h-scHKgenes.csv", in the [Data](Data) directory.
 
 7. `h-scHKgenes.csv`
+
+    I used the file [get_ensembl.R](./R/get_ensembl.R) to correspond HGNC gene 
+    names to their ensembl annotation, but I don't run this in make because I don't want
+    a dependency on the biomaRt package, so I've included the resulting file
+    [lin_hk_genes.csv](./Data/lin_hk_genes.csv) in the [Data](Data) directory.
 
 After completing these steps, the Data folder should look like this:
 

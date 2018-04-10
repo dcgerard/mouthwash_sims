@@ -4,7 +4,7 @@
 # parSapply calls. This could also be specified automatically using
 # environment variables. For example, in SLURM, SLURM_CPUS_PER_TASK
 # specifies the number of CPUs allocated for each task.
-nc = 8
+nc = 6
 
 # R scripting front-end. Note that makeCluster sometimes fails to
 # connect to a socker when using Rscript, so we are using the "R CMD
@@ -47,8 +47,7 @@ tissue_dat = $(tissue_dir)/adiposetissue.csv \
              $(tissue_dir)/vagina.csv
 tissue_targets = $(addsuffix .%,$(basename $(tissue_dat)))
 
-# TO DO: Add description of these targets here. See above description
-# of tissue_dat for an example.
+# Contains data in the format used as input for MOUTHWASH
 cleaned_dir = ./Output/cleaned_gtex_data
 cleaned_dat = $(cleaned_dir)/adiposetissue.Rds \
 	      $(cleaned_dir)/bladder.Rds \
@@ -85,10 +84,10 @@ gtex_fits = $(gtex_dir)/betahat_list.Rds \
 # of tissue_dat for an example.
 sims_out = ./Output/sims_out/sims_out.Rds
 
-all: sims gtex_analysis one_data 
+all: sims gtex_analysis one_data
 
 # Extract tissue data.
-$(tissue_targets) : R/gtex_extract_tissues_v6p.R
+$(tissue_targets) : ./R/gtex_extract_tissues_v6p.R
 	mkdir -p Output/gtex_tissue_gene_reads_v6p
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
@@ -97,34 +96,39 @@ $(cleaned_dat) : ./R/gtex_clean.R $(tissue_dat)
 	mkdir -p Output/cleaned_gtex_data
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
+# Get Lin et al control genes
+$(cleaned_dir)/lin_ctl.Rds : ./R/gtex_add_lin_control.R ./Data/lin_hk_genes.csv $(cleaned_dat)
+	mkdir -p Output/cleaned_gtex_data
+	$(rexec) $< Output/$(basename $(notdir $<)).Rout
+
 # Run GTEx analysis.
-$(gtex_fits) : ./R/fit_mouthwash.R $(cleaned_dat) 
+$(gtex_fits) : ./R/fit_mouthwash.R $(cleaned_dat)
 	mkdir -p Output/gtex_fits
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
 # Create plots from results of GTEx analysis.
 .PHONY : gtex_analysis
-gtex_analysis : ./R/gtex_plots.R $(gtex_fits) 
+gtex_analysis : ./R/gtex_plots.R $(gtex_fits)
 	mkdir -p Output/figures
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
 # Run simulations.
-$(sims_out) : ./Code/mouthwash_sims.R $(tissue_dat) 
+$(sims_out) : ./Code/mouthwash_sims.R $(tissue_dat)
 	mkdir -p Output/sims_out
 	$(rexec) '--args nc=$(nc)' $< Output/$(basename $(notdir $<)).Rout
 
 # Create plots from simulation experiments.
 .PHONY : sims
-sims : ./R/plot_mouthwash_sims.R $(sims_out) 
+sims : ./R/plot_mouthwash_sims.R $(sims_out)
 	mkdir -p Output/figures
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
-# TO DO: Explain here what this does.
+# Provide example figure of ash's poor performance in the presence of
+# unobserved confounding.
 .PHONY : one_data
-one_data : ./R/ash_problems.R $(tissue_dat) 
+one_data : ./R/ash_problems.R $(tissue_dat)
 	mkdir -p Output/figures
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
 clean:
 	rm -f $(tissue_dat)
-

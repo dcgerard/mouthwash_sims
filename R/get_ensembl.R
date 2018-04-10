@@ -1,0 +1,5 @@
+library(biomaRt)
+hkgenes <- read.csv("./Data/h-scHKgenes.csv", row.names = 1)
+mart <- useMart(biomart = "ensembl", dataset = "hsapiens_gene_ensembl")
+hkdat <- getBM(attributes = "ensembl_gene_id", filters = "hgnc_symbol", values = hkgenes[, 1], mart = mart)
+write.csv(hkdat, file = "./Data/lin_hk_genes.csv", row.names = FALSE)

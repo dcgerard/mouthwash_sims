@@ -36,6 +36,9 @@ for (index in 1:length(gene_names)) {
                              exon$gene_id[index])
 }
 
+hkgenes <- read.table("./Data/HK_genes.txt")
+gene2ensembl <- read.table("./Data/gene2ensembl.gz")
+
 for (tissue_index in 1:length(tissue_vec)) {
     current_tissue <- tissue_vec[tissue_index]
     cat("tissue",tissue_index,"=",current_tissue,"\n")
@@ -94,8 +97,6 @@ for (tissue_index in 1:length(tissue_vec)) {
     ## with the file gene2ensemble.gz which can be found at
     ## [ftp://ftp.ncbi.nih.gov/gene/DATA/](ftp://ftp.ncbi.nih.gov/gene/DATA/).
 
-    hkgenes <- read.table("./Data/HK_genes.txt")
-    gene2ensembl <- read.table("./Data/gene2ensembl.gz")
     ## V4 is NCBI, V3 is Ensemble
 
     ctl <- rep(FALSE, length = nrow(Y))

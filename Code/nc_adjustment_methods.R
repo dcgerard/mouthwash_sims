@@ -74,7 +74,7 @@ cate_simp_nc_correction <- function(Y, X, num_sv, control_genes, calibrate = FAL
                             nc.var.correction = TRUE)
 
   betahat   <- c(cate_nc$beta)
-  sebetahat <- c(sqrt(cate_nc$beta.cov.row * cate_nc$beta.cov.col) /
+  sebetahat <- c(sqrt(cate_nc$beta.cov.row * c(cate_nc$beta.cov.col)) /
                    sqrt(nrow(X)))
   df        <- nrow(Y) - ncol(X) - num_sv
 
@@ -118,7 +118,7 @@ ruv2_simp <- function(Y, X, num_sv, control_genes) {
   vout <- ruv::RUV2(Y = Y, X = X[, 2, drop = FALSE],
                     ctl = control_genes, k = num_sv, Z = X[, -2, drop = FALSE])
   betahat   <- vout$betahat
-  sebetahat <- sqrt(vout$sigma2 * vout$multiplier)
+  sebetahat <- sqrt(vout$sigma2 * c(vout$multiplier))
   df        <- nrow(Y) - ncol(X) - num_sv
   return(list(betahat = betahat, sebetahat = sebetahat, df = df))
 }
