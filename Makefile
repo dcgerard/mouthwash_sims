@@ -90,7 +90,7 @@ gtex_lin_fits = $(gtex_lin_dir)/betahat_list.Rds \
 # of tissue_dat for an example.
 sims_out = ./Output/sims_out/sims_out.Rds
 
-all: sims gtex_analysis gtex_analysis_lin one_data
+all: sims gtex_analysis gtex_analysis_lin one_data computation
 
 # Extract tissue data.
 $(tissue_targets) : ./R/gtex_extract_tissues_v6p.R
@@ -146,6 +146,17 @@ sims : ./R/plot_mouthwash_sims.R $(sims_out)
 .PHONY : one_data
 one_data : ./R/ash_problems.R $(tissue_dat)
 	mkdir -p Output/figures
+	$(rexec) $< Output/$(basename $(notdir $<)).Rout
+
+# Compuatation time simulations
+Output/computation/comp_time.Rds : ./R/computation_time.R $(tissue_dat)
+	mkdir -p Output/computation
+	$(rexec) $< Output/$(basename $(notdir $<)).Rout
+
+# Summarize computation time results
+.PHONY: computation
+computation : ./R/summarize_computation.R Output/computation/comp_time.Rds
+	mkdir -p Output/computation
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
 clean:
