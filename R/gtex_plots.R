@@ -239,6 +239,18 @@ ggplot() + geom_point(data = dummydat, mapping = aes(x = Rank, y = lfdr,
     ylab("Median lfdr")
 dev.off()
 
+pdf(file = "./Output/figures/proponsex_bw.pdf", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
+ggplot() + geom_point(data = dummydat, mapping = aes(x = Rank, y = lfdr,
+                                                     color = Proportion), size = 0.5) +
+  facet_wrap(~Method) +
+  theme_bw() +
+  scale_color_gradient(guide = guide_colourbar(title = "Proportion\non Sex\nChromosome"),
+                       low = "grey90", high = "black") +
+  theme(strip.background = element_rect(fill="white"), text = element_text(size = 9)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  ylab("Median lfdr")
+dev.off()
+
 pdf(file = "./Output/figures/lfdr_rank.pdf", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
 ggplot(data = biglongdat2, mapping = aes(y = lfdr, x = Rank, group = Tissue)) +
     geom_line(alpha = 1/4) +
