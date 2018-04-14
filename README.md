@@ -33,7 +33,7 @@ To reproduce the results of Gerard and Stephens (2017), you need to (i) install 
 
 ``` r
 source("https://bioconductor.org/biocLite.R")
-biocLite(c("sva","limma","qvalue"),suppressUpdates = TRUE)
+biocLite(c("sva", "limma", "qvalue", "biomaRt"), suppressUpdates = TRUE)
 install.packages(c("tidyverse", "stringr", "reshape2", "pROC",
                    "ruv", "cate", "devtools", "ashr", "bfa",
                    "xtable", "dplyr", "ggthemes",
@@ -58,9 +58,11 @@ Download the following files from the [GTEx Portal](https://www.gtexportal.org) 
 5.  <http://www.tau.ac.il/~elieis/HKG/HK_genes.txt>
 6.  <ftp://ftp.ncbi.nih.gov/gene/DATA/gene2ensembl.gz>
 
-    Finally, download the list of human housekeeping genes from Lin et al. (2017) by navigating to their [Shiny R application](http://shiny.maths.usyd.edu.au/scHK/), clicking on "Default Values", then immediately clicking "Download". Then place this file, labeled "h-scHKgenes.csv", in the [Data](data) directory.
+    Finally, download the list of human housekeeping genes from Lin et al. (2017) by navigating to their [Shiny R application](http://shiny.maths.usyd.edu.au/scHK/), clicking on "Default Values", then immediately clicking "Download". Then place this file, labeled "h-scHKgenes.csv", in the [Data](Data) directory.
 
 7.  `h-scHKgenes.csv`
+
+    I used the file [get\_ensembl.R](./R/get_ensembl.R) to correspond HGNC gene names to their ensembl annotation, but I don't run this in make because I don't want a dependency on the biomaRt package, so I've included the resulting file [lin\_hk\_genes.csv](./Data/lin_hk_genes.csv) in the [Data](Data) directory.
 
 After completing these steps, the Data folder should look like this:
 
@@ -69,28 +71,42 @@ cd Data
 ls -1
 ```
 
-    ## gencode.v19.genes.V6p_model.patched_contigs.gtf
+    ## gencode.v19.genes.v6p_model.patched_contigs.gtf.gz
     ## gene2ensembl.gz
     ## GTEx_Analysis_v6p_RNA-seq_RNA-SeQCv1.1.8_gene_reads.gct.gz
     ## GTEx_Data_V6_Annotations_SampleAttributesDS.txt
     ## GTEx_Data_V6_Annotations_SubjectPhenotypesDS.txt
     ## HK_genes.txt
     ## h-scHKgenes.csv
+    ## hsc.txt~
+    ## lin_hk_genes.csv
 
 ### Run make
 
 To reproduce all of the results in Gerard and Stephens (2017), move to the root directory in your local copy of this repository, and run `make` from the terminal. This will run all the steps in the data processing and analysis pipeline. Note that you may need to adjust some of the settings in the [Makefile](Makefile) to suit your computing environment.
 
-Since some of the steps take a long time to run, you may not want to run everything at once. If you want to reproduce just the results from Section 5.1, run
+Since some of the steps take a long time to run, you may not want to run everything at once. If you want to reproduce the simulation results, run
 
 ``` bash
 make sims
 ```
 
-If you want to reproduce just the results from Section 5.2, run
+If you want to reproduce just the results of the GTEx analysis using the control genes from Eisenberg and Levanon (2013), run
 
 ``` bash
 make gtex_analysis
+```
+
+If you want to reproduce just the results of the GTEx analysis using the control genes from Lin et al. (2017), run
+
+``` bash
+make gtex_analysis_lin
+```
+
+If you want to reproduce the computation time calculations, run
+
+``` bash
+make computation
 ```
 
 If you want to reproduce the figure in the introduction, run
@@ -144,7 +160,7 @@ sessionInfo()
     ## loaded via a namespace (and not attached):
     ##  [1] compiler_3.4.4  backports_1.0.5 magrittr_1.5    rprojroot_1.3-2
     ##  [5] tools_3.4.4     htmltools_0.3.5 yaml_2.1.14     Rcpp_0.12.16   
-    ##  [9] stringi_1.1.2   rmarkdown_1.9   knitr_1.20      stringr_1.2.0  
+    ##  [9] stringi_1.1.7   rmarkdown_1.9   knitr_1.20      stringr_1.3.0  
     ## [13] digest_0.6.12   evaluate_0.10
 
 As you can see, I've also only tried this out on Ubuntu.

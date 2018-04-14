@@ -108,17 +108,28 @@ some of the settings in the [Makefile](Makefile) to suit your
 computing environment.
 
 Since some of the steps take a long time to run, you may not want to
-run everything at once. If you want to reproduce just the results from
-Section 5.1, run
+run everything at once. If you want to reproduce the simulation results, run
 
 ``` bash
 make sims
 ```
 
-If you want to reproduce just the results from Section 5.2, run
+If you want to reproduce just the results of the GTEx analysis using the control genes from @eisenberg2013human, run
 
 ``` bash
 make gtex_analysis
+```
+
+If you want to reproduce just the results of the GTEx analysis using the control genes from @lin2017housekeeping, run
+
+``` bash
+make gtex_analysis_lin
+```
+
+If you want to reproduce the computation time calculations, run
+
+``` bash
+make computation
 ```
 
 If you want to reproduce the figure in the introduction, run

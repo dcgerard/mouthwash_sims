@@ -86,9 +86,14 @@ gtex_lin_fits = $(gtex_lin_dir)/betahat_list.Rds \
                 $(gtex_lin_dir)/plist.Rds
 
 
-# TO DO: Add description of these targets here. See above description
-# of tissue_dat for an example.
+# Output from the main simulation study
 sims_out = ./Output/sims_out/sims_out.Rds
+
+# Output from the simulation study using just control-gene methods
+sims_out_control = ./Output/sims_out_control/sims_out_control.Rds
+
+# Data frame of computation time for all methods
+comp_time = ./Output/computation/comp_time.Rds
 
 all: sims gtex_analysis gtex_analysis_lin one_data computation
 
@@ -149,7 +154,7 @@ one_data : ./R/ash_problems.R $(tissue_dat)
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
 # Compuatation time simulations
-Output/computation/comp_time.Rds : ./R/computation_time.R $(tissue_dat)
+$(comp_time) : ./R/computation_time.R $(tissue_dat)
 	mkdir -p Output/computation
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
