@@ -78,7 +78,6 @@ ls -1
     ## GTEx_Data_V6_Annotations_SubjectPhenotypesDS.txt
     ## HK_genes.txt
     ## h-scHKgenes.csv
-    ## hsc.txt~
     ## lin_hk_genes.csv
 
 ### Run make
@@ -159,9 +158,9 @@ sessionInfo()
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] compiler_3.4.4  backports_1.0.5 magrittr_1.5    rprojroot_1.3-2
-    ##  [5] tools_3.4.4     htmltools_0.3.5 yaml_2.1.14     Rcpp_0.12.16   
+    ##  [5] tools_3.4.4     htmltools_0.3.5 yaml_2.1.18     Rcpp_0.12.16   
     ##  [9] stringi_1.1.7   rmarkdown_1.9   knitr_1.20      stringr_1.3.0  
-    ## [13] digest_0.6.12   evaluate_0.10
+    ## [13] digest_0.6.15   evaluate_0.10
 
 As you can see, I've also only tried this out on Ubuntu.
 
