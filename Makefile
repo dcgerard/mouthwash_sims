@@ -85,12 +85,43 @@ gtex_lin_fits = $(gtex_lin_dir)/betahat_list.Rds \
                 $(gtex_lin_dir)/pi0mat.Rds \
                 $(gtex_lin_dir)/plist.Rds
 
+# Figures output from ash_problems.R
+ash_prob_out_dir = ./Output/figures
+ash_prob_out = $(ash_prob_out_dir)/ash_fail.pdf \
+               $(ash_prob_out_dir)/ash_fail_small.pdf \
+               $(ash_prob_out_dir)/ash_fail_small_mouth.pdf
+
+# Output from summarize_computation.R
+sum_comp_out_dir = ./Output/computation
+sum_comp_out = $(sum_comp_out_dir)/comp_tab.txt
 
 # Output from the main simulation study
 sims_out = ./Output/sims_out/sims_out.Rds
 
 # Output from the simulation study using just control-gene methods
 sims_out_control = ./Output/sims_out_control/sims_out_control.Rds
+
+# Figures output from plot_mouthwash_sims.R
+sim_fig_dir = ./Output/figures
+sim_fig = $(sim_fig_dir)/pi0_box_50.pdf \
+          $(sim_fig_dir)/pi0_box_90.pdf \
+          $(sim_fig_dir)/pi0_box_100.pdf \
+          $(sim_fig_dir)/auc_ave.pdf
+
+# Figures output from gtex_plots.R
+gtex_fig_dir = ./Output/figures
+gtex_fig = $(gtex_fig_dir)/prop_max.pdf \
+           $(gtex_fig_dir)/prop_max.eps \
+           $(gtex_fig_dir)/proponsex.pdf \
+           $(gtex_fig_dir)/proponsex_bw.pdf \
+           $(gtex_fig_dir)/lfdr_rank.pdf
+
+# Figures output from gtex_plots_lin.R
+gtex_fig_dir_lin = ./Output/figures
+gtex_fig_lin = $(gtex_fig_dir_lin)/prop_max_lin.pdf \
+               $(gtex_fig_dir_lin)/prop_max_lin.eps \
+               $(gtex_fig_dir_lin)/proponsex_lin.pdf \
+               $(gtex_fig_dir_lin)/lfdr_rank_lin.pdf
 
 # Data frame of computation time for all methods
 comp_time = ./Output/computation/comp_time.Rds
@@ -123,17 +154,21 @@ $(gtex_lin_fits) : ./R/fit_gtex_lin.R $(cleaned_dat)
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
 # Create plots from results of GTEx analysis.
-.PHONY : gtex_analysis
-gtex_analysis : ./R/gtex_plots.R $(gtex_fits)
+$(gtex_fig) : ./R/gtex_plots.R $(gtex_fits)
 	mkdir -p Output/figures
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
+.PHONY : gtex_analysis
+gtex_analysis : $(gtex_fig)
+
 # Create same plots from results of GTEx analysis where we use
 # the control genes from Lin et al.
-.PHONY : gtex_analysis_lin
-gtex_analysis_lin : ./R/gtex_plots_lin.R $(gtex_lin_fits)
+$(gtex_fig_lin) : ./R/gtex_plots_lin.R $(gtex_lin_fits)
 	mkdir -p Output/figures
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
+
+.PHONY : gtex_analysis_lin
+gtex_analysis_lin : $(gtex_fig_lin)
 
 # Run simulations.
 $(sims_out) : ./Code/mouthwash_sims.R $(tissue_dat)
@@ -141,17 +176,21 @@ $(sims_out) : ./Code/mouthwash_sims.R $(tissue_dat)
 	$(rexec) '--args nc=$(nc)' $< Output/$(basename $(notdir $<)).Rout
 
 # Create plots from simulation experiments.
-.PHONY : sims
-sims : ./R/plot_mouthwash_sims.R $(sims_out)
+$(sim_fig) : ./R/plot_mouthwash_sims.R $(sims_out)
 	mkdir -p Output/figures
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
+.PHONY : sims
+sims : $(sim_fig)
+
 # Provide example figure of ash's poor performance in the presence of
 # unobserved confounding.
-.PHONY : one_data
-one_data : ./R/ash_problems.R $(tissue_dat)
+$(ash_prob_out) : ./R/ash_problems.R $(tissue_dat)
 	mkdir -p Output/figures
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
+
+.PHONY : one_data
+one_data : $(ash_prob_out)
 
 # Compuatation time simulations
 $(comp_time) : ./R/computation_time.R $(tissue_dat)
@@ -159,10 +198,12 @@ $(comp_time) : ./R/computation_time.R $(tissue_dat)
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
 
 # Summarize computation time results
-.PHONY: computation
-computation : ./R/summarize_computation.R Output/computation/comp_time.Rds
+$(sum_comp_out) : ./R/summarize_computation.R Output/computation/comp_time.Rds
 	mkdir -p Output/computation
 	$(rexec) $< Output/$(basename $(notdir $<)).Rout
+
+.PHONY : computation
+computation : $(sum_comp_out)
 
 clean:
 	rm -f $(tissue_dat)
