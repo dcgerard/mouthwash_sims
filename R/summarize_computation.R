@@ -27,4 +27,11 @@ compdat %>%
                        round(Lower, digits = 2), ", ", round(Upper, digits = 2), ")")) ->
   sumdat
 
+sumdat %>%
+  arrange(Median) %>%
+  select(Method, Time) ->
+  tabdat
 
+
+print(file = "./Output/computation/comp_tab.txt",
+      xtable(tabdat), include.rownames = FALSE)
