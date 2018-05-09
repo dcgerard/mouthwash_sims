@@ -4,10 +4,10 @@ source("./Code/nc_adjustment_methods.R")
 source("./Code/non_nc_methods.R")
 
 log2foldsd   <- 0.8
-Ngene        <- 1000
+Ngene        <- 10000
 log2foldmean <- 0
 skip_gene    <- 0
-Nsamp_seq    <- c(6, 10, 20, 40)
+Nsamp_seq    <- 100
 nullpi       <- 0.9
 ncontrol     <- 100
 itermax      <- 100
@@ -74,8 +74,8 @@ for (index in 1:nrow(simdat)) {
   simdat$mouthwash_time[index] <- system.time(mouthwash(Y = Y, X = X, num_sv = num_sv,
                                                         likelihood = "normal", alpha = 0,
                                                         scale_var = TRUE))["elapsed"]
-  simdat$backwash_time[index] <- system.time(backwash(Y = Y, X = X, num_sv = num_sv, alpha = 0,
-                                                      scale_var = TRUE))["elapsed"]
+  # simdat$backwash_time[index] <- system.time(backwash(Y = Y, X = X, num_sv = num_sv, alpha = 0,
+  #                                                     scale_var = TRUE))["elapsed"]
 }
 
 saveRDS(simdat, "./Output/computation/comp_time.Rds")

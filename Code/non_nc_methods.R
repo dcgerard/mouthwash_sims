@@ -8,7 +8,7 @@ cate_rr <- function(Y, X, num_sv, calibrate = FALSE) {
                             r = num_sv, adj.method = "rr",
                             calibrate = calibrate, fa.method = "pc")
   betahat     <- c(cate_rr$beta)
-  sebetahat   <- c(sqrt(cate_rr$beta.cov.row * cate_rr$beta.cov.col) / sqrt(nrow(X)))
+  sebetahat   <- c(sqrt(c(cate_rr$beta.cov.row) * c(cate_rr$beta.cov.col)) / sqrt(nrow(X)))
   pvalues     <- c(cate_rr$beta.p.value)
   df          <- Inf
 

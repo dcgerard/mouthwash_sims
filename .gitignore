@@ -3,6 +3,7 @@
 *.Rproj
 .Rhistory
 .RData
+*.Rout
 
 ## Compiled
 *.o
