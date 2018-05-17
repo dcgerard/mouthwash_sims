@@ -165,11 +165,47 @@ sessionInfo()
     ## attached base packages:
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
+    ## other attached packages:
+    ##  [1] vicar_0.1-9       seqgendiff_0.1.0  biomaRt_2.26.1   
+    ##  [4] qvalue_2.2.2      limma_3.26.9      sva_3.18.0       
+    ##  [7] genefilter_1.52.1 mgcv_1.8-23       nlme_3.1-137     
+    ## [10] R.utils_2.6.0     R.oo_1.22.0       R.methodsS3_1.7.1
+    ## [13] assertthat_0.2.0  ggthemes_3.5.0    xtable_1.8-2     
+    ## [16] bfa_0.4           ashr_2.2-7        devtools_1.13.5  
+    ## [19] cate_1.0.4        ruv_0.9.7         pROC_1.12.1      
+    ## [22] reshape2_1.4.3    forcats_0.3.0     stringr_1.3.1    
+    ## [25] dplyr_0.7.4       purrr_0.2.4       readr_1.1.1      
+    ## [28] tidyr_0.8.0       tibble_1.4.2      ggplot2_2.2.1    
+    ## [31] tidyverse_1.2.1  
+    ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] compiler_3.5.0  backports_1.1.2 magrittr_1.5    rprojroot_1.3-2
-    ##  [5] tools_3.5.0     htmltools_0.3.6 yaml_2.1.19     Rcpp_0.12.16   
-    ##  [9] stringi_1.2.2   rmarkdown_1.9   knitr_1.20      stringr_1.3.1  
-    ## [13] digest_0.6.15   evaluate_0.10.1
+    ##  [1] svd_0.4.1            bitops_1.0-6         lubridate_1.7.4     
+    ##  [4] bit64_0.9-7          doParallel_1.0.11    httr_1.3.1          
+    ##  [7] rprojroot_1.3-2      tools_3.5.0          backports_1.1.2     
+    ## [10] R6_2.2.2             DBI_1.0.0            lazyeval_0.2.1      
+    ## [13] BiocGenerics_0.16.1  colorspace_1.3-2     withr_2.1.2         
+    ## [16] gridExtra_2.3        mnormt_1.5-5         bit_1.1-12          
+    ## [19] compiler_3.5.0       cli_1.0.0            rvest_0.3.2         
+    ## [22] Biobase_2.30.0       xml2_1.2.0           scales_0.5.0        
+    ## [25] SQUAREM_2017.10-1    psych_1.8.4          esaBcv_1.2.1        
+    ## [28] digest_0.6.15        foreign_0.8-70       rmarkdown_1.9       
+    ## [31] pscl_1.5.2           pkgconfig_2.0.1      htmltools_0.3.6     
+    ## [34] rlang_0.2.0          readxl_1.1.0         rstudioapi_0.7      
+    ## [37] RSQLite_2.1.1        bindr_0.1.1          jsonlite_1.5        
+    ## [40] leapp_1.2            RCurl_1.95-4.10      magrittr_1.5        
+    ## [43] Matrix_1.2-14        Rcpp_0.12.16         munsell_0.4.3       
+    ## [46] S4Vectors_0.8.11     stringi_1.2.2        yaml_2.1.19         
+    ## [49] MASS_7.3-50          plyr_1.8.4           grid_3.5.0          
+    ## [52] blob_1.1.1           parallel_3.5.0       crayon_1.3.4        
+    ## [55] lattice_0.20-35      haven_1.1.1          splines_3.5.0       
+    ## [58] annotate_1.48.0      hms_0.4.2            knitr_1.20          
+    ## [61] pillar_1.2.2         corpcor_1.6.9        codetools_0.2-15    
+    ## [64] stats4_3.5.0         XML_3.98-1.11        glue_1.2.0          
+    ## [67] evaluate_0.10.1      modelr_0.1.2         foreach_1.4.4       
+    ## [70] cellranger_1.1.0     gtable_0.2.0         broom_0.4.4         
+    ## [73] coda_0.19-1          survival_2.42-3      truncnorm_1.0-8     
+    ## [76] iterators_1.0.9      AnnotationDbi_1.32.3 memoise_1.1.0       
+    ## [79] IRanges_2.4.8        bindrcpp_0.2.2
 
 As you can see, I've also only tried this out on Ubuntu.
 

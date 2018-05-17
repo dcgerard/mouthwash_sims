@@ -65,6 +65,16 @@ devtools::install_github("dcgerard/seqgendiff", ref = "680e088c1a37879b82b7db86b
 
 See below for the versions of the packages that I used for the paper.
 
+```{r, message=FALSE, warning=FALSE, echo=FALSE, results="hide"}
+liblist <- c("tidyverse", "stringr", "reshape2", "pROC",
+             "ruv", "cate", "devtools", "ashr", "bfa",
+             "xtable", "dplyr", "ggthemes",
+             "assertthat", "R.utils", "sva", "limma", 
+             "qvalue", "biomaRt", "seqgendiff", "vicar")
+lapply(liblist, require, character.only = TRUE)
+```
+
+
 ### Get data
 
 Download the following files from the
