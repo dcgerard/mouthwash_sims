@@ -57,6 +57,12 @@ devtools::install_github("dcgerard/seqgendiff")
 devtools::install_github("dcgerard/vicar")
 ```
 
+If the newer versions of `seqgendiff` and `vicar` do not work, then you can try the specific commits I used for publication:
+```{r, eval = FALSE}
+devtools::install_github("dcgerard/vicar", ref = "41fc3df8faed8d59af1f29410619908385970124")
+devtools::install_github("dcgerard/seqgendiff", ref = "680e088c1a37879b82b7db86b24fbd657b5f6869")
+```
+
 See below for the versions of the packages that I used for the paper.
 
 ### Get data
