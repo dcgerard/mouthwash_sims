@@ -4,6 +4,7 @@ bibliography: readme_bib.bib
 ---
 
 # Source to reproduce results from @gerard2017unifying
+[![DOI](https://zenodo.org/badge/71280495.svg)](https://zenodo.org/badge/latestdoi/71280495)
 
 This repository contains source code to reproduce the empirical
 evaluations of @gerard2017unifying.

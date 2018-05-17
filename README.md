@@ -2,6 +2,8 @@
 Source to reproduce results from Gerard and Stephens (2017)
 ===========================================================
 
+[![DOI](https://zenodo.org/badge/71280495.svg)](https://zenodo.org/badge/latestdoi/71280495)
+
 This repository contains source code to reproduce the empirical evaluations of Gerard and Stephens (2017). The new methods can be found in the [vicar](https://github.com/dcgerard/vicar) package.
 
 If you find a bug, please create an [issue](https://github.com/dcgerard/ruvb_sims/issues).
@@ -137,13 +139,13 @@ If you are having trouble reproducing these results, it might be that you need t
 sessionInfo()
 ```
 
-    ## R version 3.4.4 (2018-03-15)
+    ## R version 3.5.0 (2018-04-23)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
     ## Running under: Ubuntu 16.04.4 LTS
     ## 
     ## Matrix products: default
-    ## BLAS: /usr/lib/atlas-base/atlas/libblas.so.3.0
-    ## LAPACK: /usr/lib/atlas-base/atlas/liblapack.so.3.0
+    ## BLAS: /usr/local/lib/R/lib/libRblas.so
+    ## LAPACK: /usr/local/lib/R/lib/libRlapack.so
     ## 
     ## locale:
     ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -157,10 +159,10 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] compiler_3.4.4  backports_1.0.5 magrittr_1.5    rprojroot_1.3-2
-    ##  [5] tools_3.4.4     htmltools_0.3.5 yaml_2.1.18     Rcpp_0.12.16   
-    ##  [9] stringi_1.1.7   rmarkdown_1.9   knitr_1.20      stringr_1.3.0  
-    ## [13] digest_0.6.15   evaluate_0.10
+    ##  [1] compiler_3.5.0  backports_1.1.2 magrittr_1.5    rprojroot_1.3-2
+    ##  [5] tools_3.5.0     htmltools_0.3.6 yaml_2.1.19     Rcpp_0.12.16   
+    ##  [9] stringi_1.2.2   rmarkdown_1.9   knitr_1.20      stringr_1.3.1  
+    ## [13] digest_0.6.15   evaluate_0.10.1
 
 As you can see, I've also only tried this out on Ubuntu.
 
