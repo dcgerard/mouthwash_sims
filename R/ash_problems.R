@@ -53,7 +53,8 @@ longdat$variable <- stringr::str_replace(longdat$variable, "VLEASH", "VOOM + ASH
 longdat$variable <- factor(longdat$variable, levels = c("OLS + ASH", "VOOM + ASH",
                                                         "MOUTHWASH", "BACKWASH"))
 names(longdat) <- c("Method", "lfdr")
-pdf(file = "./Output/figures/ash_fail.pdf", family = "Times", width = 6.5, height = 2.5, colormodel = "cmyk")
+setEPS()
+postscript(file = "./Output/figures/ash_fail.eps", family = "Times", width = 6.5, height = 2.5, colormodel = "cmyk")
 ggplot(data = longdat, mapping = aes(x = lfdr, color = I("black"), fill = I("white"))) +
     facet_grid(.~Method) +
     geom_histogram(bins = 20) +
@@ -64,7 +65,7 @@ dev.off()
 
 smalldat <- filter(longdat, Method == "OLS + ASH" | Method  == "VOOM + ASH")
 
-pdf(file = "./Output/figures/ash_fail_small.pdf", family = "Times", width = 4, height = 2.5, colormodel = "cmyk")
+postscript(file = "./Output/figures/ash_fail_small.eps", family = "Times", width = 4, height = 2.5, colormodel = "cmyk")
 ggplot(data = smalldat, mapping = aes(x = lfdr, color = I("black"), fill = I("lightgrey"))) +
   facet_grid(.~Method) +
   geom_histogram(bins = 20) +
@@ -74,7 +75,7 @@ ggplot(data = smalldat, mapping = aes(x = lfdr, color = I("black"), fill = I("li
 dev.off()
 
 smalldat <- filter(longdat, Method == "MOUTHWASH")
-pdf(file = "./Output/figures/ash_fail_small_mouth.pdf", family = "Times", width = 4, height = 2.5, colormodel = "cmyk")
+postscript(file = "./Output/figures/ash_fail_small_mouth.eps", family = "Times", width = 4, height = 2.5, colormodel = "cmyk")
 ggplot(data = smalldat, mapping = aes(x = lfdr, color = I("black"), fill = I("lightgrey"))) +
   facet_grid(.~Method) +
   geom_histogram(bins = 20) +

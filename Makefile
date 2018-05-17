@@ -87,9 +87,9 @@ gtex_lin_fits = $(gtex_lin_dir)/betahat_list.Rds \
 
 # Figures output from ash_problems.R
 ash_prob_out_dir = ./Output/figures
-ash_prob_out = $(ash_prob_out_dir)/ash_fail.pdf \
-               $(ash_prob_out_dir)/ash_fail_small.pdf \
-               $(ash_prob_out_dir)/ash_fail_small_mouth.pdf
+ash_prob_out = $(ash_prob_out_dir)/ash_fail.eps \
+               $(ash_prob_out_dir)/ash_fail_small.eps \
+               $(ash_prob_out_dir)/ash_fail_small_mouth.eps
 
 # Output from summarize_computation.R
 sum_comp_out_dir = ./Output/computation
@@ -103,25 +103,23 @@ sims_out_control = ./Output/sims_out_control/sims_out_control.Rds
 
 # Figures output from plot_mouthwash_sims.R
 sim_fig_dir = ./Output/figures
-sim_fig = $(sim_fig_dir)/pi0_box_50.pdf \
-          $(sim_fig_dir)/pi0_box_90.pdf \
-          $(sim_fig_dir)/pi0_box_100.pdf \
-          $(sim_fig_dir)/auc_ave.pdf
+sim_fig = $(sim_fig_dir)/pi0_box_50.eps \
+          $(sim_fig_dir)/pi0_box_90.eps \
+          $(sim_fig_dir)/pi0_box_100.eps \
+          $(sim_fig_dir)/auc_ave.eps
 
 # Figures output from gtex_plots.R
 gtex_fig_dir = ./Output/figures
-gtex_fig = $(gtex_fig_dir)/prop_max.pdf \
-           $(gtex_fig_dir)/prop_max.eps \
-           $(gtex_fig_dir)/proponsex.pdf \
-           $(gtex_fig_dir)/proponsex_bw.pdf \
-           $(gtex_fig_dir)/lfdr_rank.pdf
+gtex_fig = $(gtex_fig_dir)/prop_max.eps \
+           $(gtex_fig_dir)/proponsex.eps \
+           $(gtex_fig_dir)/proponsex_bw.eps \
+           $(gtex_fig_dir)/lfdr_rank.eps
 
 # Figures output from gtex_plots_lin.R
 gtex_fig_dir_lin = ./Output/figures
-gtex_fig_lin = $(gtex_fig_dir_lin)/prop_max_lin.pdf \
-               $(gtex_fig_dir_lin)/prop_max_lin.eps \
-               $(gtex_fig_dir_lin)/proponsex_lin.pdf \
-               $(gtex_fig_dir_lin)/lfdr_rank_lin.pdf
+gtex_fig_lin = $(gtex_fig_dir_lin)/prop_max_lin.eps \
+               $(gtex_fig_dir_lin)/proponsex_lin.eps \
+               $(gtex_fig_dir_lin)/lfdr_rank_lin.eps
 
 # Data frame of computation time for all methods
 comp_time = ./Output/computation/comp_time.Rds

@@ -141,9 +141,6 @@ pl <- ggplot(data = longdat, mapping = aes(x = Method, y = Tissue, fill = Propor
     theme_bw() +
     scale_size_manual(values=c(dot=2, no_dot=NA), guide="none") +
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
-pdf(file = "./Output/figures/prop_max_lin.pdf", height = 7.3, width = 6.5, family = "Times", color = "cmyk")
-print(pl)
-dev.off()
 
 setEPS()
 postscript(file = "./Output/figures/prop_max_lin.eps", height = 7.3, width = 6.5, family = "Times", color = "cmyk")
@@ -260,7 +257,7 @@ names(biglongdat2) <- c("lfdr", "onsex", "Method", "Rank", "Tissue")
 
 biglongdat2$Method <- replace_names(biglongdat2$Method)
 
-pdf(file = "./Output/figures/proponsex_lin.pdf", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
+postscript(file = "./Output/figures/proponsex_lin.eps", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
 ggplot() + geom_point(data = dummydat, mapping = aes(x = Rank, y = lfdr,
                                                      color = Proportion), size = 0.5) +
     facet_wrap(~Method) +
@@ -271,9 +268,9 @@ ggplot() + geom_point(data = dummydat, mapping = aes(x = Rank, y = lfdr,
     ylab("Median lfdr")
 dev.off()
 
-pdf(file = "./Output/figures/lfdr_rank_lin.pdf", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
+postscript(file = "./Output/figures/lfdr_rank_lin.eps", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
 ggplot(data = biglongdat2, mapping = aes(y = lfdr, x = Rank, group = Tissue)) +
-    geom_line(alpha = 1/4) +
+    geom_line(color = "grey50") +
     facet_wrap(~Method) +
     theme_bw() +
     theme(strip.background = element_rect(fill="white"), text = element_text(size = 10)) +

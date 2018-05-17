@@ -29,6 +29,7 @@ longdat <- select(dat, nullpi, Nsamp, ncontrols, contains("pi0")) %>%
   gather(key = "Method", value = "pi0hat", pi0_ash_ols:pi0_qvalue_caterr_cal)
 longdat$Method <- replace_names(longdat$Method)
 
+setEPS()
 for (nullpi_current in c(0.5, 0.9, 1)) {
   sublongdat <- filter(longdat, nullpi == nullpi_current)
 
@@ -47,7 +48,7 @@ for (nullpi_current in c(0.5, 0.9, 1)) {
           axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
     ylab("Estimate of Pi0")
 
-  pdf(file = paste0("./Output/figures/pi0_box_", nullpi_current * 100, ".pdf"), colormodel = "cmyk",
+  postscript(file = paste0("./Output/figures/pi0_box_", nullpi_current * 100, ".eps"), colormodel = "cmyk",
       family = "Times", width = 6.5, height = 7)
   print(pl)
   dev.off()
@@ -82,12 +83,13 @@ pl <- ggplot(data = meddat, mapping = aes(x = Method, y = mean, pch = as.factor(
   theme(strip.background = element_rect(fill = "white"),
         axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
   geom_point() +
-  geom_hline(data = maxdat, mapping = aes(yintercept = max, lty = Nsamp), alpha = 1/2) +
+  geom_hline(data = maxdat, mapping = aes(yintercept = max, lty = Nsamp), color = "grey50") +
   scale_linetype_discrete(name = "Max Mean at\nSample Size") +
   scale_shape_discrete(name = "Sample Size") +
   ylab("Mean AUC")
 
-pdf(file = "./Output/figures/auc_ave.pdf", colormodel = "cmyk",
+setEPS()
+postscript(file = "./Output/figures/auc_ave.eps", colormodel = "cmyk",
     family = "Times", width = 6.5, height = 7)
 print(pl)
 dev.off()

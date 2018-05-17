@@ -113,7 +113,8 @@ longdat <- gather(top100p, key = "Method", value = "Proportion", `RUV2+ASH`:`CAT
 longdat$Tissue <- factor(longdat$Tissue, levels = rownames(top100)[order(nseq, decreasing = TRUE)])
 longdat$Method <- factor(longdat$Method, levels = unique(longdat$Method)[faorder])
 
-pdf(file = "./Output/figures/prop_max.pdf", height = 7.3, width = 6.5, family = "Times", color = "cmyk")
+setEPS()
+postscript(file = "./Output/figures/prop_max.eps", height = 7.3, width = 6.5, family = "Times", color = "cmyk")
 pl <- ggplot(data = longdat, mapping = aes(x = Method, y = Tissue, fill = Proportion)) +
     geom_raster() +
     scale_fill_gradient(high = "#ffffff",
@@ -228,7 +229,7 @@ names(biglongdat2) <- c("lfdr", "onsex", "Method", "Rank", "Tissue")
 
 biglongdat2$Method <- replace_names(biglongdat2$Method)
 
-pdf(file = "./Output/figures/proponsex.pdf", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
+postscript(file = "./Output/figures/proponsex.eps", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
 ggplot() + geom_point(data = dummydat, mapping = aes(x = Rank, y = lfdr,
                                                      color = Proportion), size = 0.5) +
     facet_wrap(~Method) +
@@ -239,7 +240,7 @@ ggplot() + geom_point(data = dummydat, mapping = aes(x = Rank, y = lfdr,
     ylab("Median lfdr")
 dev.off()
 
-pdf(file = "./Output/figures/proponsex_bw.pdf", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
+postscript(file = "./Output/figures/proponsex_bw.eps", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
 ggplot() + geom_point(data = dummydat, mapping = aes(x = Rank, y = lfdr,
                                                      color = Proportion), size = 0.5) +
   facet_wrap(~Method) +
@@ -251,9 +252,9 @@ ggplot() + geom_point(data = dummydat, mapping = aes(x = Rank, y = lfdr,
   ylab("Median lfdr")
 dev.off()
 
-pdf(file = "./Output/figures/lfdr_rank.pdf", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
+postscript(file = "./Output/figures/lfdr_rank.eps", height = 5.5, width = 6.5, family = "Times", color = "cmyk")
 ggplot(data = biglongdat2, mapping = aes(y = lfdr, x = Rank, group = Tissue)) +
-    geom_line(alpha = 1/4) +
+    geom_line(color = "grey50") +
     facet_wrap(~Method) +
     theme_bw() +
     theme(strip.background = element_rect(fill="white"), text = element_text(size = 10)) +
