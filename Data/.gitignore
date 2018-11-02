@@ -3,3 +3,4 @@
 # Except this file
 !.gitignore
 !lin_hk_genes.csv
+!h-scHKgenes.csv
