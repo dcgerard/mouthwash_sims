@@ -90,6 +90,9 @@ register for a GTEx Portal account if you have not done so already.
     application](http://shiny.maths.usyd.edu.au/scHK/), clicking on
     “Default Values”, then immediately clicking “Download”. Then place
     this file, labeled “h-scHKgenes.csv”, in the [Data](Data) directory.
+    
+    (Note: This shiny app is no longer being supported, so I placed the
+    housekeeping genes that I downloaded in the [Data](Data) directory.)
 
 7.  `h-scHKgenes.csv`
     
