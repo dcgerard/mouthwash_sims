@@ -1,10 +1,10 @@
 
-# Source to reproduce results from Gerard and Stephens (2017)
+# Source to reproduce results from Gerard and Stephens (2018)
 
 [![DOI](https://zenodo.org/badge/71280495.svg)](https://zenodo.org/badge/latestdoi/71280495)
 
 This repository contains source code to reproduce the empirical
-evaluations of Gerard and Stephens (2017). The new methods can be found
+evaluations of Gerard and Stephens (2018). The new methods can be found
 in the [vicar](https://github.com/dcgerard/vicar) package.
 
 If you find a bug, please create an
@@ -15,9 +15,10 @@ If you find a bug, please create an
 If you find any of the source code in this repository useful for your
 work, please cite our paper:
 
-> Gerard, David, and Matthew Stephens. 2017. “Empirical Bayes Shrinkage
+> Gerard, David, and Matthew Stephens. 2018. “Empirical Bayes Shrinkage
 > and False Discovery Rate Estimation, Allowing for Unwanted Variation.”
-> *arXiv Preprint arXiv:1709.10066*. <https://arxiv.org/abs/1709.10066>.
+> *Biostatistics*, kxy029.
+> <https://doi.org/10.1093/biostatistics/kxy029>.
 
 ## License
 
@@ -30,7 +31,7 @@ License](http://www.gnu.org/licenses/gpl.html). See the
 
 ## Instructions
 
-To reproduce the results of Gerard and Stephens (2017), you need to (i)
+To reproduce the results of Gerard and Stephens (2018), you need to (i)
 install the appropriate R packages, (ii) obtain the appropriate data,
 (iii) run `make` and (iv) get some coffee while you wait. Please read
 below for details on each of these steps.
@@ -47,12 +48,11 @@ below for details on each of these steps.
 <!-- end list -->
 
 ``` r
-source("https://bioconductor.org/biocLite.R")
-biocLite(c("sva", "limma", "qvalue", "biomaRt"), suppressUpdates = TRUE)
 install.packages(c("tidyverse", "stringr", "reshape2", "pROC",
                    "ruv", "cate", "devtools", "ashr", "bfa",
                    "xtable", "dplyr", "ggthemes",
-                   "assertthat", "R.utils"))
+                   "assertthat", "R.utils", "BiocManager"))
+BiocManager::install(c("sva", "limma", "qvalue", "biomaRt"))
 devtools::install_github("dcgerard/vicar", 
                          ref = "41fc3df8faed8d59af1f29410619908385970124")
 devtools::install_github("dcgerard/seqgendiff", 
@@ -118,7 +118,7 @@ ls -1
 
 ### Run make
 
-To reproduce all of the results in Gerard and Stephens (2017), move to
+To reproduce all of the results in Gerard and Stephens (2018), move to
 the root directory in your local copy of this repository, and run `make`
 from the terminal. This will run all the steps in the data processing
 and analysis pipeline. Note that you may need to adjust some of the
@@ -207,48 +207,53 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] seqgendiff_0.2.1    biomaRt_2.40.0      qvalue_2.16.0      
-    ##  [4] limma_3.40.2        sva_3.32.1          BiocParallel_1.18.0
-    ##  [7] genefilter_1.66.0   mgcv_1.8-28         nlme_3.1-140       
-    ## [10] assertthat_0.2.1    ggthemes_4.2.0      xtable_1.8-4       
-    ## [13] ashr_2.2-32         usethis_1.5.0       devtools_2.0.2     
-    ## [16] reshape2_1.4.3      forcats_0.4.0       stringr_1.4.0      
-    ## [19] dplyr_0.8.1         purrr_0.3.2         readr_1.3.1        
-    ## [22] tidyr_0.8.3         tibble_2.1.3        ggplot2_3.2.0      
-    ## [25] tidyverse_1.2.1    
+    ##  [1] vicar_0.1-9         seqgendiff_0.1.0    biomaRt_2.40.3     
+    ##  [4] qvalue_2.16.0       limma_3.40.6        sva_3.32.1         
+    ##  [7] BiocParallel_1.18.0 genefilter_1.66.0   mgcv_1.8-28        
+    ## [10] nlme_3.1-141        R.utils_2.9.0       R.oo_1.22.0        
+    ## [13] R.methodsS3_1.7.1   assertthat_0.2.1    ggthemes_4.2.0     
+    ## [16] xtable_1.8-4        bfa_0.4             ashr_2.2-32        
+    ## [19] devtools_2.1.0      usethis_1.5.1       cate_1.0.4         
+    ## [22] ruv_0.9.7           pROC_1.15.3         reshape2_1.4.3     
+    ## [25] forcats_0.4.0       stringr_1.4.0       dplyr_0.8.3        
+    ## [28] purrr_0.3.2         readr_1.3.1         tidyr_0.8.3        
+    ## [31] tibble_2.1.3        ggplot2_3.2.0       tidyverse_1.2.1    
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] matrixStats_0.54.0   bitops_1.0-6         fs_1.3.1            
-    ##  [4] bit64_0.9-7          lubridate_1.7.4      progress_1.2.2      
-    ##  [7] doParallel_1.0.14    httr_1.4.0           rprojroot_1.3-2     
-    ## [10] tools_3.6.0          backports_1.1.4      R6_2.4.0            
-    ## [13] DBI_1.0.0            lazyeval_0.2.2       BiocGenerics_0.30.0 
-    ## [16] colorspace_1.4-1     withr_2.1.2          tidyselect_0.2.5    
-    ## [19] prettyunits_1.0.2    processx_3.3.1       bit_1.1-14          
-    ## [22] compiler_3.6.0       cli_1.1.0            rvest_0.3.4         
-    ## [25] Biobase_2.44.0       xml2_1.2.0           desc_1.2.0          
-    ## [28] scales_1.0.0         SQUAREM_2017.10-1    callr_3.2.0         
-    ## [31] mixsqp_0.1-97        digest_0.6.19        rmarkdown_1.13      
-    ## [34] pscl_1.5.2           pkgconfig_2.0.2      htmltools_0.3.6     
-    ## [37] sessioninfo_1.1.1    rlang_0.3.4          readxl_1.3.1        
-    ## [40] RSQLite_2.1.1        rstudioapi_0.10      generics_0.0.2      
-    ## [43] jsonlite_1.6         RCurl_1.95-4.12      magrittr_1.5        
-    ## [46] Matrix_1.2-17        Rcpp_1.0.1           munsell_0.5.0       
-    ## [49] S4Vectors_0.22.0     stringi_1.4.3        yaml_2.2.0          
-    ## [52] MASS_7.3-51.4        pkgbuild_1.0.3       plyr_1.8.4          
-    ## [55] blob_1.1.1           grid_3.6.0           parallel_3.6.0      
-    ## [58] crayon_1.3.4         lattice_0.20-38      haven_2.1.0         
-    ## [61] splines_3.6.0        annotate_1.62.0      hms_0.4.2           
-    ## [64] knitr_1.23           ps_1.3.0             pillar_1.4.1        
-    ## [67] codetools_0.2-16     stats4_3.6.0         pkgload_1.0.2       
-    ## [70] XML_3.98-1.20        glue_1.3.1           evaluate_0.14       
-    ## [73] remotes_2.0.4        modelr_0.1.4         foreach_1.4.4       
-    ## [76] testthat_2.1.1       cellranger_1.1.0     gtable_0.3.0        
-    ## [79] xfun_0.7             broom_0.5.2          survival_2.44-1.1   
-    ## [82] truncnorm_1.0-8      iterators_1.0.10     IRanges_2.18.1      
-    ## [85] AnnotationDbi_1.46.0 memoise_1.1.0
+    ##  [1] colorspace_1.4-1     rprojroot_1.3-2      corpcor_1.6.9       
+    ##  [4] fs_1.3.1             rstudioapi_0.10      remotes_2.1.0       
+    ##  [7] leapp_1.2            bit64_0.9-7          AnnotationDbi_1.46.0
+    ## [10] lubridate_1.7.4      xml2_1.2.1           codetools_0.2-16    
+    ## [13] splines_3.6.0        pscl_1.5.2           doParallel_1.0.14   
+    ## [16] knitr_1.23           pkgload_1.0.2        zeallot_0.1.0       
+    ## [19] jsonlite_1.6         broom_0.5.2          annotate_1.62.0     
+    ## [22] compiler_3.6.0       httr_1.4.0           backports_1.1.4     
+    ## [25] Matrix_1.2-17        lazyeval_0.2.2       cli_1.1.0           
+    ## [28] htmltools_0.3.6      prettyunits_1.0.2    tools_3.6.0         
+    ## [31] coda_0.19-3          gtable_0.3.0         glue_1.3.1          
+    ## [34] Rcpp_1.0.2           Biobase_2.44.0       cellranger_1.1.0    
+    ## [37] vctrs_0.2.0          iterators_1.0.12     xfun_0.8            
+    ## [40] ps_1.3.0             testthat_2.2.1       rvest_0.3.4         
+    ## [43] XML_3.98-1.20        MASS_7.3-51.4        scales_1.0.0        
+    ## [46] hms_0.5.0            parallel_3.6.0       yaml_2.2.0          
+    ## [49] memoise_1.1.0        gridExtra_2.3        stringi_1.4.3       
+    ## [52] RSQLite_2.1.2        SQUAREM_2017.10-1    S4Vectors_0.22.0    
+    ## [55] desc_1.2.0           foreach_1.4.7        BiocGenerics_0.30.0 
+    ## [58] pkgbuild_1.0.3       truncnorm_1.0-8      rlang_0.4.0         
+    ## [61] pkgconfig_2.0.2      matrixStats_0.54.0   bitops_1.0-6        
+    ## [64] evaluate_0.14        lattice_0.20-38      esaBcv_1.2.1        
+    ## [67] bit_1.1-14           tidyselect_0.2.5     processx_3.4.1      
+    ## [70] plyr_1.8.4           magrittr_1.5         R6_2.4.0            
+    ## [73] IRanges_2.18.1       generics_0.0.2       DBI_1.0.0           
+    ## [76] pillar_1.4.2         haven_2.1.1          withr_2.1.2         
+    ## [79] survival_2.44-1.1    RCurl_1.95-4.12      mixsqp_0.1-97       
+    ## [82] modelr_0.1.4         crayon_1.3.4         rmarkdown_1.14      
+    ## [85] progress_1.2.2       grid_3.6.0           readxl_1.3.1        
+    ## [88] blob_1.2.0           callr_3.3.1          digest_0.6.20       
+    ## [91] svd_0.4.3            stats4_3.6.0         munsell_0.5.0       
+    ## [94] sessioninfo_1.1.1
 
-As you can see, I’ve also only tried this out on Ubuntu.
+I’ve also only tried this out on Ubuntu.
 
 ## Credits
 
@@ -274,11 +279,11 @@ Revisited.” *Trends in Genetics* 29 (10): 569–74.
 
 </div>
 
-<div id="ref-gerard2017unifying">
+<div id="ref-gerard2018empirical">
 
-Gerard, David, and Matthew Stephens. 2017. “Unifying and Generalizing
-Methods for Removing Unwanted Variation Based on Negative Controls.”
-*arXiv Preprint arXiv:1705.08393*. <https://arxiv.org/abs/1705.08393>.
+Gerard, David, and Matthew Stephens. 2018. “Empirical Bayes Shrinkage
+and False Discovery Rate Estimation, Allowing for Unwanted Variation.”
+*Biostatistics*, kxy029. <https://doi.org/10.1093/biostatistics/kxy029>.
 
 </div>
 
