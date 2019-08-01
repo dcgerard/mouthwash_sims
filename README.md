@@ -59,6 +59,9 @@ devtools::install_github("dcgerard/seqgendiff",
                          ref = "680e088c1a37879b82b7db86b24fbd657b5f6869")
 ```
 
+Newer versions of `seqgendiff` should not work as the `poisthin()`
+function has been replaced by `select_counts()` and `thin_2group()`.
+
 See below for the versions of the packages that I used for the paper.
 
 ### Get data
@@ -193,7 +196,7 @@ to run the code):
 sessionInfo()
 ```
 
-    ## R version 3.6.0 (2019-04-26)
+    ## R version 3.6.1 (2019-07-05)
     ## Platform: x86_64-w64-mingw32/x64 (64-bit)
     ## Running under: Windows 10 x64 (build 17134)
     ## 
@@ -210,14 +213,14 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] vicar_0.1-9         seqgendiff_0.1.0    biomaRt_2.40.3     
+    ##  [1] vicar_0.1-9         seqgendiff_1.0.0    biomaRt_2.40.3     
     ##  [4] qvalue_2.16.0       limma_3.40.6        sva_3.32.1         
     ##  [7] BiocParallel_1.18.0 genefilter_1.66.0   mgcv_1.8-28        
     ## [10] nlme_3.1-141        R.utils_2.9.0       R.oo_1.22.0        
     ## [13] R.methodsS3_1.7.1   assertthat_0.2.1    ggthemes_4.2.0     
     ## [16] xtable_1.8-4        bfa_0.4             ashr_2.2-32        
     ## [19] devtools_2.1.0      usethis_1.5.1       cate_1.0.4         
-    ## [22] ruv_0.9.7           pROC_1.15.3         reshape2_1.4.3     
+    ## [22] ruv_0.9.6           pROC_1.15.3         reshape2_1.4.3     
     ## [25] forcats_0.4.0       stringr_1.4.0       dplyr_0.8.3        
     ## [28] purrr_0.3.2         readr_1.3.1         tidyr_0.8.3        
     ## [31] tibble_2.1.3        ggplot2_3.2.0       tidyverse_1.2.1    
@@ -227,34 +230,33 @@ sessionInfo()
     ##  [4] fs_1.3.1             rstudioapi_0.10      remotes_2.1.0       
     ##  [7] leapp_1.2            bit64_0.9-7          AnnotationDbi_1.46.0
     ## [10] lubridate_1.7.4      xml2_1.2.1           codetools_0.2-16    
-    ## [13] splines_3.6.0        pscl_1.5.2           doParallel_1.0.14   
+    ## [13] splines_3.6.1        pscl_1.5.2           doParallel_1.0.14   
     ## [16] knitr_1.23           pkgload_1.0.2        zeallot_0.1.0       
     ## [19] jsonlite_1.6         broom_0.5.2          annotate_1.62.0     
-    ## [22] compiler_3.6.0       httr_1.4.0           backports_1.1.4     
+    ## [22] compiler_3.6.1       httr_1.4.0           backports_1.1.4     
     ## [25] Matrix_1.2-17        lazyeval_0.2.2       cli_1.1.0           
-    ## [28] htmltools_0.3.6      prettyunits_1.0.2    tools_3.6.0         
+    ## [28] htmltools_0.3.6      prettyunits_1.0.2    tools_3.6.1         
     ## [31] coda_0.19-3          gtable_0.3.0         glue_1.3.1          
     ## [34] Rcpp_1.0.2           Biobase_2.44.0       cellranger_1.1.0    
     ## [37] vctrs_0.2.0          iterators_1.0.12     xfun_0.8            
     ## [40] ps_1.3.0             testthat_2.2.1       rvest_0.3.4         
     ## [43] XML_3.98-1.20        MASS_7.3-51.4        scales_1.0.0        
-    ## [46] hms_0.5.0            parallel_3.6.0       yaml_2.2.0          
-    ## [49] memoise_1.1.0        gridExtra_2.3        stringi_1.4.3       
-    ## [52] RSQLite_2.1.2        SQUAREM_2017.10-1    S4Vectors_0.22.0    
-    ## [55] desc_1.2.0           foreach_1.4.7        BiocGenerics_0.30.0 
-    ## [58] pkgbuild_1.0.3       truncnorm_1.0-8      rlang_0.4.0         
-    ## [61] pkgconfig_2.0.2      matrixStats_0.54.0   bitops_1.0-6        
-    ## [64] evaluate_0.14        lattice_0.20-38      esaBcv_1.2.1        
-    ## [67] bit_1.1-14           tidyselect_0.2.5     processx_3.4.1      
-    ## [70] plyr_1.8.4           magrittr_1.5         R6_2.4.0            
-    ## [73] IRanges_2.18.1       generics_0.0.2       DBI_1.0.0           
-    ## [76] pillar_1.4.2         haven_2.1.1          withr_2.1.2         
-    ## [79] survival_2.44-1.1    RCurl_1.95-4.12      mixsqp_0.1-97       
-    ## [82] modelr_0.1.4         crayon_1.3.4         rmarkdown_1.14      
-    ## [85] progress_1.2.2       grid_3.6.0           readxl_1.3.1        
-    ## [88] blob_1.2.0           callr_3.3.1          digest_0.6.20       
-    ## [91] svd_0.4.3            stats4_3.6.0         munsell_0.5.0       
-    ## [94] sessioninfo_1.1.1
+    ## [46] hms_0.5.0            parallel_3.6.1       yaml_2.2.0          
+    ## [49] memoise_1.1.0        stringi_1.4.3        RSQLite_2.1.2       
+    ## [52] SQUAREM_2017.10-1    S4Vectors_0.22.0     desc_1.2.0          
+    ## [55] foreach_1.4.7        BiocGenerics_0.30.0  pkgbuild_1.0.3      
+    ## [58] truncnorm_1.0-8      rlang_0.4.0          pkgconfig_2.0.2     
+    ## [61] matrixStats_0.54.0   bitops_1.0-6         evaluate_0.14       
+    ## [64] lattice_0.20-38      esaBcv_1.2.1         bit_1.1-14          
+    ## [67] tidyselect_0.2.5     processx_3.4.1       plyr_1.8.4          
+    ## [70] magrittr_1.5         R6_2.4.0             IRanges_2.18.1      
+    ## [73] generics_0.0.2       DBI_1.0.0            pillar_1.4.2        
+    ## [76] haven_2.1.1          withr_2.1.2          survival_2.44-1.1   
+    ## [79] RCurl_1.95-4.12      mixsqp_0.1-97        modelr_0.1.4        
+    ## [82] crayon_1.3.4         rmarkdown_1.14       progress_1.2.2      
+    ## [85] grid_3.6.1           readxl_1.3.1         blob_1.2.0          
+    ## [88] callr_3.3.1          digest_0.6.20        svd_0.4.3           
+    ## [91] stats4_3.6.1         munsell_0.5.0        sessioninfo_1.1.1
 
 I’ve also only tried this out on Ubuntu.
 

@@ -58,6 +58,8 @@ devtools::install_github("dcgerard/seqgendiff",
                          ref = "680e088c1a37879b82b7db86b24fbd657b5f6869")
 ```
 
+Newer versions of `seqgendiff` should not work as the `poisthin()` function has been replaced by `select_counts()` and `thin_2group()`.
+
 See below for the versions of the packages that I used for the paper.
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE, results="hide"}
