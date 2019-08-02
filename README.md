@@ -197,17 +197,20 @@ sessionInfo()
 ```
 
     ## R version 3.6.1 (2019-07-05)
-    ## Platform: x86_64-w64-mingw32/x64 (64-bit)
-    ## Running under: Windows 10 x64 (build 17134)
+    ## Platform: x86_64-pc-linux-gnu (64-bit)
+    ## Running under: Ubuntu 18.04.2 LTS
     ## 
     ## Matrix products: default
+    ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas/libblas.so.3
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/libopenblasp-r0.2.20.so
     ## 
     ## locale:
-    ## [1] LC_COLLATE=English_United States.1252 
-    ## [2] LC_CTYPE=English_United States.1252   
-    ## [3] LC_MONETARY=English_United States.1252
-    ## [4] LC_NUMERIC=C                          
-    ## [5] LC_TIME=English_United States.1252    
+    ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+    ##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+    ##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+    ##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+    ##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+    ## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
     ## 
     ## attached base packages:
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
@@ -218,7 +221,7 @@ sessionInfo()
     ##  [7] BiocParallel_1.18.0 genefilter_1.66.0   mgcv_1.8-28        
     ## [10] nlme_3.1-141        R.utils_2.9.0       R.oo_1.22.0        
     ## [13] R.methodsS3_1.7.1   assertthat_0.2.1    ggthemes_4.2.0     
-    ## [16] xtable_1.8-4        bfa_0.4             ashr_2.2-32        
+    ## [16] xtable_1.8-4        bfa_0.4             ashr_2.2-38        
     ## [19] devtools_2.1.0      usethis_1.5.1       cate_1.0.4         
     ## [22] ruv_0.9.6           pROC_1.15.3         reshape2_1.4.3     
     ## [25] forcats_0.4.0       stringr_1.4.0       dplyr_0.8.3        
@@ -229,8 +232,8 @@ sessionInfo()
     ##  [1] colorspace_1.4-1     rprojroot_1.3-2      corpcor_1.6.9       
     ##  [4] fs_1.3.1             rstudioapi_0.10      remotes_2.1.0       
     ##  [7] leapp_1.2            bit64_0.9-7          AnnotationDbi_1.46.0
-    ## [10] lubridate_1.7.4      xml2_1.2.1           codetools_0.2-16    
-    ## [13] splines_3.6.1        pscl_1.5.2           doParallel_1.0.14   
+    ## [10] lubridate_1.7.4.9000 xml2_1.2.1           codetools_0.2-16    
+    ## [13] splines_3.6.1        pscl_1.5.2           doParallel_1.0.15   
     ## [16] knitr_1.23           pkgload_1.0.2        zeallot_0.1.0       
     ## [19] jsonlite_1.6         broom_0.5.2          annotate_1.62.0     
     ## [22] compiler_3.6.1       httr_1.4.0           backports_1.1.4     
@@ -279,7 +282,7 @@ support and mentorship.
 <div id="ref-eisenberg2013human">
 
 Eisenberg, Eli, and Erez Y Levanon. 2013. “Human Housekeeping Genes,
-Revisited.” *Trends in Genetics* 29 (10): 569–74.
+Revisited.” *Trends in Genetics* 29 (10). Elsevier: 569–74.
 <https://doi.org/10.1016/j.tig.2013.05.010>.
 
 </div>
@@ -296,8 +299,8 @@ and False Discovery Rate Estimation, Allowing for Unwanted Variation.”
 
 Lin, Yingxin, Shila Ghazanfar, Dario Strbenac, Andy Wang, Ellis Patrick,
 Terence Speed, Jean Yang, and Pengyi Yang. 2017. “Housekeeping Genes,
-Revisited at the Single-Cell Level.” *bioRxiv*.
-<https://doi.org/10.1101/229815>.
+Revisited at the Single-Cell Level.” *bioRxiv*. Cold Spring Harbor
+Laboratory. <https://doi.org/10.1101/229815>.
 
 </div>
 
