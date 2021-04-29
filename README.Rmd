@@ -3,11 +3,11 @@ output: github_document
 bibliography: readme_bib.bib
 ---
 
-# Source to reproduce results from @gerard2018empirical
+# Source to reproduce results from @gerard2020empirical
 [![DOI](https://zenodo.org/badge/71280495.svg)](https://zenodo.org/badge/latestdoi/71280495)
 
 This repository contains source code to reproduce the empirical
-evaluations of @gerard2018empirical.
+evaluations of @gerard2020empirical.
 The new methods can be found in the
 [vicar](https://github.com/dcgerard/vicar) package.
 
@@ -19,11 +19,11 @@ If you find a bug, please create an
 If you find any of the source code in this repository useful for your
 work, please cite our paper:
 
-> Gerard, David, and Matthew Stephens. 2018. "Empirical Bayes Shrinkage and False Discovery Rate Estimation, Allowing for Unwanted Variation." *Biostatistics*, kxy029. <https://doi.org/10.1093/biostatistics/kxy029>.
+> Gerard, David, and Matthew Stephens. 2020. "Empirical Bayes Shrinkage and False Discovery Rate Estimation, Allowing for Unwanted Variation." *Biostatistics*, 21(1), 15-32. doi: [10.1093/biostatistics/kxy029](https://doi.org/10.1093/biostatistics/kxy029).
 
 ## License
 
-Copyright (c) 2017-2018, David Gerard.
+Copyright (c) 2017-2020, David Gerard.
 
 All source code and software in this repository are made available
 under the terms of the [GNU General Public
@@ -32,7 +32,7 @@ License](http://www.gnu.org/licenses/gpl.html). See the
 
 ## Instructions
 
-To reproduce the results of @gerard2018empirical, you need to (i)
+To reproduce the results of @gerard2020empirical, you need to (i)
 install the appropriate R packages, (ii) obtain the appropriate data,
 (iii) run `make` and (iv) get some coffee while you wait. Please read
 below for details on each of these steps.
@@ -117,7 +117,7 @@ ls -1
 
 ### Run make
 
-To reproduce all of the results in @gerard2018empirical, move to
+To reproduce all of the results in @gerard2020empirical, move to
 the root directory in your local copy of this repository, and run
 `make` from the terminal. This will run all the steps in the data
 processing and analysis pipeline. Note that you may need to adjust
